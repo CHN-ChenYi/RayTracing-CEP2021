@@ -138,7 +138,9 @@ Renderer::Renderer(const std::string &serialized_scene,
                    const CSL::RefPtr<std::string> &image_name)
     : scene_(Scene(serialized_scene)), image_name_(image_name) {}
 
-Renderer::~Renderer() noexcept {}
+Renderer::~Renderer() noexcept {
+  if (task_.joinable()) task_.join();
+}
 
 bool Renderer::Render(std::function<void(void)> fire) noexcept {
   if (task_.joinable()) task_.join();
