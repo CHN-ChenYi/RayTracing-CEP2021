@@ -1,4 +1,6 @@
 set(SRC_LIST
   ${SRC_LIST}
+  ${CMAKE_CURRENT_SOURCE_DIR}/RenderViewModel.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/RenderViewModel.cc
   PARENT_SCOPE
 )
