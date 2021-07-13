@@ -12,7 +12,6 @@ class RenderViewModel : public CSL::PropertyTrigger {
   ~RenderViewModel() noexcept;
 
   // properties
-  CSL::RefPtr<Scene> GetScene() noexcept;
   CSL::RefPtr<std::string> GetImageName() noexcept;
   CSL::RefPtr<std::string> GetRenderErrorInfo() noexcept;
 

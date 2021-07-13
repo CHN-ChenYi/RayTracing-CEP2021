@@ -2,6 +2,8 @@
 
 #include <random>
 
+#include "Property.hpp"
+#include "Renderer.hpp"
 #include "uuid.h"
 
 RenderModel::RenderModel() {
@@ -17,10 +19,6 @@ RenderModel::RenderModel() {
 
 RenderModel::~RenderModel() {}
 
-CSL::RefPtr<Scene> RenderModel::GetScene() noexcept {
-  return CSL::RefPtr<Scene>(&scene_);
-}
-
 CSL::RefPtr<std::string> RenderModel::GetImageName() noexcept {
   return CSL::RefPtr<std::string>(&image_name_);
 }
@@ -30,5 +28,6 @@ CSL::RefPtr<std::string> RenderModel::GetRenderErrorInfo() noexcept {
 }
 
 bool RenderModel::Render(const std::string &serialized_scene) noexcept {
-  return false;
+  Renderer r(serialized_scene, CSL::RefPtr<std::string>(&image_name_));
+  return r.Render([this] { this->Fire(kRenderModelImageName); });
 }

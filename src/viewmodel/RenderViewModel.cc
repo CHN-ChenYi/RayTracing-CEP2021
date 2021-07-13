@@ -6,10 +6,6 @@ RenderViewModel::RenderViewModel() noexcept {}
 
 RenderViewModel::~RenderViewModel() noexcept {}
 
-CSL::RefPtr<Scene> RenderViewModel::GetScene() noexcept {
-  return render_model_ref_->GetScene();
-}
-
 CSL::RefPtr<std::string> RenderViewModel::GetImageName() noexcept {
   return render_model_ref_->GetImageName();
 }
@@ -35,7 +31,7 @@ CSL::RefPtr<RenderModel> RenderViewModel::DetachModel() noexcept {
 
 CSL::PropertyNotification RenderViewModel::GetNotification() noexcept {
   return [this](uint32_t uID) {
-    if (uID == kRenderModelScene) {
+    if (uID == kRenderModelImageName) {
       this->Fire(uID);
     }
   };
