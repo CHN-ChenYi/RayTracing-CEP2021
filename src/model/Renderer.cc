@@ -135,16 +135,17 @@ Vector Renderer::Radiance(const Ray &r, int depth) const noexcept {
 }
 
 Renderer::Renderer(const std::string &serialized_scene,
-                   const CSL::RefPtr<std::string> &image_name)
-    : scene_(Scene(serialized_scene)), image_name_(image_name) {}
+                   const CSL::RefPtr<std::string> &image_name,
+                   const std::function<void(void)> &fire)
+    : scene_(Scene(serialized_scene)), image_name_(image_name), fire_(fire) {}
 
 Renderer::~Renderer() noexcept {
   if (task_.joinable()) task_.join();
 }
 
-bool Renderer::Render(std::function<void(void)> fire) noexcept {
+bool Renderer::Render() noexcept {
   if (task_.joinable()) task_.join();
-  auto new_task = std::thread([this, fire] {
+  auto new_task = std::thread([this] {
     Vector *map = new Vector[scene_.w * scene_.h],
            *colour = new Vector[scene_.w * scene_.h];
     for (int i = 0; i < scene_.samp_num; i++) {
@@ -180,7 +181,7 @@ bool Renderer::Render(std::function<void(void)> fire) noexcept {
       //   fprintf(file, "%d %d %d ", Gamma(map[id].x), Gamma(map[id].y),
       //           Gamma(map[id].z));
       // fclose(file);
-      fire();
+      Fl::awake(&Awake, this);
     }
     delete[] map;
     delete[] colour;
@@ -188,4 +189,8 @@ bool Renderer::Render(std::function<void(void)> fire) noexcept {
   if (!new_task.joinable()) return false;
   task_ = std::move(new_task);
   return true;
+}
+
+void Renderer::Awake(void *p_this) {
+  static_cast<Renderer*>(p_this)->fire_();
 }
