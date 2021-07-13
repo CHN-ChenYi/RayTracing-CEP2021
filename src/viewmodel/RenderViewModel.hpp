@@ -14,16 +14,17 @@ class RenderViewModel : public CSL::PropertyTrigger {
   // properties
   CSL::RefPtr<Scene> GetScene() noexcept;
   CSL::RefPtr<std::string> GetImageName() noexcept;
+  CSL::RefPtr<std::string> GetRenderErrorInfo() noexcept;
 
   // commands
-  std::function<bool(void)> GetRenderCommand();
+  std::function<bool(const std::string&)> GetRenderCommand() noexcept;
 
   // methods
   void AttachModel(const CSL::RefPtr<RenderModel>& render_model) noexcept;
   CSL::RefPtr<RenderModel> DetachModel() noexcept;
 
- public:
-  CSL::PropertyNotification GetNotification();
+  // notifications
+  CSL::PropertyNotification GetNotification() noexcept;
 
  private:
   CSL::RefPtr<RenderModel> render_model_ref_;
