@@ -1,7 +1,11 @@
 INCLUDE_DIRECTORIES(
-	"${CMAKE_CURRENT_BINARY_DIR}"
-	"${CMAKE_CURRENT_SOURCE_DIR}"
 	"${PROJECT_SOURCE_DIR}/src"
+	"${PROJECT_SOURCE_DIR}/src/app"
+	"${PROJECT_SOURCE_DIR}/src/common"
+	"${PROJECT_SOURCE_DIR}/src/model"
+	"${PROJECT_SOURCE_DIR}/src/view"
+	"${PROJECT_SOURCE_DIR}/src/viewmodel"
+	"${PROJECT_SOURCE_DIR}/src/window"
 )
 
 SET(EXECUTABLE_OUTPUT_PATH "${PROJECT_BINARY_DIR}/bin")
@@ -9,6 +13,13 @@ SET(SRC_PCH_LIST "precomp.cc")
 SET(SRC_LIST
   "main.cc"
 )
+
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/app)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/common)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/model)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/view)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/viewmodel)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/window)
 
 ADD_EXECUTABLE(RayTracing ${SRC_PCH_LIST} ${SRC_LIST})
 
