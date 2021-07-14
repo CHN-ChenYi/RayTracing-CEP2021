@@ -10,9 +10,9 @@
 struct RGBColor {
   uint8_t b, g, r;
   RGBColor &operator=(const Vector &other) {
-    b = other.x;
+    r = other.x;
     g = other.y;
-    r = other.z;
+    b = other.z;
     return *this;
   }
 };

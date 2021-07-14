@@ -148,54 +148,52 @@ Renderer::~Renderer() noexcept {
 #endif
 
 bool Renderer::Render() noexcept {
-  // if (task_.joinable()) task_.join();
-  // auto new_task = std::thread([this] {
-  const Vector lens_centre = scene_.camera.ori + scene_.camera.dir * scene_.v;
-  Vector *map = new Vector[scene_.w * scene_.h],
-         *colour = new Vector[scene_.w * scene_.h];
-  for (int i = 0; i < scene_.samp_num; i++) {
+  if (task_.joinable()) task_.join();
+  auto new_task = std::thread([this] {
+    const Vector lens_centre = scene_.camera.ori + scene_.camera.dir * scene_.v;
+    Vector *map = new Vector[scene_.w * scene_.h],
+           *colour = new Vector[scene_.w * scene_.h];
+    for (int i = 0; i < scene_.samp_num; i++) {
 #pragma omp parallel for schedule(dynamic, 1)
-    for (int y = 0; y < scene_.h; y++) {
-      for (unsigned short x = 0; x < scene_.w; x++) {
-        const int id = (scene_.h - y - 1) * scene_.w + x;
-        const Vector sensor_point =
-            scene_.camera.ori +
-            scene_.camera_x * (scene_.w / 2 - x) * scene_.ipp +
-            scene_.camera_y * (scene_.h / 2 - y) * scene_.ipp;
-        const Vector focus_point =
-            lens_centre + (lens_centre - sensor_point) * (scene_.u / scene_.v);
-        const double theta = 2 * M_PI * erand(),
-                     radius = scene_.lensr * erand();
-        const Vector lens_point = lens_centre +
-                                  scene_.camera_x * (cos(theta) * radius) +
-                                  scene_.camera_y * (sin(theta) * radius);
-        colour[id] += Radiance(
-            Ray(lens_point, (focus_point - lens_point).normalize()), 0);
-        map[id] = Vector(Gamma(clamp(colour[id].x / (i + 1))),
-                         Gamma(clamp(colour[id].y / (i + 1))),
-                         Gamma(clamp(colour[id].z / (i + 1))));
-        // map[id] =
-        //     Vector(clamp(colour[id].x / (i + 1)), clamp(colour[id].y / (i + 1)),
-        //            clamp(colour[id].z / (i + 1)));
+      for (int y = 0; y < scene_.h; y++) {
+        for (unsigned short x = 0; x < scene_.w; x++) {
+          const int id = (scene_.h - y - 1) * scene_.w + x;
+          const Vector sensor_point =
+              scene_.camera.ori +
+              scene_.camera_x * (scene_.w / 2 - x) * scene_.ipp +
+              scene_.camera_y * (scene_.h / 2 - y) * scene_.ipp;
+          const Vector focus_point =
+              lens_centre +
+              (lens_centre - sensor_point) * (scene_.u / scene_.v);
+          const double theta = 2 * M_PI * erand(),
+                       radius = scene_.lensr * erand();
+          const Vector lens_point = lens_centre +
+                                    scene_.camera_x * (cos(theta) * radius) +
+                                    scene_.camera_y * (sin(theta) * radius);
+          colour[id] += Radiance(
+              Ray(lens_point, (focus_point - lens_point).normalize()), 0);
+          map[id] = Vector(Gamma(clamp(colour[id].x / (i + 1))),
+                           Gamma(clamp(colour[id].y / (i + 1))),
+                           Gamma(clamp(colour[id].z / (i + 1))));
+        }
       }
-    }
-    WriteBmp(*image_name_, scene_.h, scene_.w, map);
+      WriteBmp(*image_name_, scene_.h, scene_.w, map);
 
 #ifdef _DEBUG
-    FILE *file = fopen("debug.ppm", "w");
-    fprintf(file, "P3\n%d %d\n%d\n", scene_.w, scene_.h, 255);
-    for (int id = 0; id < scene_.w * scene_.h; id++)
-      fprintf(file, "%d %d %d ", int(map[id].x), int(map[id].y),
-              int(map[id].z));
+      FILE *file = fopen("debug.ppm", "w");
+      fprintf(file, "P3\n%d %d\n%d\n", scene_.w, scene_.h, 255);
+      for (int id = 0; id < scene_.w * scene_.h; id++)
+        fprintf(file, "%d %d %d ", int(map[id].x), int(map[id].y),
+                int(map[id].z));
 #endif
 
-    // Fl::awake(&Awake, this);
-  }
-  delete[] map;
-  delete[] colour;
-  // });
-  // if (!new_task.joinable()) return false;
-  // task_ = std::move(new_task);
+      Fl::awake(&Awake, this);
+    }
+    delete[] map;
+    delete[] colour;
+  });
+  if (!new_task.joinable()) return false;
+  task_ = std::move(new_task);
   return true;
 }
 
