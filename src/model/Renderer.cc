@@ -39,10 +39,8 @@ static inline int Gamma(const double &x) {
 int Renderer::Intersect(const Ray &r, double &t) const noexcept {
   int id = -1;
   t = inf;
-  for (auto [it, end, i] =
-           std::tuple{scene_.spheres.cbegin(), scene_.spheres.cend(), 0};
-       it != end; it++, i++) {
-    double tmp = it->Intersect(r);
+  for (auto i = scene_.spheres.size() - 1; i >= 0; i--) {
+    double tmp = scene_.spheres[i].Intersect(r);
     if (tmp < t) {
       id = i;
       t = tmp;
