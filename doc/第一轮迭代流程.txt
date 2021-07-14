@@ -1,0 +1,19 @@
+第一轮迭代流程 1.0
+7.14
+
+app（及其组成部分包括window,model,viewmodel）初始化：
+    main window 增加图片控件
+    main window 注册 close 回调
+
+    viewmodel 获取 model 引用
+    为 model 增加 notification 从 viewmodel (目前没什么用,或许用于获得出错信息)
+
+    为 图片显示控件 获取 图片名引用 （从 viewmodel)
+    
+    为 main window 获取 加载图片命令 ( LoadImageCommand ) 从 app 的 getLoadImageCommand() (主要是图片控件.show())
+    为 main window 获取 关闭命令
+
+    为 viewmodel 增加 notification 从 main window (目前没什么用，或许用于获得出错信息)
+
+运行：
+    运行 main window.LoadImageCommand() (因为是主动运行，大概不需要回调)
