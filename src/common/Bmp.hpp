@@ -115,7 +115,7 @@ void WriteBmp(const std::string &filename, const int32_t &height,
               const int32_t &width, const Vector *const bitmap) {
   BMP image;
   image.Resize(height, width);
-  auto bmp_bitmap = image.bitmap();
+  auto &bmp_bitmap = image.bitmap();
   for (int32_t i = 0; i < height; i++) {
     for (int32_t j = 0; j < width; j++)
       bmp_bitmap[height - 1 - i][j] = bitmap[i * width + j];

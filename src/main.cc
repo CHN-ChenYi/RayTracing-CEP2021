@@ -2,7 +2,12 @@
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Window.H>
 
+#include "RenderModel.hpp"
+
 int main(int argc, char **argv) {
+  RenderModel r;
+  r.Render("");
+
   Fl_Window *window = new Fl_Window(340, 180);
   Fl_Box *box = new Fl_Box(20, 40, 300, 100, "Hello, World!");
   box->box(FL_UP_BOX);
