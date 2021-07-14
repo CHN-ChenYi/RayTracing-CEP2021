@@ -1,0 +1,25 @@
+s第一轮迭代流程 1.1
+7.14
+
+app（及其组成部分包括window,model,viewmodel）初始化：
+    model 初始化
+
+    viewmodel 初始化
+
+    main window 初始化
+    	main window 增加图片控件
+    	main window 注册 close 回调
+
+    viewmodel 获取 model 引用
+    为 model 增加 notification 从 viewmodel (通知渲染一次完成)
+
+    为 图片显示控件 获取 图片名引用 （从 viewmodel )
+    
+    为 main window 获取 开始渲染命令 ( StartRenderingCommand ) 从 viewmodel 的 getStartRenderingCommand() (要求model开始渲染)
+
+    为 main window 获取 关闭命令 （CloseCommand) 从 app 的 getCloseCommand() 
+
+    为 viewmodel 增加 notification 从 main window (通知一次渲染完成) （图片控件.show())
+
+运行：
+    运行 main window.StartRenderingCommand() (因为是主动运行，大概不需要回调)
