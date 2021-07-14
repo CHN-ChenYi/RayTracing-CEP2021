@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "RenderModel.hpp"
 #include "Scene.hpp"

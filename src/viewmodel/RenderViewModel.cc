@@ -1,4 +1,4 @@
-#include "RenderViewModel.hpp"
+﻿#include "RenderViewModel.hpp"
 
 #include "Property.hpp"
 
