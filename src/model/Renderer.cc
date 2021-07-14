@@ -11,6 +11,7 @@
 #include <string>
 #include <tuple>
 
+#include "Bmp.hpp"
 #include "Scene.hpp"
 
 static double M_PI = acos(-1);
@@ -167,20 +168,12 @@ bool Renderer::Render() noexcept {
                                     scene_.camera_y * (sin(theta) * radius);
           colour[id] += Radiance(
               Ray(lens_point, (focus_point - lens_point).normalize()), 0);
-          map[id] = Vector(clamp(colour[id].x / (i + 1)),
-                           clamp(colour[id].y / (i + 1)),
-                           clamp(colour[id].z / (i + 1)));
+          map[id] = Vector(Gamma(clamp(colour[id].x / (i + 1))),
+                           Gamma(clamp(colour[id].y / (i + 1))),
+                           Gamma(clamp(colour[id].z / (i + 1))));
         }
       }
-      // TODO(TO/GA)
-      // std::stringstream ss;
-      // ss << file_name << i << ".ppm";
-      // FILE *file = fopen(ss.str().c_str(), "w");
-      // fprintf(file, "P3\n%d %d\n%d\n", w, h, 255);
-      // for (int id = 0; id < w * h; id++)
-      //   fprintf(file, "%d %d %d ", Gamma(map[id].x), Gamma(map[id].y),
-      //           Gamma(map[id].z));
-      // fclose(file);
+      WriteBmp(*image_name_, scene_.h, scene_.w, map);
       Fl::awake(&Awake, this);
     }
     delete[] map;
@@ -191,6 +184,4 @@ bool Renderer::Render() noexcept {
   return true;
 }
 
-void Renderer::Awake(void *p_this) {
-  static_cast<Renderer*>(p_this)->fire_();
-}
+void Renderer::Awake(void *p_this) { static_cast<Renderer *>(p_this)->fire_(); }

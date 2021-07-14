@@ -1,6 +1,7 @@
 #include "RenderModel.hpp"
 
 #include <random>
+#include <filesystem>
 
 #include "Property.hpp"
 #include "Renderer.hpp"
@@ -17,7 +18,9 @@ RenderModel::RenderModel() {
   image_name_ = uuids::to_string(gen()) + ".bmp";
 }
 
-RenderModel::~RenderModel() {}
+RenderModel::~RenderModel() {
+  std::filesystem::remove(image_name_);
+}
 
 CSL::RefPtr<std::string> RenderModel::GetImageName() noexcept {
   return CSL::RefPtr<std::string>(&image_name_);
@@ -30,5 +33,6 @@ CSL::RefPtr<std::string> RenderModel::GetRenderErrorInfo() noexcept {
 bool RenderModel::Render(const std::string &serialized_scene) noexcept {
   Renderer r(serialized_scene, CSL::RefPtr<std::string>(&image_name_),
              [this] { this->Fire(kRenderModelImageName); });
+  // TODO(TO/GA): set error info
   return r.Render();
 }
