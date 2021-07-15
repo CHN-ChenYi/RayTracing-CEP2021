@@ -25,7 +25,7 @@ bool RenderingApp::Init()
 int RenderingApp::Run()
 {
 	Fl::visual(FL_DOUBLE | FL_RGB);
-	m_imgPart.GetMainWindow().StartRendering("hello");
+	m_imgPart.GetMainWindow().StartRendering();
 	m_imgPart.GetMainWindow().show();
 	return Fl::run();
 }
