@@ -2,6 +2,7 @@
 
 #include <string>
 
+#include "Renderer.hpp"
 #include "Scene.hpp"
 #include "precomp.hpp"
 
@@ -22,4 +23,5 @@ class RenderModel : public CSL::PropertyTrigger {
  private:
   std::string image_name_;
   std::string render_error_info_;
+  Renderer r_;
 };

@@ -39,7 +39,7 @@ static inline int Gamma(const double &x) {
 int Renderer::Intersect(const Ray &r, double &t) const noexcept {
   int id = -1;
   t = inf;
-  for (auto i = scene_.spheres.size() - 1; i >= 0; i--) {
+  for (int i = scene_.spheres.size() - 1; i >= 0; i--) {
     double tmp = scene_.spheres[i].Intersect(r);
     if (tmp < t) {
       id = i;
@@ -132,10 +132,7 @@ Vector Renderer::Radiance(const Ray &r, int depth) const noexcept {
   return Vector();
 }
 
-Renderer::Renderer(const std::string &serialized_scene,
-                   const CSL::RefPtr<std::string> &image_name,
-                   const std::function<void(void)> &fire)
-    : scene_(Scene(serialized_scene)), image_name_(image_name), fire_(fire) {}
+Renderer::Renderer() {}
 
 Renderer::~Renderer() noexcept {
   if (task_.joinable()) task_.join();
@@ -145,8 +142,13 @@ Renderer::~Renderer() noexcept {
 #include <cstdio>
 #endif
 
-bool Renderer::Render() noexcept {
+bool Renderer::Render(const std::string &serialized_scene,
+                      const CSL::RefPtr<std::string> &image_name,
+                      std::function<void(void)> fire) noexcept {
   if (task_.joinable()) task_.join();
+  scene_ = Scene(serialized_scene);
+  image_name_ = image_name;
+  fire_ = fire;
   auto new_task = std::thread([this] {
     const Vector lens_centre = scene_.camera.ori + scene_.camera.dir * scene_.v;
     Vector *map = new Vector[scene_.w * scene_.h],

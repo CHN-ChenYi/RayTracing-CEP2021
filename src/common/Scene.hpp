@@ -54,7 +54,7 @@ struct Scene {
   Ray camera = Ray(Vector(50, 40, 150), Vector(0, 0, -1).normalize());
   std::vector<Sphere> spheres;
 
-  Scene(const std::string &serialized_scene) {
+  Scene(const std::string &serialized_scene = "") {
     spheres.push_back(Sphere(1e5, Vector(1e5 + 1, 40.8, 81.6), Vector(),
                              Vector(.75, .25, .25), Diffuse));  // Left
     spheres.push_back(Sphere(1e5, Vector(-1e5 + 99, 40.8, 81.6), Vector(),

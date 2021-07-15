@@ -11,14 +11,14 @@
 
 class Renderer {
  public:
-  Renderer(const std::string &serialized_scene,
-           const CSL::RefPtr<std::string> &image_name,
-           const std::function<void(void)> &fire);
+  Renderer();
   Renderer(const Renderer &) = delete;
   Renderer &operator=(const Renderer &) = delete;
   ~Renderer() noexcept;
 
-  bool Render() noexcept;
+  bool Render(const std::string &serialized_scene,
+              const CSL::RefPtr<std::string> &image_name,
+              std::function<void(void)> fire) noexcept;
 
  private:
   Scene scene_;

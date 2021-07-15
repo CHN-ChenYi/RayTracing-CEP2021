@@ -1,10 +1,9 @@
 ﻿#include "RenderModel.hpp"
 
-#include <random>
 #include <filesystem>
+#include <random>
 
 #include "Property.hpp"
-#include "Renderer.hpp"
 #include "uuid.h"
 
 RenderModel::RenderModel() {
@@ -18,9 +17,7 @@ RenderModel::RenderModel() {
   image_name_ = uuids::to_string(gen()) + ".bmp";
 }
 
-RenderModel::~RenderModel() {
-  std::filesystem::remove(image_name_);
-}
+RenderModel::~RenderModel() { std::filesystem::remove(image_name_); }
 
 CSL::RefPtr<std::string> RenderModel::GetImageName() noexcept {
   return CSL::RefPtr<std::string>(&image_name_);
@@ -30,7 +27,7 @@ CSL::RefPtr<std::string> RenderModel::GetRenderErrorInfo() noexcept {
   return CSL::RefPtr<std::string>(&render_error_info_);
 }
 
-#define DEBUG
+// #define DEBUG
 
 bool RenderModel::Render(const std::string &serialized_scene) noexcept {
 #ifdef DEBUG
@@ -40,8 +37,7 @@ bool RenderModel::Render(const std::string &serialized_scene) noexcept {
 #undef DEBUG
 #endif  // DEBUG
 
-  Renderer r(serialized_scene, CSL::RefPtr<std::string>(&image_name_),
-             [this] { this->Fire(kRenderModelImageName); });
   // TODO(TO/GA): set error info
-  return r.Render();
+  return r_.Render(serialized_scene, CSL::RefPtr<std::string>(&image_name_),
+                  [this] { this->Fire(kRenderModelImageName); });
 }
