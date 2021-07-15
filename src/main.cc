@@ -25,5 +25,4 @@ CSL_UI_MAIN_ENTRY() {
   std::cout << "hello" << std::endl;
   bool t = upApp->Init();
   return upApp->Run();
-  return 0;
 }

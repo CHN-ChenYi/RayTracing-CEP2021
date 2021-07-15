@@ -40,4 +40,5 @@ void MainWindow::Update() {
 }
 void MainWindow::StartRendering(const std::string & s) {
 	m_cmdRender(s);
+	//TODO:nullptr
 }

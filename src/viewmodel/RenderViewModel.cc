@@ -31,6 +31,7 @@ CSL::RefPtr<RenderModel> RenderViewModel::DetachModel() noexcept {
 
 CSL::PropertyNotification RenderViewModel::GetNotification() noexcept {
   return [this](uint32_t uID) {
+    // TODO generate fltk img
     if (uID == kRenderModelImageName) {
       this->Fire(uID);
     }

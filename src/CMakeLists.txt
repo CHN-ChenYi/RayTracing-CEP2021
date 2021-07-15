@@ -3,6 +3,7 @@
 	"${PROJECT_SOURCE_DIR}/src/app"
 	"${PROJECT_SOURCE_DIR}/src/common"
 	"${PROJECT_SOURCE_DIR}/src/model"
+	"${PROJECT_SOURCE_DIR}/src/model/algorithm"
 	"${PROJECT_SOURCE_DIR}/src/view"
 	"${PROJECT_SOURCE_DIR}/src/viewmodel"
 	"${PROJECT_SOURCE_DIR}/src/window"

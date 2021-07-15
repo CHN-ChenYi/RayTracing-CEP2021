@@ -151,7 +151,7 @@ bool Renderer::Render(const std::string &serialized_scene,
   fire_ = fire;
   auto new_task = std::thread([this] {
     const Vector lens_centre = scene_.camera.ori + scene_.camera.dir * scene_.v;
-    Vector *map = new Vector[scene_.w * scene_.h],
+    Vector *map = new Vector[scene_.w * scene_.h], // TODO(TO/GA): use unique_ptr
            *colour = new Vector[scene_.w * scene_.h];
     for (int i = 0; i < scene_.samp_num; i++) {
 #pragma omp parallel for schedule(dynamic, 1)

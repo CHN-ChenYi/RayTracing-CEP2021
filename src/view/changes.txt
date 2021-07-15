@@ -1,4 +1,0 @@
-
-1. ImageView.cc:
-	在ImageShower构造函数中添加fl_register_images();
-	因为这是显示图片必要的，不然会发生段错误

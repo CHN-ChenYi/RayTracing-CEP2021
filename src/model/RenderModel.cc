@@ -27,17 +27,8 @@ CSL::RefPtr<std::string> RenderModel::GetRenderErrorInfo() noexcept {
   return CSL::RefPtr<std::string>(&render_error_info_);
 }
 
-// #define DEBUG
-
 bool RenderModel::Render(const std::string &serialized_scene) noexcept {
-#ifdef DEBUG
-  image_name_.assign("../source/sample.png");
-  Fire(kRenderModelImageName);
-  return true;
-#undef DEBUG
-#endif  // DEBUG
-
   // TODO(TO/GA): set error info
   return r_.Render(serialized_scene, CSL::RefPtr<std::string>(&image_name_),
-                  [this] { this->Fire(kRenderModelImageName); });
+                   [this] { this->Fire(kRenderModelImageName); });
 }
