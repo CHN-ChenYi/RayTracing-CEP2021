@@ -138,10 +138,6 @@ Renderer::~Renderer() noexcept {
   if (task_.joinable()) task_.join();
 }
 
-#ifdef _DEBUG
-#include <cstdio>
-#endif
-
 bool Renderer::Render(const std::string &serialized_scene,
                       const CSL::RefPtr<std::string> &image_name,
                       std::function<void(void)> fire) noexcept {
