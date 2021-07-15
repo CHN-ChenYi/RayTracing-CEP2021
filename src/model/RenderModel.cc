@@ -4,6 +4,7 @@
 #include <random>
 
 #include "Property.hpp"
+#include "precomp.hpp"
 #include "uuid.h"
 
 RenderModel::RenderModel() {

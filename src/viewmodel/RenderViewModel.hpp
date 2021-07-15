@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include "RenderModel.hpp"
-#include "precomp.hpp"
 
 class RenderViewModel : public CSL::PropertyTrigger {
  public:

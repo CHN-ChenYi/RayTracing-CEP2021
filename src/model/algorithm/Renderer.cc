@@ -177,20 +177,16 @@ bool Renderer::Render(const std::string &serialized_scene,
                            Gamma(clamp(colour[id].z / (i + 1))));
         }
       }
-      WriteBmp(*image_name_, scene_.h, scene_.w, map);
-
-#ifdef _DEBUG
-      FILE *file = fopen("debug.ppm", "w");
-      fprintf(file, "P3\n%d %d\n%d\n", scene_.w, scene_.h, 255);
-      for (int id = 0; id < scene_.w * scene_.h; id++)
-        fprintf(file, "%d %d %d ", int(map[id].x), int(map[id].y),
-                int(map[id].z));
-#endif
+      if (!(i & 1))
+        WriteBmp(*image_name_, scene_.h, scene_.w, map);
+      else
+        WriteBmp(*image_name_, scene_.h, scene_.w, colour);
 
       Fl::awake(&Awake, this);
     }
     delete[] map;
     delete[] colour;
+    // TODO: send notification after join (or std::future?)
   });
   if (!new_task.joinable()) return false;
   task_ = std::move(new_task);

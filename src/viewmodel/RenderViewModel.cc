@@ -1,6 +1,7 @@
 ﻿#include "RenderViewModel.hpp"
 
 #include "Property.hpp"
+#include "precomp.hpp"
 
 RenderViewModel::RenderViewModel() noexcept {}
 
@@ -14,7 +15,8 @@ CSL::RefPtr<std::string> RenderViewModel::GetRenderErrorInfo() noexcept {
   return render_model_ref_->GetRenderErrorInfo();
 }
 
-std::function<bool(const std::string &)> RenderViewModel::GetRenderCommand() noexcept {
+std::function<bool(const std::string &)>
+RenderViewModel::GetRenderCommand() noexcept {
   return [this](const std::string &serialized_scene) -> bool {
     return this->render_model_ref_->Render(serialized_scene);
   };

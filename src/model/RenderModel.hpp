@@ -4,7 +4,6 @@
 
 #include "Renderer.hpp"
 #include "Scene.hpp"
-#include "precomp.hpp"
 
 class RenderModel : public CSL::PropertyTrigger {
  public:
