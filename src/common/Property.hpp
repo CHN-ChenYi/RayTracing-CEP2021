@@ -1,3 +1,5 @@
 ﻿#pragma once
 
-enum { kRenderModelImageName };
+enum {
+  kRenderModelImageName
+};

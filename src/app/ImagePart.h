@@ -8,20 +8,22 @@
 #include "../viewmodel/RenderViewModel.hpp"
 #include "../window/MainWindow.h"
 
-class ImagePart {
- public:
-  ImagePart();
-  ImagePart(const ImagePart&) = delete;
-  ImagePart& operator=(const ImagePart&) = delete;
-  ~ImagePart() noexcept;
+class ImagePart
+{
+public:
+	ImagePart();
+	ImagePart(const ImagePart&) = delete;
+	ImagePart& operator=(const ImagePart&) = delete;
+	~ImagePart() noexcept;
 
- public:
-  MainWindow& GetMainWindow() noexcept;
+public:
+	MainWindow& GetMainWindow() noexcept;
 
- private:
-  RenderModel m_model;
-  RenderViewModel m_renderVM;
-  MainWindow m_wndMain;
+private:
+	RenderModel      m_model;
+	RenderViewModel  m_renderVM;
+	MainWindow     m_wndMain;
 };
 
-#endif  // !__IMAGE_PART_H__
+#endif // !__IMAGE_PART_H__
+

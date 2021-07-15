@@ -1,22 +1,28 @@
-#include "ImagePart.h"
-
 #include "precomp.hpp"
 
-ImagePart::ImagePart() : m_wndMain(500, 500, "Renderred Image Shower") {
-  // binding
-  m_renderVM.AttachModel(CSL::RefPtr<RenderModel>(m_model));
-  m_model.AddNotification(m_renderVM.GetNotification());
+#include "ImagePart.h"
 
-  // properties
-  m_wndMain.GetImageShower().attach_ImageName(m_renderVM.GetImageName());
+ImagePart::ImagePart() : m_wndMain(500, 500, "Renderred Image Shower")
+{
+	//binding
+	m_renderVM.AttachModel(CSL::RefPtr<RenderModel>(m_model));
+	m_model.AddNotification(m_renderVM.GetNotification());
 
-  // commands
-  m_wndMain.attach_StartRenderingCommand(m_renderVM.GetRenderCommand());
+	//properties
+	m_wndMain.GetImageShower().attach_ImageName(m_renderVM.GetImageName());
 
-  // notifications
-  m_renderVM.AddNotification(m_wndMain.get_Notification());
+	//commands
+	m_wndMain.attach_StartRenderingCommand(m_renderVM.GetRenderCommand());
+
+	//notifications
+	m_renderVM.AddNotification(m_wndMain.get_Notification());
 }
 
-ImagePart::~ImagePart() noexcept {}
+ImagePart::~ImagePart() noexcept
+{
+}
 
-MainWindow& ImagePart::GetMainWindow() noexcept { return m_wndMain; }
+MainWindow& ImagePart::GetMainWindow() noexcept
+{
+	return m_wndMain;
+}

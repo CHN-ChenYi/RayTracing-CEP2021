@@ -33,7 +33,7 @@ struct Vector {
     *this = *this * (1. / sqrt(x * x + y * y + z * z));
     return *this;
   }
-  friend std::istream &operator>>(std::istream &is, Vector &other) {
+  friend std::istream& operator>>(std::istream &is, Vector &other) {
     is >> other.x >> other.y >> other.z;
     return is;
   }
