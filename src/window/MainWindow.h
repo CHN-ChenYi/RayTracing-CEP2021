@@ -4,6 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "../view/ImageView.h"
+#include<Fl/Fl_Multiline_Input.H>
 ////////////////////////////////////////////////////////////////////////////////
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -34,19 +35,21 @@ public:
 
 	//methods
 	void Update();
-	void StartRendering(const std::string& s);
+	void StartRendering();
 private:
 	//callback
 	static void close_cb(Fl_Window* pW, void* pD);
-
+	static void start_cb(Fl_Widget* pW, void* pD);
 private:
 	//commands
 	std::function<bool(const std::string&)> m_cmdRender;
 	std::function<void()> m_cmdClose;
-
+	
 	//UI
 	ImageShower   m_ImageShower;
-
+	Fl_Button start;
+	Fl_Multiline_Input m_ImageInfo;
+	bool IsRendering;
 };
 
 #endif

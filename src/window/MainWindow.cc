@@ -3,11 +3,14 @@
 
 #include<MainWindow.h>
 
-MainWindow::MainWindow(int w, int h, const char* t) : Fl_Double_Window(w, h, t), m_ImageShower(5,5,w-10,h-10)
+MainWindow::MainWindow(int w, int h, const char* t) : Fl_Double_Window(w, h, t),
+													  m_ImageShower(5,5,w/2-5,h-10),
+													  start(w/4*3-50,h-70,100,50,"start"),
+													  m_ImageInfo(w/2+5, 5, w/2-10, h-80)
 {
 	end();
 	
-
+	start.callback(&start_cb, this);
 	callback((Fl_Callback*)&close_cb, &m_cmdClose);
 
 }
@@ -32,13 +35,24 @@ std::function<void()> MainWindow::detach_CloseCommand() noexcept {
 void MainWindow::close_cb(Fl_Window* pW, void* pD)
 {
 	std::function<void()>& cf = *((std::function<void()>*)pD);
+	MainWindow* pThis = (MainWindow*)pW;
+	if (pThis->IsRendering) { pThis->IsRendering = 0;return; }
 	if (cf != nullptr)
 		cf();
+	
 	default_callback(pW, pD);
 }
 void MainWindow::Update() {
 }
-void MainWindow::StartRendering(const std::string & s) {
-	m_cmdRender(s);
-	//TODO:nullptr
+
+void MainWindow::StartRendering() {
+	IsRendering = 1;
+	m_cmdRender(m_ImageInfo.value());
+	
+}
+void MainWindow::start_cb(Fl_Widget* pW, void* pD)
+{
+	MainWindow* pThis = (MainWindow*)pD;
+	pThis->StartRendering();
+	
 }
