@@ -1,0 +1,7 @@
+
+1. 在MainWindowNotification.cc 11行注释if语句，因为该常量已经在更新后从Property.hpp中消失
+
+2. 在 MainWindow.h 中删去了 #include <precomp.hpp>,在MainWindow.cc中增加了 #include "precomp.hpp",
+	因为原来的代码会使编译无法通过（错误：get_Notificaiton已在MainWindow.obj中定义）
+
+3. MainWindowNotification.cc: 在 kRenderModelImageName 分支中增加了 m_ImageShower.show(),用于在被通知后显示图片
