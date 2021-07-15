@@ -1,10 +1,10 @@
 ﻿#pragma once
 
 #include <functional>
+#include <future>
 #include <memory>
 #include <string>
 #include <thread>
-#include <future>
 
 #include "Scene.hpp"
 #include "Vector.hpp"

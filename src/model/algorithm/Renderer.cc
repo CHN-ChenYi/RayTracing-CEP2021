@@ -138,7 +138,9 @@ Renderer::~Renderer() noexcept {
   if (task_future_.valid()) task_future_.wait();
 }
 
-CSL::RefPtr<std::future<void>> Renderer::GetFuture() noexcept { return CSL::RefPtr<std::future<void>>(&task_future_); }
+CSL::RefPtr<std::future<void>> Renderer::GetFuture() noexcept {
+  return CSL::RefPtr<std::future<void>>(&task_future_);
+}
 
 bool Renderer::Render(const std::string &serialized_scene,
                       const CSL::RefPtr<std::string> &image_name,

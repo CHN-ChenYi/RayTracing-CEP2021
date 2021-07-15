@@ -6,23 +6,21 @@
 
 #include "ImagePart.h"
 
-class RenderingApp
-{
-public:
-	RenderingApp();
-	RenderingApp(const RenderingApp&) = delete;
-	RenderingApp& operator=(const RenderingApp&) = delete;
-	~RenderingApp() noexcept;
-	//methods
-	bool Init();
-	int Run();
+class RenderingApp {
+ public:
+  RenderingApp();
+  RenderingApp(const RenderingApp&) = delete;
+  RenderingApp& operator=(const RenderingApp&) = delete;
+  ~RenderingApp() noexcept;
+  // methods
+  bool Init();
+  int Run();
 
-private:
-	std::function<void()> get_CloseCommand();
+ private:
+  std::function<void()> get_CloseCommand();
 
-private:
-	ImagePart m_imgPart;
+ private:
+  ImagePart m_imgPart;
 };
 
-#endif // !
-
+#endif  // !
