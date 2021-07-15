@@ -3,16 +3,22 @@
 #include "precomp.hpp"
 #include "MainWindow.h"
 
-MainWindow::MainWindow(int w, int h, const char* t) : Fl_Double_Window(w, h, t),
-													m_ImageShower(5, 5, w / 2 - 5, h - 10),
-													start(w / 4 * 3 - 50, h - 70, 100, 50, "start"),
-													m_ImageInfo(w / 2 + 5, 5, w / 2 - 10, h - 80)
+MainWindow::MainWindow(int w, int h, const char* t)
+    : Fl_Double_Window(w, h, t),
+      m_ImageShower(400, 0,800,600),
+      start(100, 0, 100, 30, "start"),
+      menu(0, 0, 100, 30),
+	  m_ImageInfo(0, 30, 400, h - 30)
 {
 	end();
 
-	start.callback(&start_cb, this);
-	callback((Fl_Callback*)&close_cb, &m_cmdClose);
+	m_ImageInfo.color(fl_rgb_color(0, 0, 0));
+    m_ImageInfo.textcolor(fl_rgb_color(29, 221, 226));
 
+	start.callback(&start_cb, this);
+    menu.add("start", 0, nullptr, this);
+	callback((Fl_Callback*)&close_cb, &m_cmdClose);
+    //this->resizable(m_ImageInfo);
 }
 MainWindow::~MainWindow() noexcept {
 
@@ -51,12 +57,11 @@ void MainWindow::close_cb(Fl_Window* pW, void* pD)
             pThis->ref_future.Get()->wait_for(std::chrono::milliseconds(1)) !=
             std::future_status::ready) 
 	{
+      if (cf != nullptr) {
+            cf();
+      }
           return;    
 	}
-
-    if (cf != nullptr && !cf()) {
-        return;
-    }
 
 	default_callback(pW, pD);
 }

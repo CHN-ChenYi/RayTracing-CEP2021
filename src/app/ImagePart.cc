@@ -2,7 +2,7 @@
 
 #include "ImagePart.h"
 
-ImagePart::ImagePart() : m_wndMain(800, 600, "Renderred Image Shower")
+ImagePart::ImagePart() : m_wndMain(1200, 600, "Renderred Image Shower")
 {
 	//binding
 	m_renderVM.AttachModel(CSL::RefPtr<RenderModel>(m_model));

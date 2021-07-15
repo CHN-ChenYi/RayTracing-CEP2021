@@ -50,6 +50,7 @@ private:
 	//UI
 	ImageShower   m_ImageShower;
 	Fl_Button start;
+    Fl_Menu_Bar menu;
 	Fl_Multiline_Input m_ImageInfo;
 	
 	//properties

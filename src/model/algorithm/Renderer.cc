@@ -159,8 +159,7 @@ bool Renderer::Render(const std::string &serialized_scene,
   /*img_ptr,img_buf*/
   //auto new_task = std::thread([this, img_ptr, img_buf] {
   try {
-    auto new_task_future = std::async(std::launch::async, [this, img_ptr,
-                                                           img_buf] {
+    auto new_task_future = std::async(std::launch::async, [this, img_ptr,img_buf] {
       const Vector lens_centre =
           scene_.camera.ori + scene_.camera.dir * scene_.v;
       Vector *

@@ -21,7 +21,7 @@ void ImageShower::show() {
         (*(m_Image.Get()))->w,
         (*(m_Image.Get()))->h
     );
-    Fl_Image* nrgb_img = rgb_img->copy(400, 300);
+    Fl_Image* nrgb_img = rgb_img->copy(800,600);
     delete rgb_img;
     tmpImage.reset(nrgb_img);
     this->image(nrgb_img);

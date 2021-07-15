@@ -19,7 +19,7 @@
 #include "app/RenderingApp.h"
 
 ////////////////////////////////////////////////////////////////////////////////
-#define DEBUG
+//#define DEBUG
 #ifndef DEBUG
 CSL_UI_MAIN_ENTRY() {
 #else
@@ -27,7 +27,6 @@ int main(int argc,char* argv[]){
 #undef DEBUG
 #endif
   auto upApp(std::make_unique<RenderingApp>());
-  std::cout << "hello" << std::endl;
   bool t = upApp->Init();
   return upApp->Run();
 }
