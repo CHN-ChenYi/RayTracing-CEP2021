@@ -18,7 +18,7 @@ public:
 	int Run();
 
 private:
-	std::function<void()> get_CloseCommand();
+	std::function<bool()> get_CloseCommand();
 
 private:
 	ImagePart m_imgPart;

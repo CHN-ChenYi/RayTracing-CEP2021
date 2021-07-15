@@ -1,11 +1,8 @@
 #include "precomp.hpp"
 #include "../RenderingApp.h"
 
-std::function<void()> RenderingApp::get_CloseCommand()
+std::function<bool()> RenderingApp::get_CloseCommand()
 {
-	return [this]()
-	{
-
-	};
+	return [this]()->bool { return true;};
 }
 

@@ -2,14 +2,14 @@
 
 #include "ImagePart.h"
 
-ImagePart::ImagePart() : m_wndMain(500, 500, "Renderred Image Shower")
+ImagePart::ImagePart() : m_wndMain(800, 600, "Renderred Image Shower")
 {
 	//binding
 	m_renderVM.AttachModel(CSL::RefPtr<RenderModel>(m_model));
 	m_model.AddNotification(m_renderVM.GetNotification());
 
 	//properties
-	m_wndMain.GetImageShower().attach_ImageName(m_renderVM.GetImageName());
+	m_wndMain.GetImageShower().attach_ImagePtr(m_renderVM.GetImagePtr());
 
 	//commands
 	m_wndMain.attach_StartRenderingCommand(m_renderVM.GetRenderCommand());
@@ -21,6 +21,9 @@ ImagePart::ImagePart() : m_wndMain(500, 500, "Renderred Image Shower")
 ImagePart::~ImagePart() noexcept
 {
 }
+
+RenderViewModel& ImagePart::GetViewModel() noexcept { return m_renderVM; }
+
 
 MainWindow& ImagePart::GetMainWindow() noexcept
 {

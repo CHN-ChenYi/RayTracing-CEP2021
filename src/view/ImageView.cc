@@ -9,15 +9,21 @@ ImageShower::~ImageShower() noexcept {
 
 }
 
-void ImageShower::attach_ImageName(const CSL::RefPtr<std::string>& refImageName) noexcept {
-    m_ImageName = refImageName;
+void ImageShower::attach_ImagePtr(const CSL::RefPtr<Image*>& refImagePtr) noexcept {
+    m_Image = refImagePtr;
 }
-CSL::RefPtr<std::string> ImageShower::detach_ImageName() noexcept {
-    return CSL::RefPtr<std::string>(std::move(m_ImageName));
+CSL::RefPtr<Image*> ImageShower::detach_ImagePtr() noexcept {
+    return CSL::RefPtr<Image*>(std::move(m_Image));
 }
 void ImageShower::show() {
-    auto img = Fl_Shared_Image::get((m_ImageName.Get())->c_str(), w(), h());
-    this->image(img);
-
+    Fl_RGB_Image* rgb_img = new Fl_RGB_Image(
+        (*(m_Image.Get()))->buf, 
+        (*(m_Image.Get()))->w,
+        (*(m_Image.Get()))->h
+    );
+    Fl_Image* nrgb_img = rgb_img->copy(400, 300);
+    delete rgb_img;
+    tmpImage.reset(nrgb_img);
+    this->image(nrgb_img);
 
 }

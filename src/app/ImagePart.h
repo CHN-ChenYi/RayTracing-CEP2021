@@ -18,8 +18,10 @@ public:
 
 public:
 	MainWindow& GetMainWindow() noexcept;
+	RenderViewModel& GetViewModel() noexcept;
 
 private:
+	// TODO: export these objects
 	RenderModel      m_model;
 	RenderViewModel  m_renderVM;
 	MainWindow     m_wndMain;

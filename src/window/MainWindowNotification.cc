@@ -13,6 +13,7 @@ CSL::PropertyNotification MainWindow::get_Notification()
 		}
 		else */if (uID == kRenderModelImageName) {
 			m_ImageShower.show();
+
 			this->redraw();
 		}
 	};

@@ -1,7 +1,5 @@
 ﻿#pragma once
 
-#include <istream>
-#include <sstream>
 #include <string>
 #include <vector>
 
@@ -16,9 +14,9 @@ struct Sphere {
   Vector p, e, c;
   ReflectionType t;
   static constexpr double eps = 1e-5;
-  Sphere(const double &_radius = 0, const Vector &_position = Vector(),
-         const Vector &_emission = Vector(), const Vector &_colour = Vector(),
-         const ReflectionType &_refl_type = Diffuse) {
+  Sphere(const double &_radius, const Vector &_position,
+         const Vector &_emission, const Vector &_colour,
+         const ReflectionType &_refl_type) {
     r = _radius;
     p = _position;
     e = _emission;
@@ -39,18 +37,6 @@ struct Sphere {
     if (t_2 > eps) return t_2;
     return inf;
   }
-  friend std::istream &operator>>(std::istream &is, Sphere &other) {
-    is >> other.r >> other.p >> other.e >> other.c;
-    std::string type;
-    is >> type;
-    if (type == "Diffuse")
-      other.t = Diffuse;
-    else if (type == "Glass")
-      other.t = Glass;
-    else
-      other.t = Specular;
-    return is;
-  }
 };
 
 struct Scene {
@@ -69,58 +55,29 @@ struct Scene {
   std::vector<Sphere> spheres;
 
   Scene(const std::string &serialized_scene = "") {
-    if (!serialized_scene.length()) {
-      spheres.push_back(Sphere(1e5, Vector(1e5 + 1, 40.8, 81.6), Vector(),
-                               Vector(.75, .25, .25), Diffuse));  // Left
-      spheres.push_back(Sphere(1e5, Vector(-1e5 + 99, 40.8, 81.6), Vector(),
-                               Vector(.25, .25, .75), Diffuse));  // Rght
-      spheres.push_back(Sphere(1e5, Vector(50, 40.8, 1e5), Vector(),
-                               Vector(.75, .75, .75), Specular));  // Back
-      spheres.push_back(Sphere(1e5, Vector(50, 40.8, -1e5 + 170), Vector(),
-                               Vector(), Diffuse));  // Frnt
-      spheres.push_back(Sphere(1e5, Vector(50, 1e5, 81.6), Vector(),
-                               Vector(.75, .75, .75), Diffuse));  // Botm
-      spheres.push_back(Sphere(1e5, Vector(50, -1e5 + 81.6, 81.6),
-                               Vector(.8, .8, .8), Vector(.75, .75, .75),
-                               Diffuse));  // Top
-      spheres.push_back(Sphere(10, Vector(73, 59, 10), Vector(),
-                               Vector(0, .9, .9), Diffuse));  // Ball
-      spheres.push_back(Sphere(10, Vector(40, 45, 22), Vector(),
-                               Vector(.4, .8, 0), Diffuse));  // Ball
-      spheres.push_back(Sphere(10, Vector(27, 30, 37), Vector(),
-                               Vector(.8, .8, .1), Diffuse));  // Ball
-      spheres.push_back(Sphere(10, Vector(50, 15, 50), Vector(),
-                               Vector(1, 1, 1) * 0.999, Glass));  // Ball
-      spheres.push_back(Sphere(10, Vector(77, 16.5, 68), Vector(),
-                               Vector(.9, .45, .15), Diffuse));  // Ball
-      return;
-    }
-    std::stringstream ss(serialized_scene);
-    ss >> samp_num >> w >> h;
-
-    int frog_i;
-    ss >> frog_i;
-    if (frog_i) {
-      frog = true;
-      ss >> frog_c;
-    } else {
-      frog = false;
-    }
-
-    ss >> camera_x >> camera_y;
-    ss >> lensr;
-
-    Vector camera_ori, camera_dir;
-    ss >> camera_ori >> camera_dir;
-    camera = Ray(camera_ori, camera_dir.normalize());
-
-    int n;
-    ss >> n;
-    Sphere sphere;
-    while (n--) {
-      ss >> sphere;
-      spheres.push_back(sphere);
-    }
-    // TODO(TO/GA): set error info
+    spheres.push_back(Sphere(1e5, Vector(1e5 + 1, 40.8, 81.6), Vector(),
+                             Vector(.75, .25, .25), Diffuse));  // Left
+    spheres.push_back(Sphere(1e5, Vector(-1e5 + 99, 40.8, 81.6), Vector(),
+                             Vector(.25, .25, .75), Diffuse));  // Rght
+    spheres.push_back(Sphere(1e5, Vector(50, 40.8, 1e5), Vector(),
+                             Vector(.75, .75, .75), Specular));  // Back
+    spheres.push_back(Sphere(1e5, Vector(50, 40.8, -1e5 + 170), Vector(),
+                             Vector(), Diffuse));  // Frnt
+    spheres.push_back(Sphere(1e5, Vector(50, 1e5, 81.6), Vector(),
+                             Vector(.75, .75, .75), Diffuse));  // Botm
+    spheres.push_back(Sphere(1e5, Vector(50, -1e5 + 81.6, 81.6),
+                             Vector(.8, .8, .8), Vector(.75, .75, .75),
+                             Diffuse));  // Top
+    spheres.push_back(Sphere(10, Vector(73, 59, 10), Vector(),
+                             Vector(0, .9, .9), Diffuse));  // Ball
+    spheres.push_back(Sphere(10, Vector(40, 45, 22), Vector(),
+                             Vector(.4, .8, 0), Diffuse));  // Ball
+    spheres.push_back(Sphere(10, Vector(27, 30, 37), Vector(),
+                             Vector(.8, .8, .1), Diffuse));  // Ball
+    spheres.push_back(Sphere(10, Vector(50, 15, 50), Vector(),
+                             Vector(1, 1, 1) * 0.999, Glass));  // Ball
+    spheres.push_back(Sphere(10, Vector(77, 16.5, 68), Vector(),
+                             Vector(.9, .45, .15), Diffuse));  // Ball
+    // TODO(TO/GA): deserialize
   }
 };

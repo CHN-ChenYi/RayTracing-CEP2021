@@ -4,8 +4,10 @@
 #include <memory>
 #include <string>
 #include <thread>
+#include <memory>
 #include <future>
 
+#include "Image.hpp"
 #include "Scene.hpp"
 #include "Vector.hpp"
 #include "precomp.hpp"
@@ -19,13 +21,13 @@ class Renderer {
 
   CSL::RefPtr<std::future<void>> GetFuture() noexcept;
 
+
   bool Render(const std::string &serialized_scene,
-              const CSL::RefPtr<std::string> &image_name,
+              Image **img_ptr, Image img_buf[2],
               std::function<void(void)> fire) noexcept;
 
  private:
   Scene scene_;
-  CSL::RefPtr<std::string> image_name_;
 
   double f_atmo(const double &dis) const noexcept;
   int Intersect(const Ray &r, double &t) const noexcept;
@@ -34,4 +36,5 @@ class Renderer {
   std::future<void> task_future_;
   std::function<void(void)> fire_;
   static void Awake(void *p_this);
+
 };

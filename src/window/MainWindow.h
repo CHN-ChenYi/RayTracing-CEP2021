@@ -22,19 +22,21 @@ public:
 	//widgets
 	ImageShower& GetImageShower() noexcept;
 
+	//propertys
+    void attach_task_future(const CSL::RefPtr<std::future<void>>&) noexcept;
+        CSL::RefPtr<std::future<void>> detach_task_future() noexcept;
 
 	//commands
 	void attach_StartRenderingCommand(std::function<bool(const std::string&)>&& cf) noexcept;
 	std::function<bool(const std::string&)> detach_StartRenderingCommand() noexcept;
 
-	void attach_CloseCommand(std::function<void()>&& cf) noexcept;
-	std::function<void()> detach_CloseCommand() noexcept;
+	void attach_CloseCommand(std::function<bool()>&& cf) noexcept;
+	std::function<bool()> detach_CloseCommand() noexcept;
 
 	//notifications
 	CSL::PropertyNotification get_Notification();
 
 	//methods
-	void Update();
 	void StartRendering();
 private:
 	//callback
@@ -43,14 +45,17 @@ private:
 private:
 	//commands
 	std::function<bool(const std::string&)> m_cmdRender;
-	std::function<void()> m_cmdClose;
-	
+	std::function<bool()> m_cmdClose;
+
 	//UI
 	ImageShower   m_ImageShower;
 	Fl_Button start;
 	Fl_Multiline_Input m_ImageInfo;
-	bool IsRendering;
+	
+	//properties
+        CSL::RefPtr<std::future<void>> ref_future;
+
+	//bool IsRendering;
 };
 
 #endif
-

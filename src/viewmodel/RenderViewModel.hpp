@@ -2,6 +2,7 @@
 
 #include "RenderModel.hpp"
 
+
 class RenderViewModel : public CSL::PropertyTrigger {
  public:
   RenderViewModel() noexcept;
@@ -10,7 +11,7 @@ class RenderViewModel : public CSL::PropertyTrigger {
   ~RenderViewModel() noexcept;
 
   // properties
-  CSL::RefPtr<std::string> GetImageName() noexcept;
+  CSL::RefPtr<Image*> GetImagePtr() noexcept;
   CSL::RefPtr<std::future<void>> GetFuture() noexcept;
   CSL::RefPtr<std::string> GetRenderErrorInfo() noexcept;
 

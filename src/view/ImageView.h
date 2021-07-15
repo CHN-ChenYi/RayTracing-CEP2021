@@ -3,6 +3,7 @@
 
 #include <Fl/FL_BMP_Image.h>
 #include <precomp.hpp>
+#include <Image.hpp>
 
 class ImageShower : Fl_Box{
 public:
@@ -10,11 +11,12 @@ public:
 
 	~ImageShower() noexcept;
 	
-	void attach_ImageName(const CSL::RefPtr<std::string>& refImageName) noexcept;
-	CSL::RefPtr<std::string> detach_ImageName() noexcept;
+	void attach_ImagePtr(const CSL::RefPtr<Image*>& refImagePtr) noexcept;
+	CSL::RefPtr<Image*> detach_ImagePtr() noexcept;
 public:
 	void show();
 private:
-    CSL::RefPtr<std::string> m_ImageName;
+	CSL::RefPtr<Image*> m_Image;
+	std::unique_ptr<Fl_Image> tmpImage;
 };
 #endif

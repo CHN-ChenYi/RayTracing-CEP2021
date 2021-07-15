@@ -14,3 +14,5 @@
 #include "FL/Fl_Native_File_Chooser.H"
 #include "FL/Fl_Color_Chooser.H"
 #include "FL/fl_ask.H"
+
+#include <future>

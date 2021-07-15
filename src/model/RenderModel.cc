@@ -1,27 +1,16 @@
-﻿#include "RenderModel.hpp"
-
-#include <filesystem>
-#include <random>
+﻿#include <memory>
 
 #include "Property.hpp"
 #include "precomp.hpp"
-#include "uuid.h"
 
-RenderModel::RenderModel() {
-  std::random_device rd;
-  auto seed_data = std::array<int, std::mt19937::state_size>{};
-  std::generate(std::begin(seed_data), std::end(seed_data), std::ref(rd));
-  std::seed_seq seq(std::begin(seed_data), std::end(seed_data));
-  std::mt19937 generator(seq);
-  uuids::uuid_random_generator gen{generator};
+#include "RenderModel.hpp"
 
-  image_name_ = uuids::to_string(gen()) + ".bmp";
-}
+RenderModel::RenderModel() {}
 
-RenderModel::~RenderModel() { std::filesystem::remove(image_name_); }
+RenderModel::~RenderModel() {}
 
-CSL::RefPtr<std::string> RenderModel::GetImageName() noexcept {
-  return CSL::RefPtr<std::string>(&image_name_);
+CSL::RefPtr<Image *> RenderModel::GetImagePtr() noexcept {
+  return CSL::RefPtr<Image *>(&img_ptr_);
 }
 
 CSL::RefPtr<std::future<void>> RenderModel::GetFuture() noexcept {
@@ -34,6 +23,6 @@ CSL::RefPtr<std::string> RenderModel::GetRenderErrorInfo() noexcept {
 
 bool RenderModel::Render(const std::string &serialized_scene) noexcept {
   // TODO(TO/GA): set error info
-  return r_.Render(serialized_scene, CSL::RefPtr<std::string>(&image_name_),
+  return r_.Render(serialized_scene, &img_ptr_, img_buf_,
                    [this] { this->Fire(kRenderModelImageName); });
 }

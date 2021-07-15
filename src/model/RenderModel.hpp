@@ -2,6 +2,7 @@
 
 #include <string>
 
+#include "Image.hpp"
 #include "Renderer.hpp"
 #include "Scene.hpp"
 
@@ -13,7 +14,7 @@ class RenderModel : public CSL::PropertyTrigger {
   ~RenderModel() noexcept;
 
   // properties
-  CSL::RefPtr<std::string> GetImageName() noexcept;
+  CSL::RefPtr<Image*> GetImagePtr() noexcept;
   CSL::RefPtr<std::future<void>> GetFuture() noexcept;
   CSL::RefPtr<std::string> GetRenderErrorInfo() noexcept;
 
@@ -21,7 +22,8 @@ class RenderModel : public CSL::PropertyTrigger {
   bool Render(const std::string& serialized_scene) noexcept;
 
  private:
-  std::string image_name_;
-  std::string render_error_info_;
   Renderer r_;
+  std::string render_error_info_;
+  Image img_buf_[2];
+  Image *img_ptr_;
 };

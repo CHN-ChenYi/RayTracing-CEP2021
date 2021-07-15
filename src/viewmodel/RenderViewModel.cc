@@ -1,18 +1,15 @@
-﻿#include "RenderViewModel.hpp"
-
+﻿
 #include "Property.hpp"
 #include "precomp.hpp"
+#include "RenderViewModel.hpp"
+
 
 RenderViewModel::RenderViewModel() noexcept {}
 
 RenderViewModel::~RenderViewModel() noexcept {}
 
-CSL::RefPtr<std::string> RenderViewModel::GetImageName() noexcept {
-  return render_model_ref_->GetImageName();
-}
-
-CSL::RefPtr<std::future<void>> RenderViewModel::GetFuture() noexcept {
-  return render_model_ref_->GetFuture();
+CSL::RefPtr<Image*> RenderViewModel::GetImagePtr() noexcept {
+  return render_model_ref_->GetImagePtr();
 }
 
 CSL::RefPtr<std::string> RenderViewModel::GetRenderErrorInfo() noexcept {
@@ -24,6 +21,10 @@ RenderViewModel::GetRenderCommand() noexcept {
   return [this](const std::string &serialized_scene) -> bool {
     return this->render_model_ref_->Render(serialized_scene);
   };
+}
+
+CSL::RefPtr<std::future<void>> RenderViewModel::GetFuture() noexcept {
+  return render_model_ref_->GetFuture();
 }
 
 void RenderViewModel::AttachModel(

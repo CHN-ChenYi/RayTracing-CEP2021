@@ -1,7 +1,5 @@
 ﻿#pragma once
 
-#include <istream>
-
 struct Vector {
   double x, y, z;
   Vector(const double &_x = 0., const double &_y = 0., const double &_z = 0.)
@@ -32,10 +30,6 @@ struct Vector {
   Vector &normalize() {
     *this = *this * (1. / sqrt(x * x + y * y + z * z));
     return *this;
-  }
-  friend std::istream& operator>>(std::istream &is, Vector &other) {
-    is >> other.x >> other.y >> other.z;
-    return is;
   }
 };
 
