@@ -11,6 +11,10 @@ CSL::RefPtr<std::string> RenderViewModel::GetImageName() noexcept {
   return render_model_ref_->GetImageName();
 }
 
+CSL::RefPtr<std::future<void>> RenderViewModel::GetFuture() noexcept {
+  return render_model_ref_->GetFuture();
+}
+
 CSL::RefPtr<std::string> RenderViewModel::GetRenderErrorInfo() noexcept {
   return render_model_ref_->GetRenderErrorInfo();
 }

@@ -135,58 +135,64 @@ Vector Renderer::Radiance(const Ray &r, int depth) const noexcept {
 Renderer::Renderer() {}
 
 Renderer::~Renderer() noexcept {
-  if (task_.joinable()) task_.join();
+  if (task_future_.valid()) task_future_.wait();
 }
+
+CSL::RefPtr<std::future<void>> Renderer::GetFuture() noexcept { return CSL::RefPtr<std::future<void>>(&task_future_); }
 
 bool Renderer::Render(const std::string &serialized_scene,
                       const CSL::RefPtr<std::string> &image_name,
                       std::function<void(void)> fire) noexcept {
-  if (task_.joinable()) task_.join();
+  if (task_future_.valid()) task_future_.wait();
   scene_ = Scene(serialized_scene);
   image_name_ = image_name;
   fire_ = fire;
-  auto new_task = std::thread([this] {
-    const Vector lens_centre = scene_.camera.ori + scene_.camera.dir * scene_.v;
-    Vector *map = new Vector[scene_.w * scene_.h], // TODO(TO/GA): use unique_ptr
-           *colour = new Vector[scene_.w * scene_.h];
-    for (int i = 0; i < scene_.samp_num; i++) {
+  try {
+    auto new_task_future = std::async(std::launch::async, [this] {
+      const Vector lens_centre =
+          scene_.camera.ori + scene_.camera.dir * scene_.v;
+      Vector *
+          map = new Vector[scene_.w * scene_.h],  // TODO(TO/GA): use unique_ptr
+          *colour = new Vector[scene_.w * scene_.h];
+      for (int i = 0; i < scene_.samp_num; i++) {
 #pragma omp parallel for schedule(dynamic, 1)
-      for (int y = 0; y < scene_.h; y++) {
-        for (unsigned short x = 0; x < scene_.w; x++) {
-          const int id = (scene_.h - y - 1) * scene_.w + x;
-          const Vector sensor_point =
-              scene_.camera.ori +
-              scene_.camera_x * (scene_.w / 2 - x) * scene_.ipp +
-              scene_.camera_y * (scene_.h / 2 - y) * scene_.ipp;
-          const Vector focus_point =
-              lens_centre +
-              (lens_centre - sensor_point) * (scene_.u / scene_.v);
-          const double theta = 2 * M_PI * erand(),
-                       radius = scene_.lensr * erand();
-          const Vector lens_point = lens_centre +
-                                    scene_.camera_x * (cos(theta) * radius) +
-                                    scene_.camera_y * (sin(theta) * radius);
-          colour[id] += Radiance(
-              Ray(lens_point, (focus_point - lens_point).normalize()), 0);
-          map[id] = Vector(Gamma(clamp(colour[id].x / (i + 1))),
-                           Gamma(clamp(colour[id].y / (i + 1))),
-                           Gamma(clamp(colour[id].z / (i + 1))));
+        for (int y = 0; y < scene_.h; y++) {
+          for (unsigned short x = 0; x < scene_.w; x++) {
+            const int id = (scene_.h - y - 1) * scene_.w + x;
+            const Vector sensor_point =
+                scene_.camera.ori +
+                scene_.camera_x * (scene_.w / 2 - x) * scene_.ipp +
+                scene_.camera_y * (scene_.h / 2 - y) * scene_.ipp;
+            const Vector focus_point =
+                lens_centre +
+                (lens_centre - sensor_point) * (scene_.u / scene_.v);
+            const double theta = 2 * M_PI * erand(),
+                         radius = scene_.lensr * erand();
+            const Vector lens_point = lens_centre +
+                                      scene_.camera_x * (cos(theta) * radius) +
+                                      scene_.camera_y * (sin(theta) * radius);
+            colour[id] += Radiance(
+                Ray(lens_point, (focus_point - lens_point).normalize()), 0);
+            map[id] = Vector(Gamma(clamp(colour[id].x / (i + 1))),
+                             Gamma(clamp(colour[id].y / (i + 1))),
+                             Gamma(clamp(colour[id].z / (i + 1))));
+          }
         }
-      }
-      if (!(i & 1))
-        WriteBmp(*image_name_, scene_.h, scene_.w, map);
-      else
-        WriteBmp(*image_name_, scene_.h, scene_.w, colour);
+        if (!(i & 1))
+          WriteBmp(*image_name_, scene_.h, scene_.w, map);
+        else
+          WriteBmp(*image_name_, scene_.h, scene_.w, colour);
 
-      Fl::awake(&Awake, this);
-    }
-    delete[] map;
-    delete[] colour;
-    // TODO: send notification after join (or std::future?)
-  });
-  if (!new_task.joinable()) return false;
-  task_ = std::move(new_task);
-  return true;
+        Fl::awake(&Awake, this);
+      }
+      delete[] map;
+      delete[] colour;
+    });
+    task_future_ = std::move(new_task_future);
+    return true;
+  } catch (...) {
+    return false;
+  }
 }
 
 void Renderer::Awake(void *p_this) { static_cast<Renderer *>(p_this)->fire_(); }

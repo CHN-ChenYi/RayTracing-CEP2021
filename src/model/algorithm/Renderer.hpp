@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 #include <thread>
+#include <future>
 
 #include "Scene.hpp"
 #include "Vector.hpp"
@@ -15,6 +16,8 @@ class Renderer {
   Renderer(const Renderer &) = delete;
   Renderer &operator=(const Renderer &) = delete;
   ~Renderer() noexcept;
+
+  CSL::RefPtr<std::future<void>> GetFuture() noexcept;
 
   bool Render(const std::string &serialized_scene,
               const CSL::RefPtr<std::string> &image_name,
@@ -28,7 +31,7 @@ class Renderer {
   int Intersect(const Ray &r, double &t) const noexcept;
   Vector Radiance(const Ray &r, int depth) const noexcept;
 
-  std::thread task_;
+  std::future<void> task_future_;
   std::function<void(void)> fire_;
   static void Awake(void *p_this);
 };
