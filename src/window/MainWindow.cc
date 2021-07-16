@@ -44,11 +44,14 @@ std::function<bool(const std::string&)> MainWindow::detach_StartRenderingCommand
 void MainWindow::attach_CloseCommand(std::function<bool()>&& cf) noexcept {
 	m_cmdClose = std::move(cf);
 }
-void MainWindow::attach_ErrorCommand(std::function<std::string()>&& cf) noexcept {
-	m_cmdError = std::move(cf);
+void MainWindow::attach_ErrorHandling(std::function<void()>&& cf) noexcept {
+	m_cmdErrorHandling = std::move(cf);
 }
-std::function<std::string()> MainWindow::detach_ErrorCommand() noexcept {
-	return std::function<std::string()>(std::move(m_cmdError));
+std::function<void()> MainWindow::detach_ErrorHandling() noexcept {
+	return std::function<void()>(std::move(m_cmdErrorHandling));
+}
+void MainWindow::attach_ErrorInfo(CSL::RefPtr<std::string>& s) noexcept {
+	m_ErrorInfo = s;
 }
 std::function<bool()> MainWindow::detach_CloseCommand() noexcept {
 	return std::function<bool()>(std::move(m_cmdClose));
@@ -88,8 +91,8 @@ void MainWindow::save_cb(Fl_Widget*, void* v)
 
 void MainWindow::StartRendering() {
 	//IsRendering = 1;
-	if (!m_cmdRender(m_ImageInfo.value())) {
-
+	if (m_cmdRender(m_ImageInfo.value())) {
+		m_cmdErrorHandling();
 	}
 
 }
