@@ -92,7 +92,7 @@ void MainWindow::close_cb(Fl_Window* pW, void* pD) {
 
   default_callback(pW, pD);
 }
-inline std::wstring to_wide_string(const std::string& input)
+std::wstring to_wide_string(const std::string& input)
 {
     std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
     return converter.from_bytes(input);
