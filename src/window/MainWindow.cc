@@ -9,7 +9,7 @@ MainWindow::MainWindow(int w, int h, const char* t)
     : Fl_Double_Window(w, h, t),
       m_ImageShower(400, 0, 800, 600),
       // start(100, 0, 100, 30, "start"),
-      menu(0, 0, 50, 30),
+      menu(0, 0, 100, 30),
       m_ImageInfo(0, 30, 400, h - 30) {
   end();
 
