@@ -23,9 +23,9 @@ RenderViewModel::GetRenderCommand() noexcept {
   };
 }
 
-std::function<bool(const std::string &)>
+std::function<bool(const std::wstring &)>
 RenderViewModel::GetSaveCommand() noexcept {
-  return [this](const std::string &image_path) -> bool {
+  return [this](const std::wstring &image_path) -> bool {
     return this->render_model_ref_->Save(image_path);
   };
 }

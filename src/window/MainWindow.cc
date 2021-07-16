@@ -52,13 +52,13 @@ void MainWindow::attach_ErrorHandling(std::function<void()>&& cf) noexcept {
 std::function<void()> MainWindow::detach_ErrorHandling() noexcept {
   return std::function<void()>(std::move(m_cmdErrorHandling));
 }
-void MainWindow::attach_SaveCommand(std::function<bool(const std::string&)>&& cf) noexcept
+void MainWindow::attach_SaveCommand(std::function<bool(const std::wstring&)>&& cf) noexcept
 {
     m_cmdSave = std::move(cf);
 }
-std::function<bool(const std::string&)> MainWindow::detach_SaveCommand() noexcept
+std::function<bool(const std::wstring&)> MainWindow::detach_SaveCommand() noexcept
 {
-    return std::function<bool(const std::string&)>(std::move(m_cmdSave));
+    return std::function<bool(const std::wstring&)>(std::move(m_cmdSave));
 }
 
 void MainWindow::attach_ErrorInfo(CSL::RefPtr<std::string> s) noexcept {
@@ -92,15 +92,19 @@ void MainWindow::close_cb(Fl_Window* pW, void* pD) {
 
   default_callback(pW, pD);
 }
-
+inline std::wstring to_wide_string(const std::string& input)
+{
+    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+    return converter.from_bytes(input);
+}
 void MainWindow::save_cb(Fl_Widget*, void* v) {
   Fl_Native_File_Chooser fc;
   fc.title("Save file");
   fc.type(Fl_Native_File_Chooser::BROWSE_SAVE_FILE);
   if (fc.show() == 0) {
-    std::function<bool(const std::string&)>& cmdFunc =
-        *((std::function<bool(const std::string&)>*)v);
-    if (cmdFunc != nullptr && !cmdFunc(std::string(fc.filename()))) {
+    std::function<bool(const std::wstring&)>& cmdFunc =
+        *((std::function<bool(const std::wstring&)>*)v);
+    if (cmdFunc != nullptr && !cmdFunc(to_wide_string(std::string(fc.filename())))) {
       fl_alert("Error in saving file!");
     }
   }

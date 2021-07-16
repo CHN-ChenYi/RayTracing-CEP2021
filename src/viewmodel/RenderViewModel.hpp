@@ -16,7 +16,7 @@ class RenderViewModel : public CSL::PropertyTrigger {
 
   // commands
   std::function<bool(const std::string&)> GetRenderCommand() noexcept;
-  std::function<bool(const std::string&)> GetSaveCommand() noexcept;
+  std::function<bool(const std::wstring&)> GetSaveCommand() noexcept;
 
   // methods
   void AttachModel(const CSL::RefPtr<RenderModel>& render_model) noexcept;

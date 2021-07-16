@@ -60,7 +60,7 @@ class BMP {
 
   Bitmap &bitmap() { return bitmap_; }
 
-  void write(const std::string &filename) {
+  void write(const std::wstring &filename) {
     std::ofstream file(filename, std::ios_base::binary);
     if (!file) throw std::runtime_error("Cannot open the image file.");
 
@@ -105,7 +105,7 @@ class BMP {
   }
 };
 
-void WriteBmp(const std::string &filename, const int32_t &height,
+void WriteBmp(const std::wstring &filename, const int32_t &height,
               const int32_t &width, const unsigned char*const bitmap) {
   BMP image;
   image.Resize(height, width);

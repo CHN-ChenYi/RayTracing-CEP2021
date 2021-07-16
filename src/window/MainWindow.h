@@ -43,8 +43,8 @@ class MainWindow : public Fl_Double_Window {
   void attach_ErrorInfo(CSL::RefPtr<std::string> s) noexcept;
   CSL::RefPtr<std::string> detach_ErrorInfo() noexcept;
 
-  void attach_SaveCommand(std::function<bool(const std::string&)>&& cf) noexcept;
-  std::function<bool(const std::string&)> detach_SaveCommand() noexcept;
+  void attach_SaveCommand(std::function<bool(const std::wstring&)>&& cf) noexcept;
+  std::function<bool(const std::wstring&)> detach_SaveCommand() noexcept;
   // notifications
   CSL::PropertyNotification get_Notification();
 
@@ -62,7 +62,7 @@ class MainWindow : public Fl_Double_Window {
   std::function<bool(const std::string&)> m_cmdRender;
   std::function<bool()> m_cmdClose;
   std::function<void()> m_cmdErrorHandling;
-  std::function<bool(const std::string&)> m_cmdSave;
+  std::function<bool(const std::wstring&)> m_cmdSave;
   // UI
   ImageShower m_ImageShower;
   // Fl_Button start;
