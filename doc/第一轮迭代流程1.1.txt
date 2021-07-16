@@ -1,4 +1,4 @@
-s第一轮迭代流程 1.1
+第一轮迭代流程 1.1
 7.14
 
 app（及其组成部分包括window,model,viewmodel）初始化：

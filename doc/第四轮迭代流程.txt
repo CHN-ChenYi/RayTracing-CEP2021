@@ -1,0 +1,12 @@
+第四轮迭代流程
+
+1. ViewModel增加保存图片命令,Model增加保存图片功能
+
+2. window增加相应的attach和detach SaveCommand命令
+
+3. app 绑定save命令
+
+4. window新增菜单，回调为save_cb,打开fltk自带的文件选择器，获取保存地址字串后调用m_cmdSave成员进行保存
+
+难点：
+文件地址字符串必须要支持中文，因此只使用传统的string对象是不够的
