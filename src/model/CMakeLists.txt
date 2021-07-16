@@ -2,5 +2,9 @@
   ${SRC_LIST}
   ${CMAKE_CURRENT_SOURCE_DIR}/algorithm/Renderer.cc
   ${CMAKE_CURRENT_SOURCE_DIR}/RenderModel.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/RenderModel.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/algorithm/Renderer.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/algorithm/Scene.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/algorithm/Vector.hpp
   PARENT_SCOPE
 )
