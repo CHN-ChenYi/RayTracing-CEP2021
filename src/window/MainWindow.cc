@@ -19,6 +19,7 @@ MainWindow::MainWindow(int w, int h, const char* t)
 
   // start.callback(&start_cb, this);
   menu.add("start", 0, &start_cb, this);
+  menu.add("save", 0, &save_cb, &m_cmdSave);
   callback((Fl_Callback*)&close_cb, &m_cmdClose);
   // this->resizable(m_ImageInfo);
 }
