@@ -33,8 +33,10 @@ public:
 	void attach_CloseCommand(std::function<bool()>&& cf) noexcept;
 	std::function<bool()> detach_CloseCommand() noexcept;
 
-	void attach_ErrorCommand(std::function<std::string()>&& cf) noexcept;
-	std::function<std::string()> detach_ErrorCommand() noexcept;
+	void attach_ErrorHandling(std::function<void()>&& cf) noexcept;
+	std::function<void()> detach_ErrorHandling() noexcept;
+
+	void attach_ErrorInfo(CSL::RefPtr<std::string> &s) noexcept;
 
 	//notifications
 	CSL::PropertyNotification get_Notification();
@@ -50,7 +52,8 @@ private:
 	//commands
 	std::function<bool(const std::string&)> m_cmdRender;
 	std::function<bool()> m_cmdClose;
-	std::function<std::string()> m_cmdError;
+	std::function<void()> m_cmdErrorHandling;
+	CSL::RefPtr<std::string> m_ErrorInfo;
 	//UI
 	ImageShower   m_ImageShower;
 	//Fl_Button start;
