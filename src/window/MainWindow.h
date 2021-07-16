@@ -33,6 +33,9 @@ public:
 	void attach_CloseCommand(std::function<bool()>&& cf) noexcept;
 	std::function<bool()> detach_CloseCommand() noexcept;
 
+	void attach_ErrorCommand(std::function<std::string()>&& cf) noexcept;
+	std::function<std::string()> detach_ErrorCommand() noexcept;
+
 	//notifications
 	CSL::PropertyNotification get_Notification();
 
@@ -42,11 +45,12 @@ private:
 	//callback
 	static void close_cb(Fl_Window* pW, void* pD);
 	static void start_cb(Fl_Widget* pW, void* pD);
+	static void save_cb(Fl_Widget*, void* v);
 private:
 	//commands
 	std::function<bool(const std::string&)> m_cmdRender;
 	std::function<bool()> m_cmdClose;
-
+	std::function<std::string()> m_cmdError;
 	//UI
 	ImageShower   m_ImageShower;
 	//Fl_Button start;
