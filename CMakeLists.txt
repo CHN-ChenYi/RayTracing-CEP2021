@@ -1,4 +1,4 @@
-﻿CMAKE_MINIMUM_REQUIRED(VERSION 3.20)
+﻿CMAKE_MINIMUM_REQUIRED(VERSION 3.17)
 INCLUDE("${CMAKE_SOURCE_DIR}/third_party/CSL/csl-base.cmk")
 INCLUDE("${CMAKE_SOURCE_DIR}/third_party/CSL/csl-main.cmk")
 INCLUDE("${CMAKE_SOURCE_DIR}/third_party/fltk/fltk.cmk")
