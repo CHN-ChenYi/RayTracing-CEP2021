@@ -12,9 +12,15 @@ bool RenderingApp::Init() {
   // properties
   m_imgPart.GetMainWindow().attach_task_future(
       m_imgPart.GetViewModel().GetFuture());
+
+  m_imgPart.GetMainWindow().attach_ErrorInfo(
+      m_imgPart.GetViewModel().GetRenderErrorInfo());
+
   // commands
 
   m_imgPart.GetMainWindow().attach_CloseCommand(get_CloseCommand());
+  m_imgPart.GetMainWindow().attach_ErrorHandling(get_ErrorHandlingCommand());
+
   // notifications
   return true;
 }

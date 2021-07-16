@@ -46,14 +46,23 @@ void MainWindow::attach_CloseCommand(std::function<bool()>&& cf) noexcept {
   m_cmdClose = std::move(cf);
 }
 void MainWindow::attach_ErrorHandling(std::function<void()>&& cf) noexcept {
-	m_cmdErrorHandling = std::move(cf);
+  m_cmdErrorHandling = std::move(cf);
 }
 std::function<void()> MainWindow::detach_ErrorHandling() noexcept {
-	return std::function<void()>(std::move(m_cmdErrorHandling));
+  return std::function<void()>(std::move(m_cmdErrorHandling));
 }
 void MainWindow::attach_ErrorInfo(CSL::RefPtr<std::string>& s) noexcept {
-	m_ErrorInfo = s;
+  m_ErrorInfo = s;
 }
+
+CSL::RefPtr<std::string> MainWindow::detach_ErrorInfo() noexcept {
+  return m_ErrorInfo;
+}
+
+CSL::RefPtr<std::string> MainWindow::get_ErrorInfo() noexcept {
+  return m_ErrorInfo;
+}
+
 std::function<bool()> MainWindow::detach_CloseCommand() noexcept {
   return std::function<bool()>(std::move(m_cmdClose));
 }
@@ -74,26 +83,25 @@ void MainWindow::close_cb(Fl_Window* pW, void* pD) {
   default_callback(pW, pD);
 }
 
-void MainWindow::save_cb(Fl_Widget*, void* v)
-{
-	Fl_Native_File_Chooser fc;
-	fc.title("Save file");
-	fc.type(Fl_Native_File_Chooser::BROWSE_SAVE_FILE);
-	if (fc.show() == 0) {
-		std::function<bool(const std::string&)>& cmdFunc = *((std::function<bool(const std::string&)>*)v);
-		if (cmdFunc != nullptr && !cmdFunc(std::string(fc.filename()))) {
-			fl_alert("Error in saving file!");
-		}
-	}
-	return;
+void MainWindow::save_cb(Fl_Widget*, void* v) {
+  Fl_Native_File_Chooser fc;
+  fc.title("Save file");
+  fc.type(Fl_Native_File_Chooser::BROWSE_SAVE_FILE);
+  if (fc.show() == 0) {
+    std::function<bool(const std::string&)>& cmdFunc =
+        *((std::function<bool(const std::string&)>*)v);
+    if (cmdFunc != nullptr && !cmdFunc(std::string(fc.filename()))) {
+      fl_alert("Error in saving file!");
+    }
+  }
+  return;
 }
 
 void MainWindow::StartRendering() {
-	//IsRendering = 1;
-	if (!m_cmdRender(m_ImageInfo.value())) {
-		m_cmdErrorHandling();
-	}
-
+  // IsRendering = 1;
+  if (!m_cmdRender(m_ImageInfo.value())) {
+    m_cmdErrorHandling();
+  }
 }
 void MainWindow::start_cb(Fl_Widget* pW, void* pD) {
   MainWindow* pThis = (MainWindow*)pD;

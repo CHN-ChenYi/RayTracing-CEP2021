@@ -18,7 +18,7 @@ class RenderingApp {
 
  private:
   std::function<bool()> get_CloseCommand();
-
+  std::function<void()> get_ErrorHandlingCommand();
  private:
   ImagePart m_imgPart;
 };
