@@ -1,11 +1,10 @@
 ﻿#pragma once
 
 #include <functional>
+#include <future>
 #include <memory>
 #include <string>
 #include <thread>
-#include <memory>
-#include <future>
 
 #include "Image.hpp"
 #include "Scene.hpp"
@@ -21,10 +20,9 @@ class Renderer {
 
   CSL::RefPtr<std::future<void>> GetFuture() noexcept;
 
-
-  bool Render(const std::string &serialized_scene,
-              Image **img_ptr, Image img_buf[2],
-              std::function<void(void)> fire) noexcept;
+  bool Render(const std::string &serialized_scene, Image **img_ptr,
+              Image img_buf[2], std::function<void(void)> fire,
+              std::string &error_info) noexcept;
 
  private:
   Scene scene_;

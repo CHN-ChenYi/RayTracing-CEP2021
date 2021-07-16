@@ -116,11 +116,12 @@ struct Scene {
 
     int n;
     ss >> n;
+    if (!ss) throw std::string("Parse scene settings failed");
     Sphere sphere;
     while (n--) {
       ss >> sphere;
       spheres.push_back(sphere);
     }
-    // TODO(TO/GA): set error info
+    if (!ss) throw std::string("Parse scene settings failed");
   }
 };
