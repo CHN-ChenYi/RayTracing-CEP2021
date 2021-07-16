@@ -51,7 +51,16 @@ void MainWindow::attach_ErrorHandling(std::function<void()>&& cf) noexcept {
 std::function<void()> MainWindow::detach_ErrorHandling() noexcept {
   return std::function<void()>(std::move(m_cmdErrorHandling));
 }
-void MainWindow::attach_ErrorInfo(CSL::RefPtr<std::string>& s) noexcept {
+void MainWindow::attach_SaveCommand(std::function<bool(const std::string&)>&& cf) noexcept
+{
+    m_cmdSave = std::move(cf);
+}
+std::function<bool(const std::string&)> MainWindow::detach_SaveCommand() noexcept
+{
+    return std::function<bool(const std::string&)>(std::move(m_cmdSave));
+}
+
+void MainWindow::attach_ErrorInfo(CSL::RefPtr<std::string> s) noexcept {
   m_ErrorInfo = s;
 }
 
