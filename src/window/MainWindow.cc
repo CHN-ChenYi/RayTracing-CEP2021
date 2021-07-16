@@ -7,13 +7,14 @@ MainWindow::MainWindow(int w, int h, const char* t)
     : Fl_Double_Window(w, h, t),
       m_ImageShower(400, 0,800,600),
       //start(100, 0, 100, 30, "start"),
-      menu(0, 0, 100, 30),
+      menu(0, 0, 50, 30),
 	  m_ImageInfo(0, 30, 400, h - 30)
 {
 	end();
 
 	m_ImageInfo.color(fl_rgb_color(65,65,65));
     m_ImageInfo.textcolor(fl_rgb_color(29, 221, 226));
+    m_ImageInfo.textfont(FL_COURIER);
 
 	//start.callback(&start_cb, this);
     menu.add("start", 0, &start_cb, this);
@@ -75,5 +76,4 @@ void MainWindow::start_cb(Fl_Widget* pW, void* pD)
 {
 	MainWindow* pThis = (MainWindow*)pD;
 	pThis->StartRendering();
-
 }
