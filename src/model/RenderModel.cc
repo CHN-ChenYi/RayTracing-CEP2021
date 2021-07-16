@@ -2,10 +2,11 @@
 
 #include <memory>
 
+#include "Bmp.hpp"
 #include "Property.hpp"
 #include "precomp.hpp"
 
-RenderModel::RenderModel() {}
+RenderModel::RenderModel() { img_ptr_ = nullptr; }
 
 RenderModel::~RenderModel() {}
 
@@ -22,6 +23,13 @@ CSL::RefPtr<std::string> RenderModel::GetRenderErrorInfo() noexcept {
 }
 
 bool RenderModel::Render(const std::string &serialized_scene) noexcept {
-  return r_.Render(serialized_scene, &img_ptr_, img_buf_,
-                   [this] { this->Fire(kRenderModelImagePtr); }, render_error_info_);
+  return r_.Render(
+      serialized_scene, &img_ptr_, img_buf_,
+      [this] { this->Fire(kRenderModelImagePtr); }, render_error_info_);
+}
+
+bool RenderModel::Save(const std::string &image_path) noexcept {
+  if (!img_ptr_) return false;
+  WriteBmp(image_path, img_ptr_->h, img_ptr_->w, img_ptr_->buf);
+  return true;
 }

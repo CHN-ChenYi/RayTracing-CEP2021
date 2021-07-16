@@ -20,7 +20,13 @@ std::function<bool(const std::string &)>
 RenderViewModel::GetRenderCommand() noexcept {
   return [this](const std::string &serialized_scene) -> bool {
     return this->render_model_ref_->Render(serialized_scene);
-    return true;
+  };
+}
+
+std::function<bool(const std::string &)>
+RenderViewModel::GetSaveCommand() noexcept {
+  return [this](const std::string &image_path) -> bool {
+    return this->render_model_ref_->Save(image_path);
   };
 }
 

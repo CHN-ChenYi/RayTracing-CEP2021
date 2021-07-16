@@ -20,6 +20,7 @@ class RenderModel : public CSL::PropertyTrigger {
 
   // methods
   bool Render(const std::string& serialized_scene) noexcept;
+  bool Save(const std::string& image_path) noexcept;
 
  private:
   Renderer r_;
