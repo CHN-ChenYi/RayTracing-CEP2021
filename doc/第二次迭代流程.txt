@@ -1,0 +1,39 @@
+第二次迭代流程
+
+分工：
+app: 朱理真
+view, window:余倚岑
+viewmodel, model:陈易
+
+在第一次的基础上，修改：
+0. 增加渲染，使用渲染图片
+
+1. 删除 Property : ImageName
+    删除 ImageShower 中 attach_ImageName 和 detach
+    删除 ViewModel 中 的ImageName接口
+    app 中也相应地删除绑定
+2. 增加 Property : ImagePtr (结构Image的指针)
+    增加 ImageShowr 中 
+    void ImageShower::attach_ImagePtr(const CSL::RefPtr<std::Image*>& refImagePtr) noexcept 和 
+    CSL::RefPtr<std::Image*> ImageShower::detach_ImagePtr() noexcept
+
+    增加 ViewModel 中 的ImagePtr接口
+    app 中也相应地增加绑定
+
+3. 修改 图片显示方式
+    修改 ImageShower.show()
+        使用Fl_RGB_Image替代Fl_Shared_Image
+
+4. 增加 Property: task_future (属性值 CSL::RefPtr<std::future<void>>）
+    在window中增加对这一属性的引用，并增加attach 和 detach 函数
+    
+    增加 ViewModel中的接口
+    app也相应地增加绑定
+
+5. 修改window::close_cb 回调函数,具体为
+    若 task_future.wait_for(std::chrono::milliseconds(1)) == std::future_status::ready 
+    弹出报错窗口，不调用default_callback函数
+
+6. 对窗口进行美化
+
+
