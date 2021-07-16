@@ -1,20 +1,19 @@
 ﻿
+#include "Renderer.hpp"
+
 #include <algorithm>
 #include <cassert>
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <fstream>
+#include <iostream>
 #include <random>
 #include <sstream>
 #include <string>
 #include <tuple>
 
 #include "Scene.hpp"
-#include <iostream>
-
-#include "Renderer.hpp"
-
 
 static const double M_PI = acos(-1);
 
@@ -144,9 +143,8 @@ CSL::RefPtr<std::future<void>> Renderer::GetFuture() noexcept {
   return CSL::RefPtr<std::future<void>>(&task_future_);
 }
 
-
-bool Renderer::Render(const std::string &serialized_scene,
-                      Image ** img_ptr, Image img_buf[2],
+bool Renderer::Render(const std::string &serialized_scene, Image **img_ptr,
+                      Image img_buf[2],
                       std::function<void(void)> fire) noexcept {
   if (task_future_.valid()) task_future_.wait();
 
@@ -157,9 +155,10 @@ bool Renderer::Render(const std::string &serialized_scene,
   img_buf[0].buf = new unsigned char[scene_.h * scene_.w * 3];
   img_buf[1].buf = new unsigned char[scene_.h * scene_.w * 3];
   /*img_ptr,img_buf*/
-  //auto new_task = std::thread([this, img_ptr, img_buf] {
+  // auto new_task = std::thread([this, img_ptr, img_buf] {
   try {
-    auto new_task_future = std::async(std::launch::async, [this, img_ptr,img_buf] {
+    auto new_task_future = std::async(std::launch::async, [this, img_ptr,
+                                                           img_buf] {
       const Vector lens_centre =
           scene_.camera.ori + scene_.camera.dir * scene_.v;
       Vector *
@@ -201,8 +200,8 @@ bool Renderer::Render(const std::string &serialized_scene,
     });
     task_future_ = std::move(new_task_future);
 
-    //if (!new_task.joinable()) return false;
-    //task_ = std::move(new_task);
+    // if (!new_task.joinable()) return false;
+    // task_ = std::move(new_task);
     return true;
   } catch (...) {
     return false;

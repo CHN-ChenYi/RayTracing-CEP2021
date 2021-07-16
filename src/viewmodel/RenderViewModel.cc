@@ -1,14 +1,14 @@
 ﻿
-#include "Property.hpp"
-#include "precomp.hpp"
 #include "RenderViewModel.hpp"
 
+#include "Property.hpp"
+#include "precomp.hpp"
 
 RenderViewModel::RenderViewModel() noexcept {}
 
 RenderViewModel::~RenderViewModel() noexcept {}
 
-CSL::RefPtr<Image*> RenderViewModel::GetImagePtr() noexcept {
+CSL::RefPtr<Image *> RenderViewModel::GetImagePtr() noexcept {
   return render_model_ref_->GetImagePtr();
 }
 

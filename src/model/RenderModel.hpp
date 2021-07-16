@@ -25,5 +25,5 @@ class RenderModel : public CSL::PropertyTrigger {
   Renderer r_;
   std::string render_error_info_;
   Image img_buf_[2];
-  Image *img_ptr_;
+  Image* img_ptr_;
 };

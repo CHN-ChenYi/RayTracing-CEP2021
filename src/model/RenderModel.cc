@@ -1,9 +1,9 @@
-﻿#include <memory>
+﻿#include "RenderModel.hpp"
+
+#include <memory>
 
 #include "Property.hpp"
 #include "precomp.hpp"
-
-#include "RenderModel.hpp"
 
 RenderModel::RenderModel() {}
 

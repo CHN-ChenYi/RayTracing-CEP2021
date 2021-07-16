@@ -2,7 +2,6 @@
 
 #include "RenderModel.hpp"
 
-
 class RenderViewModel : public CSL::PropertyTrigger {
  public:
   RenderViewModel() noexcept;

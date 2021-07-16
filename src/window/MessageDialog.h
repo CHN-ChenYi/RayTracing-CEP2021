@@ -1,4 +1,4 @@
-#ifndef __MESSAGE_DIALOG_H__
+﻿#ifndef __MESSAGE_DIALOG_H__
 #define __MESSAGE_DIALOG_H__
 
 class MessageDialog : public Fl_Window {

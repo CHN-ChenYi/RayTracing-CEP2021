@@ -36,5 +36,4 @@ class Renderer {
   std::future<void> task_future_;
   std::function<void(void)> fire_;
   static void Awake(void *p_this);
-
 };
