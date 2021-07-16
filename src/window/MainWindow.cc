@@ -6,17 +6,17 @@
 MainWindow::MainWindow(int w, int h, const char* t)
     : Fl_Double_Window(w, h, t),
       m_ImageShower(400, 0,800,600),
-      start(100, 0, 100, 30, "start"),
+      //start(100, 0, 100, 30, "start"),
       menu(0, 0, 100, 30),
 	  m_ImageInfo(0, 30, 400, h - 30)
 {
 	end();
 
-	m_ImageInfo.color(fl_rgb_color(0, 0, 0));
+	m_ImageInfo.color(fl_rgb_color(65,65,65));
     m_ImageInfo.textcolor(fl_rgb_color(29, 221, 226));
 
-	start.callback(&start_cb, this);
-    menu.add("start", 0, nullptr, this);
+	//start.callback(&start_cb, this);
+    menu.add("start", 0, &start_cb, this);
 	callback((Fl_Callback*)&close_cb, &m_cmdClose);
     //this->resizable(m_ImageInfo);
 }
