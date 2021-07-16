@@ -17,7 +17,8 @@ bool RenderingApp::Init() {
       m_imgPart.GetViewModel().GetRenderErrorInfo());
 
   // commands
-
+  m_imgPart.GetMainWindow().attach_SaveCommand(
+      m_imgPart.GetViewModel().GetSaveCommand());
   m_imgPart.GetMainWindow().attach_CloseCommand(get_CloseCommand());
   m_imgPart.GetMainWindow().attach_ErrorHandling(get_ErrorHandlingCommand());
 
