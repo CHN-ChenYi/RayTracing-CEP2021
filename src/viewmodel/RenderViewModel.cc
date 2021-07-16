@@ -1,14 +1,14 @@
 ﻿
-#include "Property.hpp"
-#include "precomp.hpp"
 #include "RenderViewModel.hpp"
 
+#include "Property.hpp"
+#include "precomp.hpp"
 
 RenderViewModel::RenderViewModel() noexcept {}
 
 RenderViewModel::~RenderViewModel() noexcept {}
 
-CSL::RefPtr<Image*> RenderViewModel::GetImagePtr() noexcept {
+CSL::RefPtr<Image *> RenderViewModel::GetImagePtr() noexcept {
   return render_model_ref_->GetImagePtr();
 }
 
@@ -20,7 +20,13 @@ std::function<bool(const std::string &)>
 RenderViewModel::GetRenderCommand() noexcept {
   return [this](const std::string &serialized_scene) -> bool {
     return this->render_model_ref_->Render(serialized_scene);
-    return true;
+  };
+}
+
+std::function<bool(const std::string &)>
+RenderViewModel::GetSaveCommand() noexcept {
+  return [this](const std::string &image_path) -> bool {
+    return this->render_model_ref_->Save(image_path);
   };
 }
 
@@ -39,8 +45,7 @@ CSL::RefPtr<RenderModel> RenderViewModel::DetachModel() noexcept {
 
 CSL::PropertyNotification RenderViewModel::GetNotification() noexcept {
   return [this](uint32_t uID) {
-    // TODO generate fltk img
-    if (uID == kRenderModelImageName) {
+    if (uID == kRenderModelImagePtr) {
       this->Fire(uID);
     }
   };

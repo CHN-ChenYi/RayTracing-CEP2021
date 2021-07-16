@@ -20,10 +20,11 @@ class RenderModel : public CSL::PropertyTrigger {
 
   // methods
   bool Render(const std::string& serialized_scene) noexcept;
+  bool Save(const std::string& image_path) noexcept;
 
  private:
   Renderer r_;
   std::string render_error_info_;
   Image img_buf_[2];
-  Image *img_ptr_;
+  Image* img_ptr_;
 };

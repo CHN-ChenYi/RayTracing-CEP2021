@@ -1,20 +1,19 @@
 ﻿
+#include "Renderer.hpp"
+
 #include <algorithm>
 #include <cassert>
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <fstream>
+#include <iostream>
 #include <random>
 #include <sstream>
 #include <string>
 #include <tuple>
 
 #include "Scene.hpp"
-#include <iostream>
-
-#include "Renderer.hpp"
-
 
 static const double M_PI = acos(-1);
 
@@ -144,27 +143,28 @@ CSL::RefPtr<std::future<void>> Renderer::GetFuture() noexcept {
   return CSL::RefPtr<std::future<void>>(&task_future_);
 }
 
-
-bool Renderer::Render(const std::string &serialized_scene,
-                      Image ** img_ptr, Image img_buf[2],
-                      std::function<void(void)> fire) noexcept {
+bool Renderer::Render(const std::string &serialized_scene, Image **img_ptr,
+                      Image img_buf[2], std::function<void(void)> fire,
+                      std::string &error_info) noexcept {
   if (task_future_.valid()) task_future_.wait();
-
-  scene_ = Scene(serialized_scene);
+  try {
+    scene_ = Scene(serialized_scene);
+  } catch (const std::string &e) {
+    error_info = std::move(e);
+    return false;
+  }
   fire_ = fire;
   img_buf[0].h = img_buf[1].h = scene_.h;
   img_buf[0].w = img_buf[1].w = scene_.w;
   img_buf[0].buf = new unsigned char[scene_.h * scene_.w * 3];
   img_buf[1].buf = new unsigned char[scene_.h * scene_.w * 3];
-  /*img_ptr,img_buf*/
-  //auto new_task = std::thread([this, img_ptr, img_buf] {
   try {
-    auto new_task_future = std::async(std::launch::async, [this, img_ptr,img_buf] {
+    auto new_task_future = std::async(std::launch::async, [this, img_ptr,
+                                                           img_buf] {
       const Vector lens_centre =
           scene_.camera.ori + scene_.camera.dir * scene_.v;
-      Vector *
-          map = new Vector[scene_.w * scene_.h],  // TODO(TO/GA): use unique_ptr
-          *colour = new Vector[scene_.w * scene_.h];
+      Vector *colour =
+          new Vector[scene_.w * scene_.h];  // TODO(TO/GA): use unique_ptr
       for (int i = 0; i < scene_.samp_num; i++) {
         const int cur = i & 1;
         const int pre = cur ^ 1;
@@ -195,16 +195,12 @@ bool Renderer::Render(const std::string &serialized_scene,
         *img_ptr = &img_buf[cur];
         Fl::awake(&Awake, this);
       }
-      delete[] map;
       delete[] colour;
-      // TODO: send notification after join (or std::future?)
     });
     task_future_ = std::move(new_task_future);
-
-    //if (!new_task.joinable()) return false;
-    //task_ = std::move(new_task);
     return true;
   } catch (...) {
+    error_info = "Launch async task failed";
     return false;
   }
 }

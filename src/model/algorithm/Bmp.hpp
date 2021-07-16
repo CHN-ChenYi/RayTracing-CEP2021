@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <algorithm>
 #include <cstdint>
 #include <cstring>
@@ -9,12 +9,6 @@
 
 struct RGBColor {
   uint8_t b, g, r;
-  RGBColor &operator=(const Vector &other) {
-    r = other.x;
-    g = other.y;
-    b = other.z;
-    return *this;
-  }
 };
 
 struct Bitmap {
@@ -112,13 +106,15 @@ class BMP {
 };
 
 void WriteBmp(const std::string &filename, const int32_t &height,
-              const int32_t &width, const Vector *const bitmap) {
+              const int32_t &width, const unsigned char*const bitmap) {
   BMP image;
   image.Resize(height, width);
   auto &bmp_bitmap = image.bitmap();
   for (int32_t i = 0; i < height; i++) {
-    for (int32_t j = 0; j < width; j++)
-      bmp_bitmap[height - 1 - i][j] = bitmap[i * width + j];
+    for (int32_t j = 0; j < width; j++) {
+      auto const id = (i * width + j) * 3;
+      bmp_bitmap[height - 1 - i][j] = {bitmap[id + 2], bitmap[id + 1], bitmap[id]};
+    }
   }
   image.write(filename);
 }
