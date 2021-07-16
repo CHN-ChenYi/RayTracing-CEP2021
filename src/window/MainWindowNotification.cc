@@ -8,7 +8,7 @@ CSL::PropertyNotification MainWindow::get_Notification() {
     /*		if (uID == kRenderModelScene) {
                     }
                     else */
-    if (uID == kRenderModelImageName) {
+    if (uID == kRenderModelImagePtr) {
       m_ImageShower.show();
 
       this->redraw();

@@ -24,5 +24,5 @@ CSL::RefPtr<std::string> RenderModel::GetRenderErrorInfo() noexcept {
 bool RenderModel::Render(const std::string &serialized_scene) noexcept {
   // TODO(TO/GA): set error info
   return r_.Render(serialized_scene, &img_ptr_, img_buf_,
-                   [this] { this->Fire(kRenderModelImageName); });
+                   [this] { this->Fire(kRenderModelImagePtr); });
 }
