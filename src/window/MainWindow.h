@@ -76,7 +76,7 @@ class MainWindow : public Fl_Double_Window {
   ImageShower m_ImageShower;
   // Fl_Button start;
   Fl_Menu_Bar menu;
-  Fl_Multiline_Input m_ImageInfo;
+  Fl_Text_Editor m_ImageInfo;
   ProgressBar m_ProgressBar;
 
   // properties

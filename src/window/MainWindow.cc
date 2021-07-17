@@ -147,7 +147,7 @@ void MainWindow::load_cb(Fl_Widget*, void* v)
 }
 void MainWindow::StartRendering() {
   // IsRendering = 1;
-  if (!m_cmdRender(m_ImageInfo.value())) {
+  if (!m_cmdRender(m_ImageInfo.buffer()->text())) {
     m_cmdErrorHandling();
   }
 }
