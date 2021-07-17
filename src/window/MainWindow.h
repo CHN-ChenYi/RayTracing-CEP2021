@@ -48,6 +48,9 @@ class MainWindow : public Fl_Double_Window {
 
   void attach_SaveCommand(std::function<bool(const std::wstring&)>&& cf) noexcept;
   std::function<bool(const std::wstring&)> detach_SaveCommand() noexcept;
+
+  void attach_LoadCommand(std::function<bool(const std::wstring&)>&& cf) noexcept;
+  std::function<bool(const std::wstring&)> detach_LoadCommand() noexcept;
   // notifications
   CSL::PropertyNotification get_Notification();
 
@@ -58,6 +61,7 @@ class MainWindow : public Fl_Double_Window {
   // callback
   static void close_cb(Fl_Window* pW, void* pD);
   static void start_cb(Fl_Widget* pW, void* pD);
+  static void load_cb(Fl_Widget*, void* v);
   static void save_cb(Fl_Widget*, void* v);
   static void abort_cb(Fl_Widget*, void* v);
  private:
@@ -67,6 +71,7 @@ class MainWindow : public Fl_Double_Window {
   std::function<void()> m_cmdErrorHandling;
   std::function<void()> m_cmdAbort;
   std::function<bool(const std::wstring&)> m_cmdSave;
+  std::function<bool(const std::wstring&)> m_cmdLoad;
   // UI
   ImageShower m_ImageShower;
   // Fl_Button start;

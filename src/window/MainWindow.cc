@@ -9,7 +9,7 @@ MainWindow::MainWindow(int w, int h, const char* t)
     : Fl_Double_Window(w, h, t),
       m_ImageShower(400, 0, 800, 600),
       // start(100, 0, 100, 30, "start"),
-      menu(0, 0, 150, 30),
+      menu(0, 0, 200, 30),
       m_ImageInfo(0, 30, 400, h - 30),
       m_ProgressBar(300,0,100,30){
   end();
@@ -22,6 +22,7 @@ MainWindow::MainWindow(int w, int h, const char* t)
   menu.add("start", 0, &start_cb, this);
   menu.add("abort", 0, &abort_cb, this);
   menu.add("save", 0, &save_cb, &m_cmdSave);
+  menu.add("Load", 0, &load_cb, &m_cmdLoad);
   callback((Fl_Callback*)&close_cb, &m_cmdClose);
   // this->resizable(m_ImageInfo);
 }
@@ -70,7 +71,14 @@ std::function<bool(const std::wstring&)> MainWindow::detach_SaveCommand() noexce
 {
     return std::function<bool(const std::wstring&)>(std::move(m_cmdSave));
 }
-
+void MainWindow::attach_LoadCommand(std::function<bool(const std::wstring&)>&& cf) noexcept
+{
+    m_cmdLoad = std::move(cf);
+}
+std::function<bool(const std::wstring&)> MainWindow::detach_LoadCommand() noexcept
+{
+    return std::function<bool(const std::wstring&)>(std::move(m_cmdLoad));
+}
 void MainWindow::attach_ErrorInfo(CSL::RefPtr<std::string> s) noexcept {
   m_ErrorInfo = s;
 }
@@ -124,7 +132,19 @@ void MainWindow::save_cb(Fl_Widget*, void* v) {
   }
   return;
 }
-
+void MainWindow::load_cb(Fl_Widget*, void* v)
+{
+    Fl_Native_File_Chooser fc;
+    fc.title("Choose file");
+    fc.type(Fl_Native_File_Chooser::BROWSE_FILE);
+    if (fc.show() == 0) {
+        std::function<bool(const std::wstring&)>& cmdFunc = *((std::function<bool(const std::wstring&)>*)v);
+        if (cmdFunc != nullptr && !cmdFunc(to_wide_string((std::string(fc.filename()))))) {
+            fl_alert("Error in opening file!");
+        }
+    }
+    return;
+}
 void MainWindow::StartRendering() {
   // IsRendering = 1;
   if (!m_cmdRender(m_ImageInfo.value())) {
