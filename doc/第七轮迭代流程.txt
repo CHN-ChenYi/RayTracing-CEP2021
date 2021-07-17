@@ -1,0 +1,13 @@
+第七轮迭代流程
+
+目标：增加load按钮，可以选择文本文件载入文本框
+
+1. 增加TextModel 和 ViewModel,用于load文本文件，以及存储文本的buffer
+
+2. 增加View 层 TextEditor,其需引用TextViewModel返回的buffer，因此增加attach和detach属性
+
+3. 需将将ViewModel的getLoadCommand 赋给window的 m_cmdLoad ,因此增加相应的attach和detach函数
+
+4. window增加load按钮，其回调函数调用m_cmdLoad
+
+5. app 进行绑定
