@@ -1,6 +1,8 @@
 第一轮迭代流程 1.0
 7.14
 
+目标：显示一张图片，搭建mvvm框架
+
 app（及其组成部分包括window,model,viewmodel）初始化：
     main window 增加图片控件
     main window 注册 close 回调
