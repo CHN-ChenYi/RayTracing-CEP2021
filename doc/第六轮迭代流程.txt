@@ -1,0 +1,11 @@
+
+目标：增加abort按钮，可以终止渲染
+
+1. view model增加 getAbortCommand
+
+2. window 增加对应的command成员，并实现attach和detach
+
+3. window 增加一栏菜单"abort",其回调函数调用m_cmdAbort
+
+4.
+   app bind
