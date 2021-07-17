@@ -196,9 +196,13 @@ bool Renderer::Render(const std::string &serialized_scene, Image **img_ptr,
                 img_buf[cur].buf[offset + 2] =
                     Gamma(clamp(colour[id].z / (i + 1)));
               }
-              if (cancellation_token_) break;
             }
             *img_ptr = &img_buf[cur];
+            if (cancellation_token_) {
+              progress = 100;
+              Fl::awake(&Awake, this);
+              break;
+            }
             Fl::awake(&Awake, this);
           }
           progress = 100;

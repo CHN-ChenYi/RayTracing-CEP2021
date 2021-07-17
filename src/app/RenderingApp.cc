@@ -22,6 +22,10 @@ bool RenderingApp::Init() {
   m_imgPart.GetMainWindow().attach_CloseCommand(get_CloseCommand());
   m_imgPart.GetMainWindow().attach_ErrorHandling(get_ErrorHandlingCommand());
 
+  m_imgPart.GetMainWindow().attach_AbortCommand(
+    m_imgPart.GetViewModel().GetAbortCommand()
+  );
+
   // notifications
   return true;
 }
