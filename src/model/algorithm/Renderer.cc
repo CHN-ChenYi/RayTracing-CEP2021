@@ -196,10 +196,10 @@ bool Renderer::Render(const std::string &serialized_scene, Image **img_ptr,
         *img_ptr = &img_buf[cur];
         Fl::awake(&Awake, this);
       }
+      progress = 100;
       delete[] colour;
     });
     task_future_ = std::move(new_task_future);
-    progress = 100;
     return true;
   } catch (...) {
     error_info = "Launch async task failed";

@@ -101,6 +101,8 @@ std::wstring to_wide_string(const std::string& input)
 void MainWindow::save_cb(Fl_Widget*, void* v) {
   Fl_Native_File_Chooser fc;
   fc.title("Save file");
+  fc.filter("BMP Image\t*.bmp\n");
+  fc.options(Fl_Native_File_Chooser::USE_FILTER_EXT);
   fc.type(Fl_Native_File_Chooser::BROWSE_SAVE_FILE);
   if (fc.show() == 0) {
     std::function<bool(const std::wstring&)>& cmdFunc =
