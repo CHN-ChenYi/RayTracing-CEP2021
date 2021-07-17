@@ -25,10 +25,12 @@ class ImagePart {
   // TODO: export these objects
   RenderModel m_model;
   RenderViewModel m_renderVM;
-  MainWindow m_wndMain;
 
   TextModel m_textM;
   TextViewModel m_textVM;
+
+  // must delete in the end
+  MainWindow m_wndMain;
 };
 
 #endif  // !__IMAGE_PART_H__
