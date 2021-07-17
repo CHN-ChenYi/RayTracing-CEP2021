@@ -27,9 +27,9 @@ struct Sphere {
   }
   double Intersect(const Ray &ray) const {  // returns distance, inf if nohit
     const Vector po = ray.ori - p;
-    const double a = ray.dir.dot(ray.dir);
-    const double b = ray.dir.dot(po) * 2;
-    const double c = po.dot(po) - pow(r, 2);
+    const double a = ray.dir.DotProduct(ray.dir);
+    const double b = ray.dir.DotProduct(po) * 2;
+    const double c = po.DotProduct(po) - pow(r, 2);
     double delta = pow(b, 2) - a * c * 4;
     if (delta < 0) return inf;
     delta = sqrt(delta);
