@@ -1,0 +1,13 @@
+第五轮迭代流程：
+
+目标：在图片渲染过程中增加进度条
+
+1.view 增加 ProgressBar类
+
+2.viewmodel 和 model 增加进度条值属性（0-100的整数）
+
+3.view 增加 上述属性的 attach 和 detach 功能
+
+4.在 window的getNotification中，增加ProgressBar成员的show()函数
+
+4.app 进行绑定

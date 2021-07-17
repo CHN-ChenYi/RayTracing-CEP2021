@@ -1,5 +1,7 @@
 第四轮迭代流程
 
+目标：增加保存图片功能
+
 1. ViewModel增加保存图片命令,Model增加保存图片功能
 
 2. window增加相应的attach和detach SaveCommand命令
