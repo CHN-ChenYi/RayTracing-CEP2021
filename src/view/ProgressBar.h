@@ -14,6 +14,8 @@ class ProgressBar : public Fl_Box {
   void show()noexcept;
 
  private:
+  const unsigned char kProcessPallet_[3];
+  const unsigned char kCancelPallet_[3];
   std::unique_ptr<unsigned char> buf_;
   CSL::RefPtr<int> progress_;
   int last_progress_;
