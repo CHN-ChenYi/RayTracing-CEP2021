@@ -10,7 +10,8 @@ MainWindow::MainWindow(int w, int h, const char* t)
       m_ImageShower(400, 0, 800, 600),
       // start(100, 0, 100, 30, "start"),
       menu(0, 0, 100, 30),
-      m_ImageInfo(0, 30, 400, h - 30) {
+      m_ImageInfo(0, 30, 400, h - 30),
+      m_ProgressBar(300,0,100,30){
   end();
 
   m_ImageInfo.color(fl_rgb_color(65, 65, 65));

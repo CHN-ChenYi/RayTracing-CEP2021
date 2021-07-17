@@ -10,7 +10,7 @@ CSL::PropertyNotification MainWindow::get_Notification() {
                     else */
     if (uID == kRenderModelImagePtr) {
       m_ImageShower.show();
-
+      m_ProgressBar.show();
       this->redraw();
     }
   };

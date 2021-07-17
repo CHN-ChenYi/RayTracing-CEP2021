@@ -54,7 +54,7 @@ struct Sphere {
 };
 
 struct Scene {
-  int samp_num = 5;
+  int samp_num = 20;
   int w = 1024, h = 768;
 
   bool frog = false;

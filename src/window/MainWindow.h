@@ -6,6 +6,7 @@
 #include <Fl/Fl_Multiline_Input.H>
 
 #include "../view/ImageView.h"
+#include <ProgressBar.h>
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -68,6 +69,7 @@ class MainWindow : public Fl_Double_Window {
   // Fl_Button start;
   Fl_Menu_Bar menu;
   Fl_Multiline_Input m_ImageInfo;
+  ProgressBar m_ProgressBar;
 
   // properties
   CSL::RefPtr<std::future<void>> ref_future;
