@@ -19,11 +19,11 @@ struct Vector {
   Vector operator*(const double &rhs) const {
     return Vector(x * rhs, y * rhs, z * rhs);
   }
-  Vector operator*(const Vector &rhs) const {  // cross
+  Vector cross(const Vector &rhs) const {  // cross
     return Vector(y * rhs.z - z * rhs.y, z * rhs.x - x * rhs.z,
                   x * rhs.y - y * rhs.x);
   }
-  double operator/(const Vector &rhs) const {  // dot
+  double dot(const Vector &rhs) const {  // dot
     return x * rhs.x + y * rhs.y + z * rhs.z;
   }
   Vector operator%(const Vector &rhs) const {  // multiple
@@ -33,7 +33,7 @@ struct Vector {
     *this = *this * (1. / sqrt(x * x + y * y + z * z));
     return *this;
   }
-  friend std::istream& operator>>(std::istream &is, Vector &other) {
+  friend std::istream &operator>>(std::istream &is, Vector &other) {
     is >> other.x >> other.y >> other.z;
     return is;
   }
