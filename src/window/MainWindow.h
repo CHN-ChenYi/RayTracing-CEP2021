@@ -35,6 +35,8 @@ class MainWindow : public Fl_Double_Window {
   std::function<bool(const std::string&)>
   detach_StartRenderingCommand() noexcept;
 
+  void attach_AbortCommand(std::function<void()>&& cf) noexcept;
+  std::function<void()> detach_AbortCommand() noexcept;
   void attach_CloseCommand(std::function<bool()>&& cf) noexcept;
   std::function<bool()> detach_CloseCommand() noexcept;
 
@@ -51,18 +53,19 @@ class MainWindow : public Fl_Double_Window {
 
   // methods
   void StartRendering();
-
+  void abort();
  private:
   // callback
   static void close_cb(Fl_Window* pW, void* pD);
   static void start_cb(Fl_Widget* pW, void* pD);
   static void save_cb(Fl_Widget*, void* v);
-
+  static void abort_cb(Fl_Widget*, void* v);
  private:
   // commands
   std::function<bool(const std::string&)> m_cmdRender;
   std::function<bool()> m_cmdClose;
   std::function<void()> m_cmdErrorHandling;
+  std::function<void()> m_cmdAbort;
   std::function<bool(const std::wstring&)> m_cmdSave;
   // UI
   ImageShower m_ImageShower;

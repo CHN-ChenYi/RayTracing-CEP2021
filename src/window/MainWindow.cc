@@ -20,6 +20,7 @@ MainWindow::MainWindow(int w, int h, const char* t)
 
   // start.callback(&start_cb, this);
   menu.add("start", 0, &start_cb, this);
+  menu.add("abort", 0, &abort_cb, this);
   menu.add("save", 0, &save_cb, &m_cmdSave);
   callback((Fl_Callback*)&close_cb, &m_cmdClose);
   // this->resizable(m_ImageInfo);
@@ -43,6 +44,14 @@ void MainWindow::attach_StartRenderingCommand(
 std::function<bool(const std::string&)>
 MainWindow::detach_StartRenderingCommand() noexcept {
   return std::function<bool(const std::string&)>(std::move(m_cmdRender));
+}
+
+void MainWindow::attach_AbortCommand(std::function<void()>&& cf) noexcept {
+    m_cmdAbort = std::move(cf);
+}
+
+std::function<void()> MainWindow::detach_AbortCommand() noexcept {
+    return std::function<void()>(std::move(m_cmdAbort));
 }
 void MainWindow::attach_CloseCommand(std::function<bool()>&& cf) noexcept {
   m_cmdClose = std::move(cf);
@@ -102,6 +111,8 @@ void MainWindow::save_cb(Fl_Widget*, void* v) {
   Fl_Native_File_Chooser fc;
   fc.title("Save file");
   fc.type(Fl_Native_File_Chooser::BROWSE_SAVE_FILE);
+  fc.filter("bmp\t*.bmp\n");
+  fc.options(Fl_Native_File_Chooser::USE_FILTER_EXT);
   if (fc.show() == 0) {
     std::function<bool(const std::wstring&)>& cmdFunc =
         *((std::function<bool(const std::wstring&)>*)v);
@@ -122,7 +133,13 @@ void MainWindow::start_cb(Fl_Widget* pW, void* pD) {
   MainWindow* pThis = (MainWindow*)pD;
   pThis->StartRendering();
 }
-
+void MainWindow::abort() {
+    m_cmdAbort();
+}
+void MainWindow::abort_cb(Fl_Widget* pW, void* pD) {
+    MainWindow* pThis = (MainWindow*)pD;
+    pThis->abort();
+}
 ProgressBar& MainWindow::GetProgressBar() noexcept{
   return m_ProgressBar;
 }
