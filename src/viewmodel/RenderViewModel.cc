@@ -1,6 +1,8 @@
 ﻿
 #include "RenderViewModel.hpp"
 
+#include <utility>
+
 #include "Property.hpp"
 #include "precomp.hpp"
 

@@ -16,7 +16,7 @@ struct Sphere {
   Vector p, e, c;
   ReflectionType t;
   static constexpr double eps = 1e-5;
-  Sphere(const double &_radius = 0, const Vector &_position = Vector(),
+  explicit Sphere(const double &_radius = 0, const Vector &_position = Vector(),
          const Vector &_emission = Vector(), const Vector &_colour = Vector(),
          const ReflectionType &_refl_type = Diffuse) {
     r = _radius;

@@ -29,12 +29,11 @@ CSL::RefPtr<std::string> RenderModel::GetRenderErrorInfo() noexcept {
 bool RenderModel::Render(const std::string &serialized_scene) noexcept {
   return r_.Render(
       serialized_scene, &img_ptr_, img_buf_,
-      [this] { this->Fire(kRenderModelImagePtr); }, render_error_info_, progress_);
+      [this] { this->Fire(kRenderModelImagePtr); }, render_error_info_,
+      progress_);
 }
 
-void RenderModel::Abort() noexcept {
-  r_.Abort();
-}
+void RenderModel::Abort() noexcept { r_.Abort(); }
 
 bool RenderModel::Save(const std::wstring &image_path) noexcept {
   if (!img_ptr_) return false;

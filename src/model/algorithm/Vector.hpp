@@ -4,7 +4,7 @@
 
 struct Vector {
   double x, y, z;
-  Vector(const double &_x = 0., const double &_y = 0., const double &_z = 0.)
+  explicit Vector(const double &_x = 0., const double &_y = 0., const double &_z = 0.)
       : x(_x), y(_y), z(_z) {}
   Vector operator+(const Vector &rhs) const {
     return Vector(x + rhs.x, y + rhs.y, z + rhs.z);
@@ -41,7 +41,7 @@ struct Vector {
 
 struct Ray {
   Vector ori, dir;
-  Ray(const Vector &_ori = Vector(), const Vector &_dir = Vector()) {
+  explicit Ray(const Vector &_ori = Vector(), const Vector &_dir = Vector()) {
     ori = _ori;
     dir = _dir;
   }

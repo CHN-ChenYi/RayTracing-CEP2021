@@ -12,6 +12,7 @@
 #include <sstream>
 #include <string>
 #include <tuple>
+#include <utility>
 
 #include "Scene.hpp"
 
@@ -60,7 +61,7 @@ Vector Renderer::Radiance(const Ray &r, int depth) const noexcept {
   Vector col = obj.c;
   Vector point = r.ori + r.dir * t;                    // intersect point
   Vector n = (point - obj.p).normalize();              // normal
-  Vector o_n = n.DotProduct(r.dir) < 0 ? n : n * -1;             // orinted normal
+  Vector o_n = n.DotProduct(r.dir) < 0 ? n : n * -1;   // orinted normal
   double p = std::max(col.x, std::max(col.y, col.z));  // max reflection
   const bool in = n.DotProduct(r.dir) < 0;
   if (++depth > 5) {  // Russian Roulette
@@ -73,26 +74,30 @@ Vector Renderer::Radiance(const Ray &r, int depth) const noexcept {
     if (scene_.frog) {
       const double p_frog = f_atmo(t);
       return obj.e +
-             col.HadamardProduct(Radiance(Ray(point, r.dir - n * (2 * n.DotProduct(r.dir))), depth)) *
+             col.HadamardProduct(Radiance(
+                 Ray(point, r.dir - n * (2 * n.DotProduct(r.dir))), depth)) *
                  p_frog +
              scene_.frog_c * (1 - p_frog);
     }
     return obj.e +
-           col.HadamardProduct(Radiance(Ray(point, r.dir - n * (2 * n.DotProduct(r.dir))), depth));
+           col.HadamardProduct(Radiance(
+               Ray(point, r.dir - n * (2 * n.DotProduct(r.dir))), depth));
   } else if (obj.t == Diffuse) {
     const double ang_ = 2 * M_PI * erand();  // random angle
     const double dis_ = erand(),
                  dis_i_ = sqrt(dis_);  // random distance
-    const Vector u = ((fabs(o_n.x) > .1 ? Vector(0, 1) : Vector(1)).CrossProduct(o_n))
-                         .normalize();  // u $\perp$ o_n
-    const Vector v = o_n.CrossProduct(u);      // v $\perp$ u && v $\perp$ o_n
+    const Vector u =
+        ((fabs(o_n.x) > .1 ? Vector(0, 1) : Vector(1)).CrossProduct(o_n))
+            .normalize();                  // u $\perp$ o_n
+    const Vector v = o_n.CrossProduct(u);  // v $\perp$ u && v $\perp$ o_n
     const Vector dir = (u * (cos(ang_) * dis_i_) + v * (sin(ang_) * dis_i_) +
                         o_n * sqrt(1 - dis_))
                            .normalize();
     if (scene_.frog) {
       const double p_frog = f_atmo(t);
-      return obj.e + col.HadamardProduct(Radiance(Ray(point, dir), depth) * p_frog +
-             scene_.frog_c * (1 - p_frog));
+      return obj.e +
+             col.HadamardProduct(Radiance(Ray(point, dir), depth) * p_frog +
+                                 scene_.frog_c * (1 - p_frog));
     }
     return obj.e + col.HadamardProduct(Radiance(Ray(point, dir), depth));
   } else if (obj.t == Glass) {
@@ -115,7 +120,8 @@ Vector Renderer::Radiance(const Ray &r, int depth) const noexcept {
               .normalize();
       double a = n_relative - 1, b = n_relative + 1,
              F_0 = pow(a, 2) / pow(b, 2);
-      double Re = F_0 + (1 - F_0) * pow(1 - (in ? -d_d_n : t_dir.DotProduct(n)), 5),
+      double Re = F_0 +
+                  (1 - F_0) * pow(1 - (in ? -d_d_n : t_dir.DotProduct(n)), 5),
              Tr = 1 - Re, P = .25 + .5 * Re;  // Fresnel Reflectance
       const Vector radiance =
           (depth > 2 ? (erand() < P ? Radiance(refl_ray, depth) * (Re / P)
@@ -125,7 +131,8 @@ Vector Renderer::Radiance(const Ray &r, int depth) const noexcept {
                            Radiance(Ray(point, t_dir), depth) * Tr);
       if (scene_.frog && in) {
         const double p_frog = f_atmo(t);
-        return obj.e + col.HadamardProduct(radiance) * p_frog + scene_.frog_c * (1 - p_frog);
+        return obj.e + col.HadamardProduct(radiance) * p_frog +
+               scene_.frog_c * (1 - p_frog);
       }
       return obj.e + col.HadamardProduct(radiance);
     }
@@ -172,7 +179,7 @@ bool Renderer::Render(const std::string &serialized_scene, Image **img_ptr,
         const int pre = cur ^ 1;
 #pragma omp parallel for schedule(dynamic, 1)
         for (int y = 0; y < scene_.h; y++) {
-          for (unsigned short x = 0; x < scene_.w; x++) {
+          for (int x = 0; x < scene_.w; x++) {
             const int id = (scene_.h - y - 1) * scene_.w + x;
             const Vector sensor_point =
                 scene_.camera.ori +
