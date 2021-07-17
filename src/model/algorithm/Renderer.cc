@@ -158,53 +158,62 @@ bool Renderer::Render(const std::string &serialized_scene, Image **img_ptr,
   img_buf[0].w = img_buf[1].w = scene_.w;
   img_buf[0].buf = new unsigned char[scene_.h * scene_.w * 3];
   img_buf[1].buf = new unsigned char[scene_.h * scene_.w * 3];
+  cancellation_token_ = false;
   try {
-    auto new_task_future = std::async(std::launch::async, [this, img_ptr,
-                                                           img_buf, &progress] {
-      const Vector lens_centre =
-          scene_.camera.ori + scene_.camera.dir * scene_.v;
-      Vector *colour =
-          new Vector[scene_.w * scene_.h];  // TODO(TO/GA): use unique_ptr
-      for (int i = 0; i < scene_.samp_num; i++) {
-        progress = i * 100 / scene_.samp_num;
-        const int cur = i & 1;
-        const int pre = cur ^ 1;
+    auto new_task_future = std::async(
+        std::launch::async,
+        [this, img_ptr, img_buf, &progress] {
+          const Vector lens_centre =
+              scene_.camera.ori + scene_.camera.dir * scene_.v;
+          Vector *colour =
+              new Vector[scene_.w * scene_.h];  // TODO(TO/GA): use unique_ptr
+          for (int i = 0; i < scene_.samp_num; i++) {
+            progress = i * 100 / scene_.samp_num;
+            const int cur = i & 1;
+            const int pre = cur ^ 1;
 #pragma omp parallel for schedule(dynamic, 1)
-        for (int y = 0; y < scene_.h; y++) {
-          for (unsigned short x = 0; x < scene_.w; x++) {
-            const int id = (scene_.h - y - 1) * scene_.w + x;
-            const Vector sensor_point =
-                scene_.camera.ori +
-                scene_.camera_x * (scene_.w / 2 - x) * scene_.ipp +
-                scene_.camera_y * (scene_.h / 2 - y) * scene_.ipp;
-            const Vector focus_point =
-                lens_centre +
-                (lens_centre - sensor_point) * (scene_.u / scene_.v);
-            const double theta = 2 * M_PI * erand(),
-                         radius = scene_.lensr * erand();
-            const Vector lens_point = lens_centre +
-                                      scene_.camera_x * (cos(theta) * radius) +
-                                      scene_.camera_y * (sin(theta) * radius);
-            colour[id] += Radiance(
-                Ray(lens_point, (focus_point - lens_point).normalize()), 0);
-            const int offset = id * 3;
-            img_buf[cur].buf[offset] = Gamma(clamp(colour[id].x / (i + 1)));
-            img_buf[cur].buf[offset + 1] = Gamma(clamp(colour[id].y / (i + 1)));
-            img_buf[cur].buf[offset + 2] = Gamma(clamp(colour[id].z / (i + 1)));
+            for (int y = 0; y < scene_.h; y++) {
+              for (unsigned short x = 0; x < scene_.w; x++) {
+                const int id = (scene_.h - y - 1) * scene_.w + x;
+                const Vector sensor_point =
+                    scene_.camera.ori +
+                    scene_.camera_x * (scene_.w / 2 - x) * scene_.ipp +
+                    scene_.camera_y * (scene_.h / 2 - y) * scene_.ipp;
+                const Vector focus_point =
+                    lens_centre +
+                    (lens_centre - sensor_point) * (scene_.u / scene_.v);
+                const double theta = 2 * M_PI * erand(),
+                             radius = scene_.lensr * erand();
+                const Vector lens_point =
+                    lens_centre + scene_.camera_x * (cos(theta) * radius) +
+                    scene_.camera_y * (sin(theta) * radius);
+                colour[id] += Radiance(
+                    Ray(lens_point, (focus_point - lens_point).normalize()), 0);
+                const int offset = id * 3;
+                img_buf[cur].buf[offset] = Gamma(clamp(colour[id].x / (i + 1)));
+                img_buf[cur].buf[offset + 1] =
+                    Gamma(clamp(colour[id].y / (i + 1)));
+                img_buf[cur].buf[offset + 2] =
+                    Gamma(clamp(colour[id].z / (i + 1)));
+              }
+              if (cancellation_token_) break;
+            }
+            *img_ptr = &img_buf[cur];
+            Fl::awake(&Awake, this);
           }
-        }
-        *img_ptr = &img_buf[cur];
-        Fl::awake(&Awake, this);
-      }
-      progress = 100;
-      delete[] colour;
-    });
+          progress = 100;
+          delete[] colour;
+        });
     task_future_ = std::move(new_task_future);
     return true;
   } catch (...) {
     error_info = "Launch async task failed";
     return false;
   }
+}
+
+void Renderer::Abort() noexcept {
+  cancellation_token_ = true;
 }
 
 void Renderer::Awake(void *p_this) {

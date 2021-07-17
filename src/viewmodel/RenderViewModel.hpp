@@ -17,6 +17,7 @@ class RenderViewModel : public CSL::PropertyTrigger {
 
   // commands
   std::function<bool(const std::string&)> GetRenderCommand() noexcept;
+  std::function<void()> GetAbortCommand() noexcept;
   std::function<bool(const std::wstring&)> GetSaveCommand() noexcept;
 
   // methods
