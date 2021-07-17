@@ -7,6 +7,7 @@
 
 #include "../view/ImageView.h"
 #include "../view/ProgressBar.h"
+#include <TextView.h>
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -76,7 +77,7 @@ class MainWindow : public Fl_Double_Window {
   ImageShower m_ImageShower;
   // Fl_Button start;
   Fl_Menu_Bar menu;
-  Fl_Text_Editor m_ImageInfo;
+  TextEditor m_ImageInfo;
   ProgressBar m_ProgressBar;
 
   // properties
