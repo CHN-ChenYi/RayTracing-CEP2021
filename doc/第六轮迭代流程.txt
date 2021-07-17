@@ -7,5 +7,4 @@
 
 3. window 增加一栏菜单"abort",其回调函数调用m_cmdAbort
 
-4.
-   app bind
+4. app bind
