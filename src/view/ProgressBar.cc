@@ -31,7 +31,6 @@ void ProgressBar::show()noexcept {
   }
   last_progress_ = progress;
   img_.uncache();
-  image(img_);
   redraw();
 }
 

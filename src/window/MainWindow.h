@@ -6,7 +6,7 @@
 #include <Fl/Fl_Multiline_Input.H>
 
 #include "../view/ImageView.h"
-#include <ProgressBar.h>
+#include "../view/ProgressBar.h"
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -22,7 +22,7 @@ class MainWindow : public Fl_Double_Window {
 
   // widgets
   ImageShower& GetImageShower() noexcept;
-
+  ProgressBar& GetProgressBar() noexcept;
   // propertys
   void attach_task_future(const CSL::RefPtr<std::future<void>>&) noexcept;
   CSL::RefPtr<std::future<void>> detach_task_future() noexcept;

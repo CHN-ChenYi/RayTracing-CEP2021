@@ -122,3 +122,7 @@ void MainWindow::start_cb(Fl_Widget* pW, void* pD) {
   MainWindow* pThis = (MainWindow*)pD;
   pThis->StartRendering();
 }
+
+ProgressBar& MainWindow::GetProgressBar() noexcept{
+  return m_ProgressBar;
+}

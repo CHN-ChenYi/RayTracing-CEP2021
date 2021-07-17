@@ -9,7 +9,7 @@ ImagePart::ImagePart() : m_wndMain(1200, 600, "Renderred Image Shower") {
 
   // properties
   m_wndMain.GetImageShower().attach_ImagePtr(m_renderVM.GetImagePtr());
-
+  m_wndMain.GetProgressBar().attach_progress(m_renderVM.GetProgress());
   // commands
   m_wndMain.attach_StartRenderingCommand(m_renderVM.GetRenderCommand());
 
