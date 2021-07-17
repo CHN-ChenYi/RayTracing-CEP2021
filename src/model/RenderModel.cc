@@ -14,6 +14,10 @@ CSL::RefPtr<Image *> RenderModel::GetImagePtr() noexcept {
   return CSL::RefPtr<Image *>(&img_ptr_);
 }
 
+CSL::RefPtr<int> RenderModel::GetProgress() noexcept {
+  return CSL::RefPtr<int>(&progress_);
+}
+
 CSL::RefPtr<std::future<void>> RenderModel::GetFuture() noexcept {
   return r_.GetFuture();
 }
@@ -25,7 +29,7 @@ CSL::RefPtr<std::string> RenderModel::GetRenderErrorInfo() noexcept {
 bool RenderModel::Render(const std::string &serialized_scene) noexcept {
   return r_.Render(
       serialized_scene, &img_ptr_, img_buf_,
-      [this] { this->Fire(kRenderModelImagePtr); }, render_error_info_);
+      [this] { this->Fire(kRenderModelImagePtr); }, render_error_info_, progress_);
 }
 
 bool RenderModel::Save(const std::wstring &image_path) noexcept {

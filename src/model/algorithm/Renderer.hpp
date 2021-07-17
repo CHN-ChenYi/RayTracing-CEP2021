@@ -22,7 +22,7 @@ class Renderer {
 
   bool Render(const std::string &serialized_scene, Image **img_ptr,
               Image img_buf[2], std::function<void(void)> fire,
-              std::string &error_info) noexcept;
+              std::string &error_info, int &progress) noexcept;
 
  private:
   Scene scene_;

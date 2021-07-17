@@ -12,6 +12,10 @@ CSL::RefPtr<Image *> RenderViewModel::GetImagePtr() noexcept {
   return render_model_ref_->GetImagePtr();
 }
 
+CSL::RefPtr<int> RenderViewModel::GetProgress() noexcept {
+  return render_model_ref_->GetProgress();
+}
+
 CSL::RefPtr<std::string> RenderViewModel::GetRenderErrorInfo() noexcept {
   return render_model_ref_->GetRenderErrorInfo();
 }

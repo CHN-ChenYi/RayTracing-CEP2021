@@ -145,7 +145,7 @@ CSL::RefPtr<std::future<void>> Renderer::GetFuture() noexcept {
 
 bool Renderer::Render(const std::string &serialized_scene, Image **img_ptr,
                       Image img_buf[2], std::function<void(void)> fire,
-                      std::string &error_info) noexcept {
+                      std::string &error_info, int &progress) noexcept {
   if (task_future_.valid()) task_future_.wait();
   try {
     scene_ = Scene(serialized_scene);
@@ -160,12 +160,13 @@ bool Renderer::Render(const std::string &serialized_scene, Image **img_ptr,
   img_buf[1].buf = new unsigned char[scene_.h * scene_.w * 3];
   try {
     auto new_task_future = std::async(std::launch::async, [this, img_ptr,
-                                                           img_buf] {
+                                                           img_buf, &progress] {
       const Vector lens_centre =
           scene_.camera.ori + scene_.camera.dir * scene_.v;
       Vector *colour =
           new Vector[scene_.w * scene_.h];  // TODO(TO/GA): use unique_ptr
       for (int i = 0; i < scene_.samp_num; i++) {
+        progress = i * 100 / scene_.samp_num;
         const int cur = i & 1;
         const int pre = cur ^ 1;
 #pragma omp parallel for schedule(dynamic, 1)
@@ -198,6 +199,7 @@ bool Renderer::Render(const std::string &serialized_scene, Image **img_ptr,
       delete[] colour;
     });
     task_future_ = std::move(new_task_future);
+    progress = 100;
     return true;
   } catch (...) {
     error_info = "Launch async task failed";

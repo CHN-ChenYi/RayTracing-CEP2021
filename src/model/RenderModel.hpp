@@ -15,6 +15,7 @@ class RenderModel : public CSL::PropertyTrigger {
 
   // properties
   CSL::RefPtr<Image*> GetImagePtr() noexcept;
+  CSL::RefPtr<int> GetProgress() noexcept;
   CSL::RefPtr<std::future<void>> GetFuture() noexcept;
   CSL::RefPtr<std::string> GetRenderErrorInfo() noexcept;
 
@@ -23,6 +24,7 @@ class RenderModel : public CSL::PropertyTrigger {
   bool Save(const std::wstring& image_path) noexcept;
 
  private:
+  int progress_;
   Renderer r_;
   std::string render_error_info_;
   Image img_buf_[2];
