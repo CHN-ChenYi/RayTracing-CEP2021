@@ -4,10 +4,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <Fl/Fl_Multiline_Input.H>
+#include <TextView.h>
 
 #include "../view/ImageView.h"
 #include "../view/ProgressBar.h"
-#include <TextView.h>
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -48,10 +48,12 @@ class MainWindow : public Fl_Double_Window {
   void attach_ErrorInfo(CSL::RefPtr<std::string> s) noexcept;
   CSL::RefPtr<std::string> detach_ErrorInfo() noexcept;
 
-  void attach_SaveCommand(std::function<bool(const std::wstring&)>&& cf) noexcept;
+  void attach_SaveCommand(
+      std::function<bool(const std::wstring&)>&& cf) noexcept;
   std::function<bool(const std::wstring&)> detach_SaveCommand() noexcept;
 
-  void attach_LoadCommand(std::function<bool(const std::string&)>&& cf) noexcept;
+  void attach_LoadCommand(
+      std::function<bool(const std::string&)>&& cf) noexcept;
   std::function<bool(const std::string&)> detach_LoadCommand() noexcept;
   // notifications
   CSL::PropertyNotification get_Notification();
@@ -59,6 +61,7 @@ class MainWindow : public Fl_Double_Window {
   // methods
   void StartRendering();
   void abort();
+
  private:
   // callback
   static void close_cb(Fl_Window* pW, void* pD);
@@ -66,6 +69,7 @@ class MainWindow : public Fl_Double_Window {
   static void load_cb(Fl_Widget*, void* v);
   static void save_cb(Fl_Widget*, void* v);
   static void abort_cb(Fl_Widget*, void* v);
+
  private:
   // commands
   std::function<bool(const std::string&)> m_cmdRender;
@@ -84,7 +88,6 @@ class MainWindow : public Fl_Double_Window {
   // properties
   CSL::RefPtr<std::future<void>> ref_future;
   CSL::RefPtr<std::string> m_ErrorInfo;
-
 
   // bool IsRendering;
 };

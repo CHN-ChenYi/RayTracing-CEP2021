@@ -11,7 +11,7 @@ MainWindow::MainWindow(int w, int h, const char* t)
       // start(100, 0, 100, 30, "start"),
       menu(0, 0, 200, 30),
       m_ImageInfo(0, 30, 400, h - 30),
-      m_ProgressBar(300,0,100,30){
+      m_ProgressBar(300, 0, 100, 30) {
   end();
 
   m_ImageInfo.color(fl_rgb_color(65, 65, 65));
@@ -48,11 +48,11 @@ MainWindow::detach_StartRenderingCommand() noexcept {
 }
 
 void MainWindow::attach_AbortCommand(std::function<void()>&& cf) noexcept {
-    m_cmdAbort = std::move(cf);
+  m_cmdAbort = std::move(cf);
 }
 
 std::function<void()> MainWindow::detach_AbortCommand() noexcept {
-    return std::function<void()>(std::move(m_cmdAbort));
+  return std::function<void()>(std::move(m_cmdAbort));
 }
 void MainWindow::attach_CloseCommand(std::function<bool()>&& cf) noexcept {
   m_cmdClose = std::move(cf);
@@ -63,21 +63,21 @@ void MainWindow::attach_ErrorHandling(std::function<void()>&& cf) noexcept {
 std::function<void()> MainWindow::detach_ErrorHandling() noexcept {
   return std::function<void()>(std::move(m_cmdErrorHandling));
 }
-void MainWindow::attach_SaveCommand(std::function<bool(const std::wstring&)>&& cf) noexcept
-{
-    m_cmdSave = std::move(cf);
+void MainWindow::attach_SaveCommand(
+    std::function<bool(const std::wstring&)>&& cf) noexcept {
+  m_cmdSave = std::move(cf);
 }
-std::function<bool(const std::wstring&)> MainWindow::detach_SaveCommand() noexcept
-{
-    return std::function<bool(const std::wstring&)>(std::move(m_cmdSave));
+std::function<bool(const std::wstring&)>
+MainWindow::detach_SaveCommand() noexcept {
+  return std::function<bool(const std::wstring&)>(std::move(m_cmdSave));
 }
-void MainWindow::attach_LoadCommand(std::function<bool(const std::string&)>&& cf) noexcept
-{
-    m_cmdLoad = std::move(cf);
+void MainWindow::attach_LoadCommand(
+    std::function<bool(const std::string&)>&& cf) noexcept {
+  m_cmdLoad = std::move(cf);
 }
-std::function<bool(const std::string&)> MainWindow::detach_LoadCommand() noexcept
-{
-    return std::function<bool(const std::string&)>(std::move(m_cmdLoad));
+std::function<bool(const std::string&)>
+MainWindow::detach_LoadCommand() noexcept {
+  return std::function<bool(const std::string&)>(std::move(m_cmdLoad));
 }
 void MainWindow::attach_ErrorInfo(CSL::RefPtr<std::string> s) noexcept {
   m_ErrorInfo = s;
@@ -110,10 +110,9 @@ void MainWindow::close_cb(Fl_Window* pW, void* pD) {
 
   default_callback(pW, pD);
 }
-std::wstring to_wide_string(const std::string& input)
-{
-    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
-    return converter.from_bytes(input);
+std::wstring to_wide_string(const std::string& input) {
+  std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+  return converter.from_bytes(input);
 }
 void MainWindow::save_cb(Fl_Widget*, void* v) {
   Fl_Native_File_Chooser fc;
@@ -126,28 +125,29 @@ void MainWindow::save_cb(Fl_Widget*, void* v) {
   if (fc.show() == 0) {
     std::function<bool(const std::wstring&)>& cmdFunc =
         *((std::function<bool(const std::wstring&)>*)v);
-    if (cmdFunc != nullptr && !cmdFunc(to_wide_string(std::string(fc.filename())))) {
+    if (cmdFunc != nullptr &&
+        !cmdFunc(to_wide_string(std::string(fc.filename())))) {
       fl_alert("Error in saving file!");
     }
   }
   return;
 }
-void MainWindow::load_cb(Fl_Widget*, void* v)
-{
-    Fl_Native_File_Chooser fc;
-    fc.title("Choose file");
-    fc.type(Fl_Native_File_Chooser::BROWSE_FILE);
-    if (fc.show() == 0) {
-        //std::function<bool(const std::wstring&)>& cmdFunc = *((std::function<bool(const std::wstring&)>*)v);
-      std::function<bool(const std::string&)>& cmdFunc =
-          *(std::function<bool(const std::string&)>*)v;
-        //if (cmdFunc != nullptr && !cmdFunc(to_wide_string((std::string(fc.filename()))))) {
-          if (cmdFunc != nullptr &&
-              !cmdFunc(std::string(fc.filename()))) {
-            fl_alert("Error in opening file!");
-        }
+void MainWindow::load_cb(Fl_Widget*, void* v) {
+  Fl_Native_File_Chooser fc;
+  fc.title("Choose file");
+  fc.type(Fl_Native_File_Chooser::BROWSE_FILE);
+  if (fc.show() == 0) {
+    // std::function<bool(const std::wstring&)>& cmdFunc =
+    // *((std::function<bool(const std::wstring&)>*)v);
+    std::function<bool(const std::string&)>& cmdFunc =
+        *(std::function<bool(const std::string&)>*)v;
+    // if (cmdFunc != nullptr &&
+    // !cmdFunc(to_wide_string((std::string(fc.filename()))))) {
+    if (cmdFunc != nullptr && !cmdFunc(std::string(fc.filename()))) {
+      fl_alert("Error in opening file!");
     }
-    return;
+  }
+  return;
 }
 void MainWindow::StartRendering() {
   // IsRendering = 1;
@@ -159,18 +159,11 @@ void MainWindow::start_cb(Fl_Widget* pW, void* pD) {
   MainWindow* pThis = (MainWindow*)pD;
   pThis->StartRendering();
 }
-void MainWindow::abort() {
-    m_cmdAbort();
-}
+void MainWindow::abort() { m_cmdAbort(); }
 void MainWindow::abort_cb(Fl_Widget* pW, void* pD) {
-    MainWindow* pThis = (MainWindow*)pD;
-    pThis->abort();
+  MainWindow* pThis = (MainWindow*)pD;
+  pThis->abort();
 }
-ProgressBar& MainWindow::GetProgressBar() noexcept{
-  return m_ProgressBar;
-}
+ProgressBar& MainWindow::GetProgressBar() noexcept { return m_ProgressBar; }
 
-
-TextEditor& MainWindow::GetTextEditor() noexcept{
-  return m_ImageInfo;
-}
+TextEditor& MainWindow::GetTextEditor() noexcept { return m_ImageInfo; }

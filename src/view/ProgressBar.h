@@ -1,17 +1,17 @@
-
+﻿
 #ifndef __PROGRESS_BAR_H__
 #define __PROGRESS_BAR_H__
 
 class ProgressBar : public Fl_Box {
  public:
-  ProgressBar(int x, int y, int w, int h)noexcept;
-  ~ProgressBar()noexcept;
+  ProgressBar(int x, int y, int w, int h) noexcept;
+  ~ProgressBar() noexcept;
 
   // property
-  void attach_progress(CSL::RefPtr<int> pg)noexcept;
-  CSL::RefPtr<int> detach_progress()noexcept;
+  void attach_progress(CSL::RefPtr<int> pg) noexcept;
+  CSL::RefPtr<int> detach_progress() noexcept;
   // method
-  void show()noexcept;
+  void show() noexcept;
 
  private:
   const unsigned char kProcessPallet_[3];
@@ -23,4 +23,3 @@ class ProgressBar : public Fl_Box {
 };
 
 #endif  // !__PROGRESS_BAR_H__
-

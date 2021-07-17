@@ -1,20 +1,22 @@
-
-#include <memory>
-#include <cstring>
-#include "precomp.hpp"
+﻿
 #include "ProgressBar.h"
 
-ProgressBar::ProgressBar(int x, int y, int w, int h)noexcept
+#include <cstring>
+#include <memory>
+
+#include "precomp.hpp"
+
+ProgressBar::ProgressBar(int x, int y, int w, int h) noexcept
     : Fl_Box(x, y, w, h),
-    last_progress_(0), 
-    buf_(new unsigned char[(int64_t)w*h*3]),
-    img_((const unsigned char*)(buf_.get()),w,h),
-      kProcessPallet_{24,237,51} ,
-      kCancelPallet_{119,119,119} {
+      last_progress_(0),
+      buf_(new unsigned char[(int64_t)w * h * 3]),
+      img_((const unsigned char*)(buf_.get()), w, h),
+      kProcessPallet_{24, 237, 51},
+      kCancelPallet_{119, 119, 119} {
   unsigned char* buf = buf_.get();
-  int i,j;
+  int i, j;
   for (i = 0; i < h; i++) {
-    for (j = 0;j<w; j++) {
+    for (j = 0; j < w; j++) {
       buf[3 * j] = kCancelPallet_[0];
       buf[3 * j + 1] = kCancelPallet_[1];
       buf[3 * j + 2] = kCancelPallet_[2];
@@ -23,31 +25,32 @@ ProgressBar::ProgressBar(int x, int y, int w, int h)noexcept
   image(img_);
 }
 
-ProgressBar::~ProgressBar()noexcept {}
+ProgressBar::~ProgressBar() noexcept {}
 
-void ProgressBar::show()noexcept { 
+void ProgressBar::show() noexcept {
   int i, j;
   int progress = *(progress_.Get());
-  if (progress >100 || progress < 0) return;
+  if (progress > 100 || progress < 0) return;
   unsigned char* buf = buf_.get();
 
-  if(progress>=last_progress_){
+  if (progress >= last_progress_) {
     for (i = 0; i < h(); i++) {
-      for (j = last_progress_*w()/100+i*w(); j < progress*w()/100+i*w(); j++) {
+      for (j = last_progress_ * w() / 100 + i * w();
+           j < progress * w() / 100 + i * w(); j++) {
         buf[3 * j] = kProcessPallet_[0];
         buf[3 * j + 1] = kProcessPallet_[1];
         buf[3 * j + 2] = kProcessPallet_[2];
       }
     }
-  }
-  else{
+  } else {
     for (i = 0; i < h(); i++) {
-      for (j = progress*w()/100+i*w(); j < last_progress_*w()/100+i*w(); j++) {
+      for (j = progress * w() / 100 + i * w();
+           j < last_progress_ * w() / 100 + i * w(); j++) {
         buf[3 * j] = kCancelPallet_[0];
         buf[3 * j + 1] = kCancelPallet_[1];
         buf[3 * j + 2] = kCancelPallet_[2];
       }
-    }    
+    }
   }
 
   last_progress_ = progress;

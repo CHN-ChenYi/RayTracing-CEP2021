@@ -3,7 +3,7 @@
 
 class MessageDialog : public Fl_Window {
  public:
-  MessageDialog(int w, int h, const char* title,const char* msg);
+  MessageDialog(int w, int h, const char* title, const char* msg);
   ~MessageDialog() noexcept;
 
  public:
