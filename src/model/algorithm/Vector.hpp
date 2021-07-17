@@ -19,14 +19,14 @@ struct Vector {
   Vector operator*(const double &rhs) const {
     return Vector(x * rhs, y * rhs, z * rhs);
   }
-  Vector cross(const Vector &rhs) const {  // cross
+  Vector CrossProduct(const Vector &rhs) const {  // CrossProduct
     return Vector(y * rhs.z - z * rhs.y, z * rhs.x - x * rhs.z,
                   x * rhs.y - y * rhs.x);
   }
-  double dot(const Vector &rhs) const {  // dot
+  double DotProduct(const Vector &rhs) const {  // DotProduct
     return x * rhs.x + y * rhs.y + z * rhs.z;
   }
-  Vector operator%(const Vector &rhs) const {  // multiple
+  Vector HadamardProduct(const Vector &rhs) const {  // HadamardProduct
     return Vector(x * rhs.x, y * rhs.y, z * rhs.z);
   }
   Vector &normalize() {
