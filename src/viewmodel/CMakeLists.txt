@@ -2,5 +2,8 @@
   ${SRC_LIST}
   ${CMAKE_CURRENT_SOURCE_DIR}/RenderViewModel.cc
   ${CMAKE_CURRENT_SOURCE_DIR}/RenderViewModel.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/TextViewModel.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/TextViewModel.cc
+
   PARENT_SCOPE
 )

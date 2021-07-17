@@ -6,6 +6,8 @@
 
 #include "../model/RenderModel.hpp"
 #include "../viewmodel/RenderViewModel.hpp"
+#include "../model/TextModel.h"
+#include "../viewmodel/TextViewModel.h"
 #include "../window/MainWindow.h"
 
 class ImagePart {
@@ -24,6 +26,9 @@ class ImagePart {
   RenderModel m_model;
   RenderViewModel m_renderVM;
   MainWindow m_wndMain;
+
+  TextModel m_textM;
+  TextViewModel m_textVM;
 };
 
 #endif  // !__IMAGE_PART_H__

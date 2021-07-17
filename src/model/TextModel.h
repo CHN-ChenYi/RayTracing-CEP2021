@@ -2,7 +2,7 @@
 #ifndef __TEXT_MODEL_H__
 #define __TEXT_MODEL_H__
 
-class TextModel : public PropertyTrigger
+class TextModel : public CSL::PropertyTrigger
 {
 public:
 	TextModel();
@@ -11,7 +11,7 @@ public:
 	~TextModel() noexcept;
 
 //properties
-	RefPtr<Fl_Text_Buffer> get_TextBuf() noexcept;
+	CSL::RefPtr<Fl_Text_Buffer> get_TextBuf() noexcept;
 
 //methods
 	bool Load(const std::string& str);

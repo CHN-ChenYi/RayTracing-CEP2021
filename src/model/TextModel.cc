@@ -15,9 +15,9 @@ TextModel::~TextModel() noexcept
 }
 
 //properties
-RefPtr<Fl_Text_Buffer> TextModel::get_TextBuf() noexcept
+CSL::RefPtr<Fl_Text_Buffer> TextModel::get_TextBuf() noexcept
 {
-	return RefPtr<Fl_Text_Buffer>(m_textBuffer);
+	return CSL::RefPtr<Fl_Text_Buffer>(m_textBuffer);
 }
 
 //methods
@@ -37,4 +37,3 @@ bool TextModel::Save(const std::string& str)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-}

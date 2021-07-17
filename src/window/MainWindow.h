@@ -24,6 +24,7 @@ class MainWindow : public Fl_Double_Window {
   // widgets
   ImageShower& GetImageShower() noexcept;
   ProgressBar& GetProgressBar() noexcept;
+  TextEditor& GetTextEditor() noexcept;
   // propertys
   void attach_task_future(const CSL::RefPtr<std::future<void>>&) noexcept;
   CSL::RefPtr<std::future<void>> detach_task_future() noexcept;
@@ -50,8 +51,8 @@ class MainWindow : public Fl_Double_Window {
   void attach_SaveCommand(std::function<bool(const std::wstring&)>&& cf) noexcept;
   std::function<bool(const std::wstring&)> detach_SaveCommand() noexcept;
 
-  void attach_LoadCommand(std::function<bool(const std::wstring&)>&& cf) noexcept;
-  std::function<bool(const std::wstring&)> detach_LoadCommand() noexcept;
+  void attach_LoadCommand(std::function<bool(const std::string&)>&& cf) noexcept;
+  std::function<bool(const std::string&)> detach_LoadCommand() noexcept;
   // notifications
   CSL::PropertyNotification get_Notification();
 
@@ -72,7 +73,7 @@ class MainWindow : public Fl_Double_Window {
   std::function<void()> m_cmdErrorHandling;
   std::function<void()> m_cmdAbort;
   std::function<bool(const std::wstring&)> m_cmdSave;
-  std::function<bool(const std::wstring&)> m_cmdLoad;
+  std::function<bool(const std::string&)> m_cmdLoad;
   // UI
   ImageShower m_ImageShower;
   // Fl_Button start;

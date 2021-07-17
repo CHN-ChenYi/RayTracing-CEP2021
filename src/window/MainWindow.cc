@@ -22,7 +22,7 @@ MainWindow::MainWindow(int w, int h, const char* t)
   menu.add("start", 0, &start_cb, this);
   menu.add("abort", 0, &abort_cb, this);
   menu.add("save", 0, &save_cb, &m_cmdSave);
-  menu.add("Load", 0, &load_cb, &m_cmdLoad);
+  menu.add("load", 0, &load_cb, &m_cmdLoad);
   callback((Fl_Callback*)&close_cb, &m_cmdClose);
   // this->resizable(m_ImageInfo);
 }
@@ -71,13 +71,13 @@ std::function<bool(const std::wstring&)> MainWindow::detach_SaveCommand() noexce
 {
     return std::function<bool(const std::wstring&)>(std::move(m_cmdSave));
 }
-void MainWindow::attach_LoadCommand(std::function<bool(const std::wstring&)>&& cf) noexcept
+void MainWindow::attach_LoadCommand(std::function<bool(const std::string&)>&& cf) noexcept
 {
     m_cmdLoad = std::move(cf);
 }
-std::function<bool(const std::wstring&)> MainWindow::detach_LoadCommand() noexcept
+std::function<bool(const std::string&)> MainWindow::detach_LoadCommand() noexcept
 {
-    return std::function<bool(const std::wstring&)>(std::move(m_cmdLoad));
+    return std::function<bool(const std::string&)>(std::move(m_cmdLoad));
 }
 void MainWindow::attach_ErrorInfo(CSL::RefPtr<std::string> s) noexcept {
   m_ErrorInfo = s;
@@ -138,8 +138,12 @@ void MainWindow::load_cb(Fl_Widget*, void* v)
     fc.title("Choose file");
     fc.type(Fl_Native_File_Chooser::BROWSE_FILE);
     if (fc.show() == 0) {
-        std::function<bool(const std::wstring&)>& cmdFunc = *((std::function<bool(const std::wstring&)>*)v);
-        if (cmdFunc != nullptr && !cmdFunc(to_wide_string((std::string(fc.filename()))))) {
+        //std::function<bool(const std::wstring&)>& cmdFunc = *((std::function<bool(const std::wstring&)>*)v);
+      std::function<bool(const std::string&)>& cmdFunc =
+          *(std::function<bool(const std::string&)>*)v;
+        //if (cmdFunc != nullptr && !cmdFunc(to_wide_string((std::string(fc.filename()))))) {
+          if (cmdFunc != nullptr &&
+              !cmdFunc(std::string(fc.filename()))) {
             fl_alert("Error in opening file!");
         }
     }
@@ -164,4 +168,9 @@ void MainWindow::abort_cb(Fl_Widget* pW, void* pD) {
 }
 ProgressBar& MainWindow::GetProgressBar() noexcept{
   return m_ProgressBar;
+}
+
+
+TextEditor& MainWindow::GetTextEditor() noexcept{
+  return m_ImageInfo;
 }
