@@ -8,7 +8,7 @@ class ProgressBar : public Fl_Box {
   ~ProgressBar()noexcept;
 
   // property
-  void attach_progress(CSL::RefPtr<int>& pg)noexcept;
+  void attach_progress(CSL::RefPtr<int> pg)noexcept;
   CSL::RefPtr<int> detach_progress()noexcept;
   // method
   void show()noexcept;

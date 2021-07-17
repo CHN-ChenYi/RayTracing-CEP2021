@@ -34,7 +34,7 @@ void ProgressBar::show()noexcept {
   redraw();
 }
 
-void ProgressBar::attach_progress(CSL::RefPtr<int>& pg) noexcept {
+void ProgressBar::attach_progress(CSL::RefPtr<int> pg) noexcept {
   progress_ = pg;
 }
 
