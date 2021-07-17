@@ -32,6 +32,10 @@ bool RenderModel::Render(const std::string &serialized_scene) noexcept {
       [this] { this->Fire(kRenderModelImagePtr); }, render_error_info_, progress_);
 }
 
+void RenderModel::Abort() noexcept {
+  r_.Abort();
+}
+
 bool RenderModel::Save(const std::wstring &image_path) noexcept {
   if (!img_ptr_) return false;
   WriteBmp(image_path, img_ptr_->h, img_ptr_->w, img_ptr_->buf);

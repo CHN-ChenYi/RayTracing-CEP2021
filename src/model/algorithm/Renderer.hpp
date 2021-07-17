@@ -23,6 +23,7 @@ class Renderer {
   bool Render(const std::string &serialized_scene, Image **img_ptr,
               Image img_buf[2], std::function<void(void)> fire,
               std::string &error_info, int &progress) noexcept;
+  void Abort() noexcept;
 
  private:
   Scene scene_;
@@ -31,6 +32,7 @@ class Renderer {
   int Intersect(const Ray &r, double &t) const noexcept;
   Vector Radiance(const Ray &r, int depth) const noexcept;
 
+  bool cancellation_token_;
   std::future<void> task_future_;
   std::function<void(void)> fire_;
   static void Awake(void *p_this);
