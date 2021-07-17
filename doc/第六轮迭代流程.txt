@@ -1,4 +1,4 @@
-
+第六轮迭代流程：
 目标：增加abort按钮，可以终止渲染
 
 1. view model增加 getAbortCommand
