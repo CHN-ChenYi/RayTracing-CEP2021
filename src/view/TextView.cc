@@ -2,7 +2,11 @@
 
 #include "precomp.hpp"
 TextEditor::TextEditor(int x, int y, int w, int h, const char* l)
-    : Fl_Text_Editor(x, y, w, h, l) {}
+    : Fl_Text_Editor(x, y, w, h, l) {
+  color(fl_rgb_color(65, 65, 65));
+  textcolor(fl_rgb_color(29, 221, 226));
+  textfont(FL_COURIER);
+}
 
 TextEditor::~TextEditor() noexcept {}
 

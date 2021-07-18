@@ -14,10 +14,6 @@ MainWindow::MainWindow(int w, int h, const char* t)
       m_ProgressBar(300, 0, 100, 30) {
   end();
 
-  m_ImageInfo.color(fl_rgb_color(65, 65, 65));
-  m_ImageInfo.textcolor(fl_rgb_color(29, 221, 226));
-  m_ImageInfo.textfont(FL_COURIER);
-
   // start.callback(&start_cb, this);
   menu.add("start", 0, &start_cb, this);
   menu.add("abort", 0, &abort_cb, this);
