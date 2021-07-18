@@ -14,10 +14,11 @@ MainWindow::MainWindow(int w, int h, const char* t)
       m_ProgressBar(0, 25, 400,5), 
       input(0, 30, 400, h-30){
   end();
-
+  color(fl_rgb_color(242));
   // start.callback(&start_cb, this);
   menu.color(fl_rgb_color(36, 36, 36));
   menu.textcolor(fl_rgb_color(255, 134, 13));
+  //menu.textfont(FL_HELVETICA_BOLD);
   menu.box(Fl_Boxtype::FL_FLAT_BOX);
   menu.add("start", 0, &start_cb, this);
   menu.add("abort", 0, &abort_cb, this);

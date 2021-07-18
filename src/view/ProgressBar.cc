@@ -13,12 +13,11 @@ ProgressBar::ProgressBar(int x, int y, int w, int h) noexcept
       buf_(new unsigned char[(int64_t)w * h * 3]),
       img_((const unsigned char*)(buf_.get()), w, h),
       kProcessPallet_{255,134,13},
-      kCancelPallet_{36,36,36} {
-  box(Fl_Boxtype::FL_FLAT_BOX);
+      kCancelPallet_{50,50,50} {
   unsigned char* buf = buf_.get();
   int i, j;
   for (i = 0; i < h; i++) {
-    for (j = 0; j < w; j++) {
+    for (j = i*w; j < (i+1)*w; j++) {
       buf[3 * j] = kCancelPallet_[0];
       buf[3 * j + 1] = kCancelPallet_[1];
       buf[3 * j + 2] = kCancelPallet_[2];
