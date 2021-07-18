@@ -1,18 +1,20 @@
 ﻿
-#include "ProgressBar.h"
 
 #include <cstring>
 #include <memory>
 
 #include "precomp.hpp"
+#include "ProgressBar.h"
+
 
 ProgressBar::ProgressBar(int x, int y, int w, int h) noexcept
     : Fl_Box(x, y, w, h),
       last_progress_(0),
       buf_(new unsigned char[(int64_t)w * h * 3]),
       img_((const unsigned char*)(buf_.get()), w, h),
-      kProcessPallet_{24, 237, 51},
-      kCancelPallet_{119, 119, 119} {
+      kProcessPallet_{255,134,13},
+      kCancelPallet_{36,36,36} {
+  box(Fl_Boxtype::FL_FLAT_BOX);
   unsigned char* buf = buf_.get();
   int i, j;
   for (i = 0; i < h; i++) {

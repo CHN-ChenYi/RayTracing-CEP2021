@@ -5,6 +5,7 @@ TextEditor::TextEditor(int x, int y, int w, int h, const char* l)
     : Fl_Text_Editor(x, y, w, h, l) {
   color(fl_rgb_color(65, 65, 65));
   textcolor(fl_rgb_color(29, 221, 226));
+  box(Fl_Boxtype::FL_FLAT_BOX);
   textfont(FL_COURIER);
 }
 

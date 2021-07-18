@@ -9,13 +9,16 @@ MainWindow::MainWindow(int w, int h, const char* t)
     : Fl_Double_Window(w, h, t),
       m_ImageShower(400, 0, 800, 600),
       // start(100, 0, 100, 30, "start"),
-      menu(0, 0, 250, 30),
+      menu(0, 0, 400, 25),
       m_ImageInfo(0, 30, 400, h - 30),
-      m_ProgressBar(300, 0, 100, 30), 
+      m_ProgressBar(0, 25, 400,5), 
       input(0, 30, 400, h-30){
   end();
 
   // start.callback(&start_cb, this);
+  menu.color(fl_rgb_color(36, 36, 36));
+  menu.textcolor(fl_rgb_color(255, 134, 13));
+  menu.box(Fl_Boxtype::FL_FLAT_BOX);
   menu.add("start", 0, &start_cb, this);
   menu.add("abort", 0, &abort_cb, this);
   menu.add("save", 0, &save_cb, &m_cmdSave);
