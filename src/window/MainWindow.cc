@@ -9,9 +9,10 @@ MainWindow::MainWindow(int w, int h, const char* t)
     : Fl_Double_Window(w, h, t),
       m_ImageShower(400, 0, 800, 600),
       // start(100, 0, 100, 30, "start"),
-      menu(0, 0, 200, 30),
+      menu(0, 0, 250, 30),
       m_ImageInfo(0, 30, 400, h - 30),
-      m_ProgressBar(300, 0, 100, 30) {
+      m_ProgressBar(300, 0, 100, 30), 
+      input(0, 30, 400, h-30){
   end();
 
   // start.callback(&start_cb, this);
@@ -19,7 +20,10 @@ MainWindow::MainWindow(int w, int h, const char* t)
   menu.add("abort", 0, &abort_cb, this);
   menu.add("save", 0, &save_cb, &m_cmdSave);
   menu.add("load", 0, &load_cb, &m_cmdLoad);
+  menu.add("mode", 0, &mode_cb, this);
   callback((Fl_Callback*)&close_cb, &m_cmdClose);
+  mode = 0;
+  input.hide();
   // this->resizable(m_ImageInfo);
 }
 MainWindow::~MainWindow() noexcept {}
@@ -128,7 +132,8 @@ void MainWindow::save_cb(Fl_Widget*, void* v) {
   }
   return;
 }
-void MainWindow::load_cb(Fl_Widget*, void* v) {
+void MainWindow::load_cb(Fl_Widget* pW, void* v) {
+  MainWindow* pThis = (MainWindow*)pW;
   Fl_Native_File_Chooser fc;
   fc.title("Choose file");
   fc.type(Fl_Native_File_Chooser::BROWSE_FILE);
@@ -140,16 +145,30 @@ void MainWindow::load_cb(Fl_Widget*, void* v) {
     // if (cmdFunc != nullptr &&
     // !cmdFunc(to_wide_string((std::string(fc.filename()))))) {
     if (cmdFunc != nullptr && !cmdFunc(std::string(fc.filename()))) {
-      fl_alert("Error in opening file!");
+        fl_alert("Error in opening file!");
+    }
+    else {
+        pThis->mode = 0;
+        pThis->SwitchMode();
     }
   }
   return;
 }
 void MainWindow::StartRendering() {
   // IsRendering = 1;
-  if (!m_cmdRender(m_ImageInfo.buffer()->text())) {
-    m_cmdErrorHandling();
-  }
+    if (!mode) {
+        if (!m_cmdRender(m_ImageInfo.buffer()->text())) {
+        m_cmdErrorHandling();
+        }
+    }
+    else {
+        std::string tmp=input.GetInput();
+        if (!m_cmdRender(tmp)) {
+            m_cmdErrorHandling();
+        }
+    }
+    
+  
 }
 void MainWindow::start_cb(Fl_Widget* pW, void* pD) {
   MainWindow* pThis = (MainWindow*)pD;
@@ -159,6 +178,22 @@ void MainWindow::abort() { m_cmdAbort(); }
 void MainWindow::abort_cb(Fl_Widget* pW, void* pD) {
   MainWindow* pThis = (MainWindow*)pD;
   pThis->abort();
+}
+void MainWindow::SwitchMode() {
+    if (mode) {
+        input.show();
+        m_ImageInfo.hide();
+    }
+    else {
+        input.hide();
+        m_ImageInfo.show();
+    }
+    redraw();
+}
+void MainWindow::mode_cb(Fl_Widget* pW, void* pD) {
+    MainWindow* pThis = (MainWindow*)pD;
+    pThis->mode = pThis->mode ^ 1;
+    pThis->SwitchMode();
 }
 ProgressBar& MainWindow::GetProgressBar() noexcept { return m_ProgressBar; }
 

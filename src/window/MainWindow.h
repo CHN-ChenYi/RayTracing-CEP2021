@@ -5,9 +5,10 @@
 
 #include <Fl/Fl_Multiline_Input.H>
 #include <TextView.h>
-
+#include <Input.h>
 #include "../view/ImageView.h"
 #include "../view/ProgressBar.h"
+
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -64,13 +65,17 @@ class MainWindow : public Fl_Double_Window {
 
  private:
   // callback
+  void SwitchMode();
+
   static void close_cb(Fl_Window* pW, void* pD);
   static void start_cb(Fl_Widget* pW, void* pD);
-  static void load_cb(Fl_Widget*, void* v);
+  static void load_cb(Fl_Widget* pW, void* v);
   static void save_cb(Fl_Widget*, void* v);
   static void abort_cb(Fl_Widget*, void* v);
+  static void mode_cb(Fl_Widget* pW, void* pD);
 
  private:
+  bool mode;
   // commands
   std::function<bool(const std::string&)> m_cmdRender;
   std::function<bool()> m_cmdClose;
@@ -84,10 +89,12 @@ class MainWindow : public Fl_Double_Window {
   Fl_Menu_Bar menu;
   TextEditor m_ImageInfo;
   ProgressBar m_ProgressBar;
+  Input input;
 
   // properties
   CSL::RefPtr<std::future<void>> ref_future;
   CSL::RefPtr<std::string> m_ErrorInfo;
+  
 
   // bool IsRendering;
 };
