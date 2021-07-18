@@ -22,4 +22,5 @@ void ImageShower::show() {
   delete rgb_img;
   tmpImage.reset(nrgb_img);
   this->image(nrgb_img);
+  redraw();
 }
