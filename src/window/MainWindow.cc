@@ -19,7 +19,7 @@ MainWindow::MainWindow(int w, int h, const char* t)
   menu.add("start", 0, &start_cb, this);
   menu.add("abort", 0, &abort_cb, this);
   menu.add("save", 0, &save_cb, &m_cmdSave);
-  menu.add("load", 0, &load_cb, &m_cmdLoad);
+  menu.add("load", 0, &load_cb, this);
   menu.add("mode", 0, &mode_cb, this);
   callback((Fl_Callback*)&close_cb, &m_cmdClose);
   mode = 0;
@@ -133,23 +133,24 @@ void MainWindow::save_cb(Fl_Widget*, void* v) {
   return;
 }
 void MainWindow::load_cb(Fl_Widget* pW, void* v) {
-  MainWindow* pThis = (MainWindow*)pW;
+  MainWindow* pThis = (MainWindow*)v;
   Fl_Native_File_Chooser fc;
   fc.title("Choose file");
   fc.type(Fl_Native_File_Chooser::BROWSE_FILE);
   if (fc.show() == 0) {
     // std::function<bool(const std::wstring&)>& cmdFunc =
     // *((std::function<bool(const std::wstring&)>*)v);
-    std::function<bool(const std::string&)>& cmdFunc =
-        *(std::function<bool(const std::string&)>*)v;
+      pThis->mode = 0;
+        pThis->SwitchMode();
+        std::function<bool(const std::string&)>& cmdFunc =
+            pThis->m_cmdLoad;
     // if (cmdFunc != nullptr &&
     // !cmdFunc(to_wide_string((std::string(fc.filename()))))) {
     if (cmdFunc != nullptr && !cmdFunc(std::string(fc.filename()))) {
         fl_alert("Error in opening file!");
     }
     else {
-        pThis->mode = 0;
-        pThis->SwitchMode();
+        
     }
   }
   return;
