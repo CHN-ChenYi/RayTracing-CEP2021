@@ -40,7 +40,8 @@ struct DIBHeader {
   void write(std::ofstream &file) const {
     const uint32_t size = 40;
     file.write(reinterpret_cast<const char *const>(&size), sizeof(size));
-    file.write(reinterpret_cast<const char *const>(&width), size - sizeof(size));
+    file.write(reinterpret_cast<const char *const>(&width),
+               size - sizeof(size));
   }
 };
 
@@ -77,8 +78,10 @@ class BMP {
     dib_header_.height = dib_header_.height_abs;
     dib_header_.planes = 1;
     dib_header_.compression = 0;
-    dib_header_.x_pels_per_meter = 10000;  // TODO(TO/GA): choose a reasonable value
-    dib_header_.y_pels_per_meter = 10000;  // TODO(TO/GA): choose a reasonable value
+    dib_header_.x_pels_per_meter =
+        10000;  // TODO(TO/GA): choose a reasonable value
+    dib_header_.y_pels_per_meter =
+        10000;  // TODO(TO/GA): choose a reasonable value
     dib_header_.clr_used = 0;
     dib_header_.clr_important = 0;
     dib_header_.write(file);
@@ -90,7 +93,8 @@ class BMP {
     memset(padding, 0, padding_size);
     file.seekp(bmp_header_.offbits);
     for (int i = 0; i < dib_header_.height_abs; i++) {
-      file.write(reinterpret_cast<const char *const>(bitmap_[i].data()), line_size);
+      file.write(reinterpret_cast<const char *const>(bitmap_[i].data()),
+                 line_size);
       file.write(reinterpret_cast<const char *const>(padding), padding_size);
     }
     delete padding;
