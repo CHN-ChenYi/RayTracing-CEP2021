@@ -1,9 +1,9 @@
 ﻿
-#include "MainWindow.h"
-
+#include "FL/Fl_Shared_Image.H"
 #include <future>
 
 #include "precomp.hpp"
+#include "MainWindow.h"
 
 MainWindow::MainWindow(int w, int h, const char* t)
     : Fl_Double_Window(w, h, t),
@@ -14,6 +14,8 @@ MainWindow::MainWindow(int w, int h, const char* t)
       m_ProgressBar(0, 25, 400,5), 
       input(0, 30, 400, h-30){
   end();
+
+  set_icons();
   color(fl_rgb_color(242));
   // start.callback(&start_cb, this);
   menu.color(fl_rgb_color(36, 36, 36));
@@ -203,3 +205,20 @@ void MainWindow::mode_cb(Fl_Widget* pW, void* pD) {
 ProgressBar& MainWindow::GetProgressBar() noexcept { return m_ProgressBar; }
 
 TextEditor& MainWindow::GetTextEditor() noexcept { return m_ImageInfo; }
+
+void MainWindow::set_icons() {
+  Fl_Shared_Image* tmp_img = Fl_Shared_Image::get("../../../../pic/icon.jpg");
+  m_pic.reset(tmp_img);
+  if (tmp_img) {
+    const char*const* buf = tmp_img->data();
+    int w = tmp_img->w();
+    int h = tmp_img->h();
+    m_icons[0] = 
+        std::make_unique<Fl_RGB_Image>((const unsigned char*)*buf, w,h);
+    m_icons[1] =
+        std::make_unique<Fl_RGB_Image>((const unsigned char*)*buf,w,h);
+    m_picons[0] = m_icons[0].get();
+    m_picons[1] = m_icons[1].get();
+    icons((const Fl_RGB_Image**)m_picons, 2);
+  }
+}

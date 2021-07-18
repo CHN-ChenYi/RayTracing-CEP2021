@@ -85,6 +85,10 @@ class MainWindow : public Fl_Double_Window {
   std::function<bool(const std::string&)> m_cmdLoad;
   // UI
   ImageShower m_ImageShower;
+  std::unique_ptr<Fl_Image> m_pic;
+  std::unique_ptr<Fl_RGB_Image> m_icons[2];
+  Fl_RGB_Image* m_picons[2];
+  void set_icons();
   // Fl_Button start;
   Fl_Menu_Bar menu;
   TextEditor m_ImageInfo;
