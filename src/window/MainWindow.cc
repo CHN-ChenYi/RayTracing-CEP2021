@@ -1,10 +1,8 @@
-﻿
+﻿#include "MainWindow.h"
+#include <future>
+
 #include "FL/Fl_Shared_Image.H"
 #include "precomp.hpp"
-#include "MainWindow.h"
-#include <future>
-#include <utility>
-#include <string>
 
 
 
@@ -14,8 +12,8 @@ MainWindow::MainWindow(int w, int h, const char* t)
       // start(100, 0, 100, 30, "start"),
       menu(0, 0, 400, 25),
       m_ImageInfo(0, 30, 400, h - 30),
-      m_ProgressBar(0, 25, 400,5), 
-      input(0, 30, 400, h-30){
+      m_ProgressBar(0, 25, 400, 5), 
+      input(0, 30, 400, h-30) {
   end();
 
   set_icons();
@@ -23,7 +21,7 @@ MainWindow::MainWindow(int w, int h, const char* t)
   // start.callback(&start_cb, this);
   menu.color(fl_rgb_color(36, 36, 36));
   menu.textcolor(fl_rgb_color(255, 134, 13));
-  //menu.textfont(FL_HELVETICA_BOLD);
+  // menu.textfont(FL_HELVETICA_BOLD);
   menu.box(Fl_Boxtype::FL_FLAT_BOX);
   menu.add("start", 0, &start_cb, this);
   menu.add("abort", 0, &abort_cb, this);
@@ -167,15 +165,12 @@ void MainWindow::StartRendering() {
         if (!m_cmdRender(m_ImageInfo.buffer()->text())) {
         m_cmdErrorHandling();
         }
-    }
-    else {
-        std::string tmp=input.GetInput();
+    } else {
+        std::string tmp = input.GetInput();
         if (!m_cmdRender(tmp)) {
             m_cmdErrorHandling();
         }
     }
-    
-  
 }
 void MainWindow::start_cb(Fl_Widget* pW, void* pD) {
   MainWindow* pThis = (MainWindow*)pD;
@@ -190,8 +185,7 @@ void MainWindow::SwitchMode() {
     if (mode) {
         input.show();
         m_ImageInfo.hide();
-    }
-    else {
+    } else {
         input.hide();
         m_ImageInfo.show();
     }
@@ -213,8 +207,8 @@ void MainWindow::set_icons() {
     const char*const* buf = tmp_img->data();
     int w = tmp_img->w();
     int h = tmp_img->h();
-    m_icons[0] = 
-        std::make_unique<Fl_RGB_Image>((const unsigned char*)*buf, w, h);
+    m_icons[0] =
+        std::make_unique<Fl_RGB_Image>((const unsigned char*)*buf, w, h);//add <memory>
     m_icons[1] =
         std::make_unique<Fl_RGB_Image>((const unsigned char*)*buf, w, h);
     m_picons[0] = m_icons[0].get();
