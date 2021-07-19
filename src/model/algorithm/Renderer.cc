@@ -66,8 +66,8 @@ Vector Renderer::Radiance(const Ray &r, int depth) const noexcept {
   Vector o_n = n.DotProduct(r.dir) < 0 ? n : n * -1;   // orinted normal
   double p = std::max(col.x, std::max(col.y, col.z));  // max reflection
   const bool in = n.DotProduct(r.dir) < 0;
-  if (++depth > 5) {  // Russian Roulette
-    if (erand() < p)
+  if (++depth > 2) {  // Russian Roulette
+    if (erand() < p && depth < 300)
       col = col * (1 / p);
     else
       return obj.e;
