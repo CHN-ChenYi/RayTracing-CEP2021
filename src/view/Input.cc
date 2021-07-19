@@ -1,5 +1,6 @@
-#include <Input.h>
 #include <string>
+#include <Input.h>
+
 Input::Input(int x, int y, int w, int h) :
 samp_num(x+115, y+10, 50, 30, "sampling number"),
 w(x+220, y + 10, 50, 30, "width"),
@@ -22,7 +23,7 @@ camera_dir_x(x+115, y + 250, 50, 30, "camera dir x"),
 camera_dir_y(x+220, y + 250, 50, 30, "y"),
 camera_dir_z(x+320, y + 250, 50, 30, "z"),
 sphere(x, y + 290, w, h-290) {}
-Input::~Input(){}
+Input::~Input() {}
 void Input::show() {
     samp_num.show();
     w.show();

@@ -1,11 +1,12 @@
 ﻿
 #include "FL/Fl_Shared_Image.H"
-#include <future>
-
 #include "precomp.hpp"
 #include "MainWindow.h"
+#include <future>
 #include <utility>
-#include <cstring>
+#include <string>
+
+
 
 MainWindow::MainWindow(int w, int h, const char* t)
     : Fl_Double_Window(w, h, t),
@@ -157,9 +158,6 @@ void MainWindow::load_cb(Fl_Widget* pW, void* v) {
     if (cmdFunc != nullptr && !cmdFunc(std::string(fc.filename()))) {
         fl_alert("Error in opening file!");
     }
-    else {
-        
-    }
   }
   return;
 }
@@ -216,9 +214,9 @@ void MainWindow::set_icons() {
     int w = tmp_img->w();
     int h = tmp_img->h();
     m_icons[0] = 
-        std::make_unique<Fl_RGB_Image>((const unsigned char*)*buf, w,h);
+        std::make_unique<Fl_RGB_Image>((const unsigned char*)*buf, w, h);
     m_icons[1] =
-        std::make_unique<Fl_RGB_Image>((const unsigned char*)*buf,w,h);
+        std::make_unique<Fl_RGB_Image>((const unsigned char*)*buf, w, h);
     m_picons[0] = m_icons[0].get();
     m_picons[1] = m_icons[1].get();
     icons((const Fl_RGB_Image**)m_picons, 2);
