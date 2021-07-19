@@ -4,6 +4,8 @@
 
 #include "precomp.hpp"
 #include "MainWindow.h"
+#include <utility>
+#include <cstring>
 
 MainWindow::MainWindow(int w, int h, const char* t)
     : Fl_Double_Window(w, h, t),
