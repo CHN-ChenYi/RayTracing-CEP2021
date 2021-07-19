@@ -95,13 +95,27 @@ Vector Renderer::Radiance(const Ray &r, int depth) const noexcept {
     const Vector dir = (u * (cos(ang_) * dis_i_) + v * (sin(ang_) * dis_i_) +
                         o_n * sqrt(1 - dis_))
                            .normalize();
+    Vector L_s;
+    for (int i = scene_.spheres.size() - 1; i >= 0; i--) {
+      if (scene_.spheres[i].e) {
+        auto l = scene_.spheres[i].p - point;
+        const auto l_len = l.Length();
+        L_s += scene_.spheres[i].e *
+               (std::max(l.normalize().DotProduct(n), 0.) / std::pow(l_len - scene_.spheres[i].r, 2));
+      }
+    }
+    const double k_s = 0;
     if (scene_.frog) {
       const double p_frog = f_atmo(t);
-      return obj.e +
+      return obj.e + L_s * k_s +
              col.HadamardProduct(Radiance(Ray(point, dir), depth) * p_frog +
-                                 scene_.frog_c * (1 - p_frog));
+                                 scene_.frog_c * (1 - p_frog)) *
+                 (1 - k_s);
     }
-    return obj.e + col.HadamardProduct(Radiance(Ray(point, dir), depth));
+    // return obj.e + col.HadamardProduct(Radiance(Ray(point, dir), depth)) * 1.0 + L_s * 0.0;
+    // return obj.e + col.HadamardProduct(Radiance(Ray(point, dir), depth)) * 1.0;
+    return obj.e + L_s * k_s +
+           col.HadamardProduct(Radiance(Ray(point, dir), depth)) * (1 - k_s);
   } else if (obj.t == Glass) {
     const Ray refl_ray(point, r.dir - n * (2 * n.DotProduct(r.dir)));
     const double n_air = 1, n_obj = 1.5,

@@ -4,8 +4,10 @@
 
 struct Vector {
   double x, y, z;
-  explicit Vector(const double &_x = 0., const double &_y = 0., const double &_z = 0.)
+  explicit Vector(const double &_x = 0., const double &_y = 0.,
+                  const double &_z = 0.)
       : x(_x), y(_y), z(_z) {}
+  explicit operator bool() const { return x || y || z; }
   Vector operator+(const Vector &rhs) const {
     return Vector(x + rhs.x, y + rhs.y, z + rhs.z);
   }
@@ -29,8 +31,9 @@ struct Vector {
   Vector HadamardProduct(const Vector &rhs) const {  // HadamardProduct
     return Vector(x * rhs.x, y * rhs.y, z * rhs.z);
   }
+  double Length() const { return sqrt(x * x + y * y + z * z); }
   Vector &normalize() {
-    *this = *this * (1. / sqrt(x * x + y * y + z * z));
+    *this = *this * (1. / this->Length());
     return *this;
   }
   friend std::istream &operator>>(std::istream &is, Vector &other) {
