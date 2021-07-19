@@ -67,7 +67,7 @@ Vector Renderer::Radiance(const Ray &r, int depth) const noexcept {
   double p = std::max(col.x, std::max(col.y, col.z));  // max reflection
   const bool in = n.DotProduct(r.dir) < 0;
   if (++depth > 5) {  // Russian Roulette
-    if (erand() < p)
+    if (erand() < p && depth<300)
       col = col * (1 / p);
     else
       return obj.e;
@@ -97,14 +97,14 @@ Vector Renderer::Radiance(const Ray &r, int depth) const noexcept {
                            .normalize();
     Vector L_s;
     for (int i = scene_.spheres.size() - 1; i >= 0; i--) {
-      if (scene_.spheres[i].e) {
+      if (scene_.spheres[i].e && i != id) {
         auto l = scene_.spheres[i].p - point;
         const auto l_len = l.Length();
         L_s += scene_.spheres[i].e *
                (std::max(l.normalize().DotProduct(n), 0.) / std::pow(l_len - scene_.spheres[i].r, 2));
       }
     }
-    const double k_s = 0;
+    const double k_s = 0.9;
     if (scene_.frog) {
       const double p_frog = f_atmo(t);
       return obj.e + L_s * k_s +
@@ -112,8 +112,11 @@ Vector Renderer::Radiance(const Ray &r, int depth) const noexcept {
                                  scene_.frog_c * (1 - p_frog)) *
                  (1 - k_s);
     }
-    // return obj.e + col.HadamardProduct(Radiance(Ray(point, dir), depth)) * 1.0 + L_s * 0.0;
-    // return obj.e + col.HadamardProduct(Radiance(Ray(point, dir), depth)) * 1.0;
+
+    //auto __t3 = col.HadamardProduct(Radiance(Ray(point, dir), depth)) * 1.0;
+    //auto __t0 = obj.e + __t3 + L_s * 0.0;
+    //auto __t1 = obj.e + __t3;
+    //return __t0;
     return obj.e + L_s * k_s +
            col.HadamardProduct(Radiance(Ray(point, dir), depth)) * (1 - k_s);
   } else if (obj.t == Glass) {
