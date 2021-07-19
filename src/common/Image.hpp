@@ -1,10 +1,8 @@
 ﻿#pragma once
 
+#include <memory>
+
 struct Image {
-  unsigned char *buf;
+  std::unique_ptr<unsigned char[]> buf;
   int w, h;
-  Image() { buf = nullptr; }
-  ~Image() {
-    if (buf) delete[] buf;
-  }
 };
