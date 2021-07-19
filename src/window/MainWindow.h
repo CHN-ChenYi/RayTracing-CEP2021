@@ -2,6 +2,9 @@
 #ifndef __MAIN_WINDOW_H__
 #define __MAIN_WINDOW_H__
 
+#include <cstring>
+#include <memory>
+
 #include <Fl/Fl_Multiline_Input.H>
 #include <TextView.h>
 #include <Input.h>
@@ -95,8 +98,6 @@ class MainWindow : public Fl_Double_Window {
   // properties
   CSL::RefPtr<std::future<void>> ref_future;
   CSL::RefPtr<std::string> m_ErrorInfo;
-  
-
   // bool IsRendering;
 };
 
