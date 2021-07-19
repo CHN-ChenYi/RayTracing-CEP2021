@@ -1,5 +1,4 @@
 ﻿
-#include "Renderer.hpp"
 
 #include <algorithm>
 #include <cassert>
@@ -13,8 +12,85 @@
 #include <string>
 #include <tuple>
 #include <utility>
+#include <algorithm>
 
 #include "Scene.hpp"
+#include "Renderer.hpp"
+
+static void median_process(
+    unsigned char *buf,
+    unsigned char* outbuf,
+    unsigned char* mask, 
+    const int w, 
+    const int h, 
+    const int chan, 
+    const int x,
+    const int y, 
+    int window) 
+{
+  int w_min, w_max, h_min, h_max;
+  std::vector<unsigned char> list;
+  int i, j;
+  while (1) {
+    w_min = max(0, x - window / 2);
+    w_max = min(w, x + window - window / 2);
+    h_min = max(0, y - window / 2);
+    h_max = min(h, y + window - window / 2);
+    list.clear();
+
+    for (i = h_min; i < h_max; i++) {
+      for (j = w_min; j < w_max; j++) {
+        if (!mask[(w * i + j) * 3 + chan]) {
+          list.push_back(buf[(i * w + j) * 3 + chan]);
+        }
+      }
+    }
+    if (list.size()) break;
+    window++;
+  }
+  int sum = 0;
+  for (auto it = list.begin(); it != list.end(); it++) {
+    sum += *it;
+  }
+  outbuf[(w * y + x) * 3 + chan] = (unsigned char)(sum / list.size());
+  //std::sort(list.begin(),list.end());
+  //outbuf[(w * y + x) * 3 + chan] = list[list.size() / 2];
+}
+
+static void median_filter(Image &img, int window = 3) {
+  int w = img.w;
+  int h = img.h;
+  int i, j, k;
+  unsigned char *tmp_buf = new unsigned char[3 * (int64_t)img.w * img.h];
+  unsigned char *mask_buf = new unsigned char[3 * (int64_t)img.w * img.h];
+  for (k = 0; k < 3; k++) {
+    //#pragma omp parallel for
+    for (i = 0; i < h; i++) {
+      for (j = 0; j < w; j++) {
+        if (img.buf[(w * i + j) * 3 + k] > 250 ||
+            img.buf[(w * i + j) * 3 + k] < 5) {
+          mask_buf[(w * i + j) * 3 + k] = 1;
+        } else {
+          mask_buf[(w * i + j) * 3 + k] = 0;
+        }
+        tmp_buf[(w * i + j) * 3 + k] = img.buf[(w * i + j) * 3 + k];
+      }
+    }
+  }
+  for (k = 0; k < 3; k++) {
+#pragma omp parallel for
+    for (i = 0; i < h; i++) {
+      for (j = 0; j < w; j++) {
+        if (mask_buf[(w * i + j) * 3 + k]) {
+          median_process(img.buf, tmp_buf, mask_buf,w, h, k, j, i, window);
+        }
+      }
+    }
+  }
+  delete[] img.buf;
+  delete[] mask_buf;
+  img.buf = tmp_buf;
+}
 
 static const double M_PI = acos(-1);
 
@@ -201,6 +277,8 @@ bool Renderer::Render(const std::string &serialized_scene, Image **img_ptr,
             img_buf[cur].buf[offset + 2] = Gamma(clamp(colour[id].z / (i + 1)));
           }
         }
+        //
+        //median_filter(img_buf[cur]);
         *img_ptr = &img_buf[cur];
         if (cancellation_token_) {
           progress = 100;
