@@ -208,7 +208,7 @@ void MainWindow::set_icons() {
     int w = tmp_img->w();
     int h = tmp_img->h();
     m_icons[0] =
-        std::make_unique<Fl_RGB_Image>((const unsigned char*)*buf, w, h);//add <memory>
+        std::make_unique<Fl_RGB_Image>((const unsigned char*)*buf, w, h);
     m_icons[1] =
         std::make_unique<Fl_RGB_Image>((const unsigned char*)*buf, w, h);
     m_picons[0] = m_icons[0].get();

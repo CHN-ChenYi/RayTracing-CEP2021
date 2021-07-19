@@ -2,7 +2,7 @@
 #ifndef __MAIN_WINDOW_H__
 #define __MAIN_WINDOW_H__
 
-#include <cstring>
+#include <string>
 #include <memory>
 
 #include <Fl/Fl_Multiline_Input.H>
