@@ -16,7 +16,7 @@ MainWindow::MainWindow(int w, int h, const char* t)
   end();
 
   set_icons();
-  color(fl_rgb_color(242));
+  color(fl_rgb_color(100));
   // start.callback(&start_cb, this);
   menu.color(fl_rgb_color(36, 36, 36));
   menu.textcolor(fl_rgb_color(255, 134, 13));
@@ -207,7 +207,7 @@ ProgressBar& MainWindow::GetProgressBar() noexcept { return m_ProgressBar; }
 TextEditor& MainWindow::GetTextEditor() noexcept { return m_ImageInfo; }
 
 void MainWindow::set_icons() {
-  Fl_Shared_Image* tmp_img = Fl_Shared_Image::get("../../../../pic/icon.jpg");
+  Fl_Shared_Image* tmp_img = Fl_Shared_Image::get("G:/adv_c++/ray/RayTracing-CEP2021/pics/icon.jpg");
   m_pic.reset(tmp_img);
   if (tmp_img) {
     const char*const* buf = tmp_img->data();
