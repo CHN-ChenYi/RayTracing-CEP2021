@@ -1,29 +1,27 @@
-#include<Input.h>
+#include <Input.h>
+#include <string>
 Input::Input(int x, int y, int w, int h) :
-samp_num(x+115,y+10,50,30,"sampling number"),
-w(x+220, y + 10, 50, 30,"width"),
-h(x+320, y + 10, 50, 30,"height"),
-frog_i(x, y + 50, 50, 30,"frog"),
-frog_c_x(x+115, y + 50, 50, 30,"x"),
-frog_c_y(x+220, y + 50, 50, 30,"y"),
-frog_c_z(x+320, y + 50, 50, 30,"z"),
-camera_x_x(x+115, y + 90, 50, 30,"camera x x"),
-camera_x_y(x+220, y + 90, 50, 30,"y"),
-camera_x_z(x+320, y + 90, 50, 30,"z"),
-camera_y_x(x+115, y + 130, 50, 30,"camera y x"),
-camera_y_y(x+220, y + 130, 50, 30,"y"),
-camera_y_z(x+320, y + 130, 50, 30,"z"),
-lensr(x+115, y + 170, 50, 30,"lensr"),
-camera_ori_x(x+115, y + 210, 50, 30,"camera ori x"),
-camera_ori_y(x+220, y + 210, 50, 30,"y"),
-camera_ori_z(x+320, y + 210, 50, 30,"z"),
-camera_dir_x(x+115, y + 250, 50, 30,"camera dir x"),
-camera_dir_y(x+220, y + 250, 50, 30,"y"),
-camera_dir_z(x+320, y + 250, 50, 30,"z"),
-sphere(x, y + 290, w, h-290)
-{
-
-}
+samp_num(x+115, y+10, 50, 30, "sampling number"),
+w(x+220, y + 10, 50, 30, "width"),
+h(x+320, y + 10, 50, 30, "height"),
+frog_i(x, y + 50, 50, 30, "frog"),
+frog_c_x(x+115, y + 50, 50, 30, "x"),
+frog_c_y(x+220, y + 50, 50, 30, "y"),
+frog_c_z(x+320, y + 50, 50, 30, "z"),
+camera_x_x(x+115, y + 90, 50, 30, "camera x x"),
+camera_x_y(x+220, y + 90, 50, 30, "y"),
+camera_x_z(x+320, y + 90, 50, 30, "z"),
+camera_y_x(x+115, y + 130, 50, 30, "camera y x"),
+camera_y_y(x+220, y + 130, 50, 30, "y"),
+camera_y_z(x+320, y + 130, 50, 30, "z"),
+lensr(x+115, y + 170, 50, 30, "lensr"),
+camera_ori_x(x+115, y + 210, 50, 30, "camera ori x"),
+camera_ori_y(x+220, y + 210, 50, 30, "y"),
+camera_ori_z(x+320, y + 210, 50, 30, "z"),
+camera_dir_x(x+115, y + 250, 50, 30, "camera dir x"),
+camera_dir_y(x+220, y + 250, 50, 30, "y"),
+camera_dir_z(x+320, y + 250, 50, 30, "z"),
+sphere(x, y + 290, w, h-290) {}
 Input::~Input(){}
 void Input::show() {
     samp_num.show();
