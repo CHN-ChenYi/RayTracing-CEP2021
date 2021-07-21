@@ -37,7 +37,8 @@ static inline double clamp(const double &x) {
 }
 
 static inline int Gamma(const double &x) {
-  return int(pow(clamp(x), 1 / 2.2) * 255 + .5);  // Gamma Correction
+  return static_cast<int>(pow(clamp(x), 1 / 2.2) * 255 +
+                          .5);  // Gamma Correction
 }
 
 int Renderer::Intersect(const Ray &r, double &t) const noexcept {

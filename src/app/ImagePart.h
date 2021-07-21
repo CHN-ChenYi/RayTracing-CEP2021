@@ -1,12 +1,9 @@
-﻿// Zhu Lizhen
-// 7.14
-
-#ifndef __IMAGE_PART_H__
+﻿#ifndef __IMAGE_PART_H__
 #define __IMAGE_PART_H__
 
 #include "../model/RenderModel.hpp"
-#include "../viewmodel/RenderViewModel.hpp"
 #include "../model/TextModel.h"
+#include "../viewmodel/RenderViewModel.hpp"
 #include "../viewmodel/TextViewModel.h"
 #include "../window/MainWindow.h"
 
@@ -22,7 +19,6 @@ class ImagePart {
   RenderViewModel& GetViewModel() noexcept;
 
  private:
-  // TODO: export these objects
   RenderModel m_model;
   RenderViewModel m_renderVM;
 

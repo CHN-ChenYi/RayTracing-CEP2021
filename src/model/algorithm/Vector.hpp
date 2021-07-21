@@ -4,7 +4,8 @@
 
 struct Vector {
   double x, y, z;
-  explicit Vector(const double &_x = 0., const double &_y = 0., const double &_z = 0.)
+  explicit Vector(const double &_x = 0., const double &_y = 0.,
+                  const double &_z = 0.)
       : x(_x), y(_y), z(_z) {}
   Vector operator+(const Vector &rhs) const {
     return Vector(x + rhs.x, y + rhs.y, z + rhs.z);

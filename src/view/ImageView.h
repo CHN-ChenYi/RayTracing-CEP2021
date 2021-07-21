@@ -1,13 +1,12 @@
 ﻿#ifndef __IMAGE_VIEW_H__
 #define __IMAGE_VIEW_H__
 
-#include <utility>
-#include <memory>
-
 #include <Fl/FL_BMP_Image.h>
 
 #include <Image.hpp>
+#include <memory>
 #include <precomp.hpp>
+#include <utility>
 
 class ImageShower : Fl_Box {
  public:

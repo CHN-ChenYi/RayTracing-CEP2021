@@ -25,8 +25,9 @@ bool TextModel::Load(const std::string& str) {
 
 bool TextModel::Save(const std::string& str) {
   if (m_textBuffer.savefile(str.c_str()) == 0) {
+    return false;
   }
-  return false;
+  return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

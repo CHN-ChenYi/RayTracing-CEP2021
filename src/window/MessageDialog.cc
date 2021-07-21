@@ -23,6 +23,6 @@ MessageDialog::~MessageDialog() noexcept {}
 // callbacks
 
 void MessageDialog::ok_cb(Fl_Widget* pW, void* pD) {
-  MessageDialog* pThis = (MessageDialog*)pD;
+  MessageDialog* pThis = reinterpret_cast<MessageDialog*>(pD);
   pThis->hide();
 }

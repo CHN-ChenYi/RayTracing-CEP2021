@@ -16,8 +16,9 @@ CSL::RefPtr<Image*> ImageShower::detach_ImagePtr() noexcept {
   return CSL::RefPtr<Image*>(std::move(m_Image));
 }
 void ImageShower::show() {
-  Fl_RGB_Image* rgb_img = new Fl_RGB_Image(
-      (*(m_Image.Get()))->buf.get(), (*(m_Image.Get()))->w, (*(m_Image.Get()))->h);
+  Fl_RGB_Image* rgb_img =
+      new Fl_RGB_Image((*(m_Image.Get()))->buf.get(), (*(m_Image.Get()))->w,
+                       (*(m_Image.Get()))->h);
   Fl_Image* nrgb_img = rgb_img->copy(800, 600);
   delete rgb_img;
   tmpImage.reset(nrgb_img);

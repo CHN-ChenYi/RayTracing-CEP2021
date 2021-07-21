@@ -2,6 +2,8 @@
 #ifndef __PROGRESS_BAR_H__
 #define __PROGRESS_BAR_H__
 
+#include <memory>
+
 class ProgressBar : public Fl_Box {
  public:
   ProgressBar(int x, int y, int w, int h) noexcept;

@@ -1,7 +1,4 @@
-﻿// Zhu Lizhen
-// 7.14
-
-#ifndef __RENDERING_APP_H__
+﻿#ifndef __RENDERING_APP_H__
 #define __RENDERING_APP_H__
 
 #include "ImagePart.h"
@@ -19,6 +16,7 @@ class RenderingApp {
  private:
   std::function<bool()> get_CloseCommand();
   std::function<void()> get_ErrorHandlingCommand();
+
  private:
   ImagePart m_imgPart;
 };

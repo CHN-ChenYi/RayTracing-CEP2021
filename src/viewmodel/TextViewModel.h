@@ -1,6 +1,8 @@
 ﻿#ifndef __TEXT_VIEW_MODEL_H__
 #define __TEXT_VIEW_MODEL_H__
 
+#include <string>
+
 #include "../model/TextModel.h"
 
 class TextViewModel : public CSL::PropertyTrigger {

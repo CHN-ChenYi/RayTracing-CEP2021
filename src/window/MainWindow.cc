@@ -1,10 +1,9 @@
 ﻿#include "MainWindow.h"
+
 #include <future>
 
 #include "FL/Fl_Shared_Image.H"
 #include "precomp.hpp"
-
-
 
 MainWindow::MainWindow(int w, int h, const char* t)
     : Fl_Double_Window(w, h, t),
@@ -12,8 +11,8 @@ MainWindow::MainWindow(int w, int h, const char* t)
       // start(100, 0, 100, 30, "start"),
       menu(0, 0, 400, 25),
       m_ImageInfo(0, 30, 400, h - 30),
-      m_ProgressBar(0, 25, 400, 5), 
-      input(0, 30, 400, h-30) {
+      m_ProgressBar(0, 25, 400, 5),
+      input(0, 30, 400, h - 30) {
   end();
 
   set_icons();
@@ -28,7 +27,7 @@ MainWindow::MainWindow(int w, int h, const char* t)
   menu.add("save", 0, &save_cb, &m_cmdSave);
   menu.add("load", 0, &load_cb, this);
   menu.add("mode", 0, &mode_cb, this);
-  callback((Fl_Callback*)&close_cb, &m_cmdClose);
+  callback(reinterpret_cast<Fl_Callback*>(&close_cb), &m_cmdClose);
   mode = 0;
   input.hide();
   // this->resizable(m_ImageInfo);
@@ -103,7 +102,7 @@ std::function<bool()> MainWindow::detach_CloseCommand() noexcept {
 }
 void MainWindow::close_cb(Fl_Window* pW, void* pD) {
   std::function<bool()>& cf = *((std::function<bool()>*)pD);
-  MainWindow* pThis = (MainWindow*)pW;
+  MainWindow* pThis = reinterpret_cast<MainWindow*>(pW);
   // if (pThis->IsRendering) { pThis->IsRendering = 0;return; }
 
   if (pThis->ref_future.Get()->valid() &&
@@ -140,71 +139,71 @@ void MainWindow::save_cb(Fl_Widget*, void* v) {
   return;
 }
 void MainWindow::load_cb(Fl_Widget* pW, void* v) {
-  MainWindow* pThis = (MainWindow*)v;
+  MainWindow* pThis = reinterpret_cast<MainWindow*>(v);
   Fl_Native_File_Chooser fc;
   fc.title("Choose file");
   fc.type(Fl_Native_File_Chooser::BROWSE_FILE);
   if (fc.show() == 0) {
     // std::function<bool(const std::wstring&)>& cmdFunc =
     // *((std::function<bool(const std::wstring&)>*)v);
-      pThis->mode = 0;
-        pThis->SwitchMode();
-        std::function<bool(const std::string&)>& cmdFunc =
-            pThis->m_cmdLoad;
+    pThis->mode = 0;
+    pThis->SwitchMode();
+    std::function<bool(const std::string&)>& cmdFunc = pThis->m_cmdLoad;
     // if (cmdFunc != nullptr &&
     // !cmdFunc(to_wide_string((std::string(fc.filename()))))) {
     if (cmdFunc != nullptr && !cmdFunc(std::string(fc.filename()))) {
-        fl_alert("Error in opening file!");
+      fl_alert("Error in opening file!");
     }
   }
   return;
 }
 void MainWindow::StartRendering() {
   // IsRendering = 1;
-    if (!mode) {
-        if (!m_cmdRender(m_ImageInfo.buffer()->text())) {
-        m_cmdErrorHandling();
-        }
-    } else {
-        std::string tmp = input.GetInput();
-        if (!m_cmdRender(tmp)) {
-            m_cmdErrorHandling();
-        }
+  if (!mode) {
+    if (!m_cmdRender(m_ImageInfo.buffer()->text())) {
+      m_cmdErrorHandling();
     }
+  } else {
+    std::string tmp = input.GetInput();
+    if (!m_cmdRender(tmp)) {
+      m_cmdErrorHandling();
+    }
+  }
 }
 void MainWindow::start_cb(Fl_Widget* pW, void* pD) {
-  MainWindow* pThis = (MainWindow*)pD;
+  MainWindow* pThis = reinterpret_cast<MainWindow*>(pD);
   pThis->StartRendering();
 }
 void MainWindow::abort() { m_cmdAbort(); }
 void MainWindow::abort_cb(Fl_Widget* pW, void* pD) {
-  MainWindow* pThis = (MainWindow*)pD;
+  MainWindow* pThis = reinterpret_cast<MainWindow*>(pD);
   pThis->abort();
 }
 void MainWindow::SwitchMode() {
-    if (mode) {
-        input.show();
-        m_ImageInfo.hide();
-    } else {
-        input.hide();
-        m_ImageInfo.show();
-    }
-    redraw();
+  if (mode) {
+    input.show();
+    m_ImageInfo.hide();
+  } else {
+    input.hide();
+    m_ImageInfo.show();
+  }
+  redraw();
 }
 void MainWindow::mode_cb(Fl_Widget* pW, void* pD) {
-    MainWindow* pThis = (MainWindow*)pD;
-    pThis->mode = pThis->mode ^ 1;
-    pThis->SwitchMode();
+  MainWindow* pThis = reinterpret_cast<MainWindow*>(pD);
+  pThis->mode = pThis->mode ^ 1;
+  pThis->SwitchMode();
 }
 ProgressBar& MainWindow::GetProgressBar() noexcept { return m_ProgressBar; }
 
 TextEditor& MainWindow::GetTextEditor() noexcept { return m_ImageInfo; }
 
 void MainWindow::set_icons() {
-  Fl_Shared_Image* tmp_img = Fl_Shared_Image::get("G:/adv_c++/ray/RayTracing-CEP2021/pics/icon.jpg");
+  Fl_Shared_Image* tmp_img =
+      Fl_Shared_Image::get("G:/adv_c++/ray/RayTracing-CEP2021/pics/icon.jpg");
   m_pic.reset(tmp_img);
   if (tmp_img) {
-    const char*const* buf = tmp_img->data();
+    const char* const* buf = tmp_img->data();
     int w = tmp_img->w();
     int h = tmp_img->h();
     m_icons[0] =

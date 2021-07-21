@@ -8,7 +8,6 @@ ImagePart::ImagePart() : m_wndMain(1200, 600, "Renderred Image Shower") {
   m_model.AddNotification(m_renderVM.GetNotification());
 
   m_textVM.attach_Model(CSL::RefPtr<TextModel>(m_textM));
-  // TODO: add notification to text model
 
   // properties
   m_wndMain.GetImageShower().attach_ImagePtr(m_renderVM.GetImagePtr());

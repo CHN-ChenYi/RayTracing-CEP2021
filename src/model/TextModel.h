@@ -2,6 +2,8 @@
 #ifndef __TEXT_MODEL_H__
 #define __TEXT_MODEL_H__
 
+#include <string>
+
 class TextModel : public CSL::PropertyTrigger {
  public:
   TextModel();
